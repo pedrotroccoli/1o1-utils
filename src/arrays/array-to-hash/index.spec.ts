@@ -23,4 +23,27 @@ describe("arrayToHash", () => {
       "3": { id: "3", name: "Jim" },
     });
   });
+
+  it("should return an empty object if the array is empty", () => {
+    const result = arrayToHash<TestType>({ array: [], key: "id" });
+
+    expect(result).to.deep.equal({});
+  });
+
+  it("should return all the keys with values", () => {
+    const result = arrayToHash<TestType>({
+      array: [
+        { id: "1", name: "John" },
+        { id: "2", name: "Jane" },
+        { id: "3", name: "Jim" },
+      ],
+      key: "id",
+    });
+
+    expect(result).to.deep.equal({
+      "1": { id: "1", name: "John" },
+      "2": { id: "2", name: "Jane" },
+      "3": { id: "3", name: "Jim" },
+    });
+  });
 });
