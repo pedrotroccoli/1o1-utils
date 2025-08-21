@@ -12,11 +12,7 @@ function arrayToHash<T>({ array, key }: ArrayToHashParams<T>): ArrayToHashResult
   let hash = new Map<string, T>();
 
   for (const item of array) {
-    if (!item[key]) continue;
-
-    if (typeof item[key] !== "string") {
-      continue;
-    }
+    if (!item[key] || typeof item[key] !== "string") continue;
 
     hash.set(item[key], item);
   }
