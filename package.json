@@ -1,4 +1,9 @@
 {
+	"name": "1o1-utils",
+	"version": "1.0.0",
+	"description": "A collection of utility functions for TypeScript",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
 	"scripts": {
 		"test": "mocha",
 		"build": "tsc",
