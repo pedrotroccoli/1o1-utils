@@ -46,4 +46,14 @@ describe("arrayToHash", () => {
       "3": { id: "3", name: "Jim" },
     });
   });
+
+  it("should throw an error if the array is not an array", () => {
+    // @ts-expect-error - we want to test the error case
+    expect(() => arrayToHash<TestType>({ array: "not an array", key: "id" })).to.throw("The 'array' parameter is not an array");
+  });
+
+  it("should throw an error if the key is not a string", () => {
+    // @ts-expect-error - we want to test the error case
+    expect(() => arrayToHash<TestType>({ array: testArray, key: 1 })).to.throw("The 'key' parameter is not a string");
+  });
 });
