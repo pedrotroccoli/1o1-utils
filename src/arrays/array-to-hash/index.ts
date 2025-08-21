@@ -14,7 +14,11 @@ function arrayToHash<T>({ array, key }: ArrayToHashParams<T>): ArrayToHashResult
   for (const item of array) {
     if (!item[key]) continue;
 
-    hash.set(item[key] as string, item);
+    if (typeof item[key] !== "string") {
+      continue;
+    }
+
+    hash.set(item[key], item);
   }
 
   return Object.fromEntries(hash);
