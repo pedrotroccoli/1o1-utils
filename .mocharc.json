@@ -1,0 +1,5 @@
+{
+  "require": ["tsx"],
+  "spec": "src/**/*.spec.ts",
+  "watch": false
+}
