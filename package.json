@@ -1,11 +1,13 @@
 {
 	"scripts": {
 		"test": "mocha",
-		"build": "tsc"
+		"build": "tsc",
+		"dev": "tsx watch src/index.ts"
 	},
 	"devDependencies": {
 		"mocha": "^11.7.1",
 		"ts-node": "^10.9.2",
+		"tsx": "^4.20.4",
 		"typescript": "^5.9.2"
 	}
 }
