@@ -1,6 +1,9 @@
-import { ArrayToHashParams, ArrayToHashResult } from "./types";
+import type { ArrayToHashParams, ArrayToHashResult } from "./types";
 
-function arrayToHash<T>({ array, key }: ArrayToHashParams<T>): ArrayToHashResult<T> {
+function arrayToHash<T>({
+  array,
+  key,
+}: ArrayToHashParams<T>): ArrayToHashResult<T> {
   if (!Array.isArray(array)) {
     throw new Error("The 'array' parameter is not an array");
   }
@@ -9,7 +12,7 @@ function arrayToHash<T>({ array, key }: ArrayToHashParams<T>): ArrayToHashResult
     throw new Error("The 'key' parameter is not a string");
   }
 
-  let hash = new Map<string, T>();
+  const hash = new Map<string, T>();
 
   for (const item of array) {
     if (!item[key] || typeof item[key] !== "string") continue;
