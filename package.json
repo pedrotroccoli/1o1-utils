@@ -5,6 +5,9 @@
 	"type": "module",
 	"types": "dist/index.d.ts",
 	"sideEffects": false,
+	"files": [
+		"dist"
+	],
 	"exports": {
 		".": {
 			"import": "./dist/index.js",
