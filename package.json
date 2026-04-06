@@ -9,7 +9,7 @@
 		"build": "tsc",
 		"dev": "tsx watch src/index.ts",
 		"lint": "biome lint ./src",
-		"format": "biome format ./src",
+		"format": "biome format --write ./src",
 		"check": "biome check ./src",
 		"check:fix": "biome check --write ./src"
 	},
