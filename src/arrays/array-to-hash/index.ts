@@ -1,4 +1,4 @@
-import type { ArrayToHashParams, ArrayToHashResult } from "./types";
+import type { ArrayToHashParams, ArrayToHashResult } from "./types.js";
 
 function arrayToHash<T>({
   array,

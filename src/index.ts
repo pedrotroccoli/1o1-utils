@@ -1,1 +1,1 @@
-export { arrayToHash } from "./arrays/array-to-hash";
+export { arrayToHash } from "./arrays/array-to-hash/index.js";
