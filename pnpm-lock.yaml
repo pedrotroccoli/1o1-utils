@@ -7,10 +7,6 @@ settings:
 importers:
 
   .:
-    dependencies:
-      chai:
-        specifier: ^5.3.1
-        version: 5.3.1
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.4.10
@@ -21,6 +17,9 @@ importers:
       '@types/mocha':
         specifier: ^10.0.10
         version: 10.0.10
+      chai:
+        specifier: ^5.3.1
+        version: 5.3.1
       mocha:
         specifier: ^11.7.1
         version: 11.7.1

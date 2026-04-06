@@ -2,8 +2,19 @@
 	"name": "1o1-utils",
 	"version": "1.1.0",
 	"description": "A collection of utility functions for TypeScript & Javascript",
-	"main": "dist/index.js",
+	"type": "module",
 	"types": "dist/index.d.ts",
+	"sideEffects": false,
+	"exports": {
+		".": {
+			"import": "./dist/index.js",
+			"types": "./dist/index.d.ts"
+		},
+		"./array-to-hash": {
+			"import": "./dist/arrays/array-to-hash/index.js",
+			"types": "./dist/arrays/array-to-hash/index.d.ts"
+		}
+	},
 	"scripts": {
 		"test": "mocha",
 		"build": "tsc",
@@ -17,12 +28,10 @@
 		"@biomejs/biome": "^2.4.10",
 		"@types/chai": "^5.2.2",
 		"@types/mocha": "^10.0.10",
+		"chai": "^5.3.1",
 		"mocha": "^11.7.1",
 		"ts-node": "^10.9.2",
 		"tsx": "^4.20.4",
 		"typescript": "^5.9.2"
-	},
-	"dependencies": {
-		"chai": "^5.3.1"
 	}
 }

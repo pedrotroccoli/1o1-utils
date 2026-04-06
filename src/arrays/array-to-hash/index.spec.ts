@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { describe, it } from "mocha";
-import { arrayToHash } from "./index";
+import { arrayToHash } from "./index.js";
 
 type TestType = {
   id: string;
