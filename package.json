@@ -7,9 +7,14 @@
 	"scripts": {
 		"test": "mocha",
 		"build": "tsc",
-		"dev": "tsx watch src/index.ts"
+		"dev": "tsx watch src/index.ts",
+		"lint": "biome lint ./src",
+		"format": "biome format --write ./src",
+		"check": "biome check ./src",
+		"check:fix": "biome check --write ./src"
 	},
 	"devDependencies": {
+		"@biomejs/biome": "^2.4.10",
 		"@types/chai": "^5.2.2",
 		"@types/mocha": "^10.0.10",
 		"mocha": "^11.7.1",

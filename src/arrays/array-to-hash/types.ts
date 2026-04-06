@@ -7,8 +7,6 @@ interface ArrayToHashResult<T> {
   [key: string]: T;
 }
 
-interface ArrayToHash<T> {
-  (params: ArrayToHashParams<T>): ArrayToHashResult<T>;
-}
+type ArrayToHash<T> = (params: ArrayToHashParams<T>) => ArrayToHashResult<T>;
 
-export type { ArrayToHashParams, ArrayToHashResult, ArrayToHash };
+export type { ArrayToHash, ArrayToHashParams, ArrayToHashResult };
