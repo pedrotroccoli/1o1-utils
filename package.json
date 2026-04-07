@@ -16,6 +16,10 @@
 		"./array-to-hash": {
 			"import": "./dist/arrays/array-to-hash/index.js",
 			"types": "./dist/arrays/array-to-hash/index.d.ts"
+		},
+		"./chunk": {
+			"import": "./dist/arrays/chunk/index.js",
+			"types": "./dist/arrays/chunk/index.d.ts"
 		}
 	},
 	"scripts": {
