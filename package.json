@@ -5,6 +5,9 @@
 	"type": "module",
 	"types": "dist/index.d.ts",
 	"sideEffects": false,
+	"files": [
+		"dist"
+	],
 	"exports": {
 		".": {
 			"import": "./dist/index.js",
@@ -24,8 +27,13 @@
 		"check": "biome check ./src",
 		"check:fix": "biome check --write ./src"
 	},
+	"packageManager": "pnpm@10.9.0",
+	"engines": {
+		"node": ">=20"
+	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.4.10",
+		"@changesets/cli": "^2.30.0",
 		"@types/chai": "^5.2.2",
 		"@types/mocha": "^10.0.10",
 		"chai": "^5.3.1",
