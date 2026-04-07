@@ -30,6 +30,9 @@ jobs:
       - name: Biome check
         run: pnpm check
 
+      - name: Type check
+        run: pnpm tsc --noEmit
+
       - name: Tests
         run: pnpm test
 
