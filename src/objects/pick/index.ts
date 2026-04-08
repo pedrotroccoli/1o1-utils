@@ -7,7 +7,6 @@ function pickNested(
 ): void {
   const len = key.length;
 
-  // pass 1: validate full path exists in source
   let src: unknown = source;
   let start = 0;
   let dot = key.indexOf(".");
@@ -26,7 +25,6 @@ function pickNested(
   if (!(lastSeg in (src as Record<string, unknown>))) return;
   const value = (src as Record<string, unknown>)[lastSeg];
 
-  // pass 2: build target path and assign
   let tgt = target;
   start = 0;
   dot = key.indexOf(".");
