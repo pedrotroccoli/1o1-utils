@@ -1,15 +1,10 @@
-interface PickParams<T extends Record<string, unknown>, K extends keyof T> {
+interface PickParams<T extends Record<string, unknown>> {
   obj: T;
-  keys: K[];
+  keys: (keyof T | string)[];
 }
 
-type PickResult<T extends Record<string, unknown>, K extends keyof T> = Pick<
-  T,
-  K
->;
+type PickFn<T extends Record<string, unknown>> = (
+  params: PickParams<T>,
+) => Record<string, unknown>;
 
-type PickFn<T extends Record<string, unknown>, K extends keyof T> = (
-  params: PickParams<T, K>,
-) => PickResult<T, K>;
-
-export type { PickFn, PickParams, PickResult };
+export type { PickFn, PickParams };
