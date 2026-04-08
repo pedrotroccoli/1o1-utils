@@ -9,16 +9,18 @@ function unique<T>({ array, key }: UniqueParams<T>): UniqueResult<T> {
     return [...new Set(array)];
   }
 
-  const seen = new Map<unknown, T>();
+  const seen = new Set<unknown>();
+  const result: T[] = [];
 
-  for (const item of array) {
-    const value = item[key];
+  for (let i = 0; i < array.length; i++) {
+    const value = array[i][key];
     if (!seen.has(value)) {
-      seen.set(value, item);
+      seen.add(value);
+      result.push(array[i]);
     }
   }
 
-  return [...seen.values()];
+  return result;
 }
 
 export { unique };
