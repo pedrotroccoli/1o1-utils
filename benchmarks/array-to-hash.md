@@ -2,24 +2,20 @@
 
 [← Back to benchmarks](./README.md)
 
-Converts an array into a hash/object keyed by a given property. Compared against `lodash.keyBy`, `radash.objectify`, and a native `for` loop with direct assignment.
+Converts an array into a hash/object keyed by a given property. Compared against `lodash.keyBy`, `radash.objectify`, and a native `for` loop.
 
 ---
 
-| Size | 1o1-utils | lodash | radash | native | Fastest |
-|------|-----------|--------|--------|--------|---------|
-| n=100 | 0.004ms · 238K ops/s | 0.004ms · 226K ops/s | 0.004ms · 245K ops/s | 0.004ms · 245K ops/s | radash · 1.1× vs lodash |
-| n=10k | 0.590ms · 1.7K ops/s | 0.607ms · 1.6K ops/s | 0.571ms · 1.8K ops/s | 0.577ms · 1.7K ops/s | radash · 1.1× vs lodash |
-| n=100k | 9.57ms · 105 ops/s | 9.84ms · 102 ops/s | 9.34ms · 107 ops/s | 9.49ms · 105 ops/s | radash · 1.0× vs lodash |
-| n=1M | 149.48ms · 7 ops/s | 150.47ms · 7 ops/s | 146.32ms · 7 ops/s | 147.13ms · 7 ops/s | radash · 1.0× vs lodash |
+| Size | 1o1-utils | lodash keyBy | radash objectify | native for loop | Fastest |
+| ------ | ------ | ------ | ------ | ------ | ------ |
+| n=100 | 4.2µs · 240.0K ops/s | 4.3µs · 230.7K ops/s | 4.1µs · 244.9K ops/s | 4.1µs · 244.9K ops/s | native for loop · 1.1× faster vs lodash |
+| n=10k | 585.3µs · 1.7K ops/s | 593.7µs · 1.7K ops/s | 567.0µs · 1.8K ops/s | 579.5µs · 1.7K ops/s | radash objectify · on par vs lodash |
+| n=100k | 10.16ms · 98 ops/s | 10.19ms · 98 ops/s | 9.44ms · 106 ops/s | 10.09ms · 99 ops/s | radash objectify · 1.1× faster vs lodash |
+| n=1M | 149.6ms · 7 ops/s | 146.6ms · 7 ops/s | 134.9ms · 7 ops/s | 139.7ms · 7 ops/s | radash objectify · 1.1× faster vs lodash |
 
 ```mermaid
 xychart-beta horizontal
-  title "arrayToHash — ops/s at 100k items"
-  x-axis ["radash", "1o1-utils", "native", "lodash"]
-  bar [107, 105, 105, 102]
+  title "arrayToHash / keyBy — ops/s at n=1M items"
+  x-axis ["radash objectify", "native for loop", "lodash keyBy", "1o1-utils"]
+  bar [7, 7, 7, 7]
 ```
-
-### Notes
-
-All implementations are within margin of error — performance is essentially identical. The operation is bottlenecked by object property assignment at scale, not by implementation differences.

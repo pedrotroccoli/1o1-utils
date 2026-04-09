@@ -6,20 +6,14 @@ Picks specified keys from an object, with support for nested dot notation. Compa
 
 ---
 
-| Variant | 1o1-utils | lodash | radash | native | Fastest |
-|---------|-----------|--------|--------|--------|---------|
-| flat keys | 0.000125ms · 8.0M ops/s | 0.000500ms · 2.0M ops/s | 0.000125ms · 8.0M ops/s | 0.000041ms · 24.4M ops/s | native · 4.0× vs lodash |
-| nested keys | 0.000292ms · 3.4M ops/s | 0.000750ms · 1.3M ops/s | — | — | 1o1-utils · 2.6× vs lodash |
+| Size | 1o1-utils | lodash | radash | native destructure | Fastest |
+| ------ | ------ | ------ | ------ | ------ | ------ |
+| flat keys | 125ns · 8.0M ops/s | 459ns · 2.2M ops/s | 125ns · 8.0M ops/s | 41ns · 24.4M ops/s | native destructure · 11.2× faster vs lodash |
+| nested keys | 292ns · 3.4M ops/s | 750ns · 1.3M ops/s | — | — | 1o1-utils · 2.6× faster vs lodash |
 
 ```mermaid
 xychart-beta horizontal
-  title "pick (flat keys) — ops/s"
-  x-axis ["native", "radash", "1o1-utils", "lodash"]
-  bar [24400000, 8000000, 8000000, 2000000]
+  title "pick — ops/s at nested keys items"
+  x-axis ["1o1-utils", "lodash"]
+  bar [3424657, 1333333]
 ```
-
-### Notes
-
-- **Radash** does not support nested dot notation (`address.city`), so it's excluded from the nested keys benchmark.
-- **Native destructuring** is the fastest for flat keys but requires knowing keys at compile time — not dynamic.
-- 1o1-utils and radash are neck-and-neck on flat keys, both **4× faster** than lodash.
