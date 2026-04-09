@@ -9,10 +9,10 @@ Run `pnpm bench` to reproduce these results locally.
 ## Results
 
 - [arrayToHash / keyBy](./array-to-hash.md) — on par with lodash
-- [chunk](./chunk.md) — **1.4–11.7× faster** than lodash
-- [groupBy](./group-by.md) — **1.3× faster** than lodash
-- [unique (by key)](./unique.md) — **2.6× faster** than lodash
-- [pick](./pick.md) — **2.6–3.7× faster** than lodash
+- [chunk](./chunk.md) — **1.4–11.4× faster** than lodash
+- [groupBy](./group-by.md) — **1.2× faster** than lodash
+- [unique (by key)](./unique.md) — **2.7× faster** than lodash
+- [pick](./pick.md) — **2.6–4.0× faster** than lodash
 
 ---
 
@@ -20,11 +20,11 @@ Run `pnpm bench` to reproduce these results locally.
 
 | Utility | vs lodash | vs radash | vs native |
 | ------- | --------- | --------- | --------- |
-| arrayToHash / keyBy | on par | 1.1× slower | on par |
-| chunk | **4.9× faster** | **1.1× faster** | on par |
+| arrayToHash / keyBy | on par | on par | on par |
+| chunk | **4.9× faster** | on par | on par |
 | groupBy | **1.3× faster** | on par | 1.1× slower |
-| unique (by key) | **2.6× faster** | **1.6× faster** | on par |
-| pick | **3.1× faster** | on par | 3.0× slower |
+| unique (by key) | **2.7× faster** | **1.6× faster** | on par |
+| pick | **3.3× faster** | on par | — |
 
 ---
 
