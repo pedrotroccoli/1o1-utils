@@ -1,12 +1,12 @@
 import lodashKeyBy from "lodash/keyBy.js";
 import { objectify } from "radash";
 import { Bench } from "tinybench";
-import { DATASETS_CAPPED as DATASETS } from "../../benchmarks/helpers.js";
+import { getDatasetsCapped } from "../../benchmarks/helpers.js";
 import { arrayToHash } from "./index.js";
 
 const bench = new Bench({ name: "arrayToHash / keyBy", time: 1000 });
 
-for (const { name, data: getData } of DATASETS) {
+for (const { name, data: getData } of getDatasetsCapped()) {
   const data = getData();
   bench
     .add(`1o1-utils (${name})`, () => {

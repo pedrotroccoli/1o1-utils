@@ -1,12 +1,12 @@
 import lodashUniqBy from "lodash/uniqBy.js";
 import { unique as radashUnique } from "radash";
 import { Bench } from "tinybench";
-import { DATASETS } from "../../benchmarks/helpers.js";
+import { getDatasets } from "../../benchmarks/helpers.js";
 import { unique } from "./index.js";
 
 const bench = new Bench({ name: "unique (by key)", time: 1000 });
 
-for (const { name, data: getData } of DATASETS) {
+for (const { name, data: getData } of getDatasets()) {
   const data = getData();
   bench
     .add(`1o1-utils (${name})`, () => {

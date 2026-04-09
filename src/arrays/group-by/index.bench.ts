@@ -1,12 +1,12 @@
 import lodashGroupBy from "lodash/groupBy.js";
 import { group } from "radash";
 import { Bench } from "tinybench";
-import { DATASETS } from "../../benchmarks/helpers.js";
+import { getDatasets } from "../../benchmarks/helpers.js";
 import { groupBy } from "./index.js";
 
 const bench = new Bench({ name: "groupBy", time: 1000 });
 
-for (const { name, data: getData } of DATASETS) {
+for (const { name, data: getData } of getDatasets()) {
   const data = getData();
   bench
     .add(`1o1-utils (${name})`, () => {

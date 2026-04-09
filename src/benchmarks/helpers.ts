@@ -73,5 +73,25 @@ const DATASETS: DatasetEntry[] = [
 
 const DATASETS_CAPPED: DatasetEntry[] = DATASETS.slice(0, 4);
 
+/**
+ * Returns DATASETS_CAPPED when BENCH_CI env var is set, otherwise full DATASETS.
+ */
+function getDatasets(): DatasetEntry[] {
+  return process.env.BENCH_CI ? DATASETS_CAPPED : DATASETS;
+}
+
+/**
+ * Always capped at 1M — for utilities where 10M is too heavy (e.g. arrayToHash).
+ */
+function getDatasetsCapped(): DatasetEntry[] {
+  return DATASETS_CAPPED;
+}
+
 export type { DatasetEntry, User };
-export { DATASETS, DATASETS_CAPPED, generateUsers };
+export {
+  DATASETS,
+  DATASETS_CAPPED,
+  generateUsers,
+  getDatasets,
+  getDatasetsCapped,
+};
