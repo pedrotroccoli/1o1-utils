@@ -12,15 +12,16 @@ function arrayToHash<T>({
     throw new Error("The 'key' parameter is not a string");
   }
 
-  const hash = new Map<string, T>();
+  const result: Record<string, T> = {};
 
-  for (const item of array) {
-    if (!item[key] || typeof item[key] !== "string") continue;
+  for (let i = 0; i < array.length; i++) {
+    const k = array[i][key];
+    if (!k || typeof k !== "string") continue;
 
-    hash.set(item[key], item);
+    result[k] = array[i];
   }
 
-  return Object.fromEntries(hash);
+  return result;
 }
 
 export { arrayToHash };

@@ -21,6 +21,10 @@
 			"import": "./dist/arrays/chunk/index.js",
 			"types": "./dist/arrays/chunk/index.d.ts"
 		},
+		"./group-by": {
+			"import": "./dist/arrays/group-by/index.js",
+			"types": "./dist/arrays/group-by/index.d.ts"
+		},
 		"./pick": {
 			"import": "./dist/objects/pick/index.js",
 			"types": "./dist/objects/pick/index.d.ts"
@@ -33,7 +37,8 @@
 		"lint": "biome lint ./src",
 		"format": "biome format --write ./src",
 		"check": "biome check ./src",
-		"check:fix": "biome check --write ./src"
+		"check:fix": "biome check --write ./src",
+		"bench": "NODE_OPTIONS='--max-old-space-size=8192' tsx src/benchmarks/run.ts"
 	},
 	"packageManager": "pnpm@10.9.0",
 	"engines": {
@@ -47,9 +52,13 @@
 		"@biomejs/biome": "^2.4.10",
 		"@changesets/cli": "^2.30.0",
 		"@types/chai": "^5.2.2",
+		"@types/lodash": "^4.17.24",
 		"@types/mocha": "^10.0.10",
 		"chai": "^5.3.1",
+		"lodash": "^4.18.1",
 		"mocha": "^11.7.1",
+		"radash": "^12.1.1",
+		"tinybench": "^6.0.0",
 		"ts-node": "^10.9.2",
 		"tsx": "^4.20.4",
 		"typescript": "^5.9.2"
