@@ -29,10 +29,6 @@ bench
   })
   .add("radash (flat keys)", () => {
     radashPick(sampleObj, FLAT_KEYS);
-  })
-  .add("native destructure (flat keys)", () => {
-    const { id, name, role } = sampleObj;
-    ({ id, name, role });
   });
 
 // Nested keys (radash doesn't support dot notation)
