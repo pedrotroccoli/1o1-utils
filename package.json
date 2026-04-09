@@ -21,6 +21,10 @@
 			"import": "./dist/arrays/chunk/index.js",
 			"types": "./dist/arrays/chunk/index.d.ts"
 		},
+		"./group-by": {
+			"import": "./dist/arrays/group-by/index.js",
+			"types": "./dist/arrays/group-by/index.d.ts"
+		},
 		"./pick": {
 			"import": "./dist/objects/pick/index.js",
 			"types": "./dist/objects/pick/index.d.ts"
