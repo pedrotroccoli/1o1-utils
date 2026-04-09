@@ -86,7 +86,7 @@ const SUITE_META: Record<string, { slug: string; description: string }> = {
   pick: {
     slug: "pick",
     description:
-      "Picks specified keys from an object, with support for nested dot notation. Compared against `lodash.pick`, `radash.pick`, and native destructuring.",
+      "Picks specified keys from an object, with support for nested dot notation. Compared against `lodash.pick` and `radash.pick`.",
   },
   "unique (by key)": {
     slug: "unique",
@@ -239,10 +239,10 @@ function generateReadme(suites: SuiteResult[]): string {
     // Compute overall verdict
     let verdict = "";
     if (lodashLib) {
-      const oneOOneRows = suite.rows.filter((r) => r.lib === "1o1-utils");
+      const ownRows = suite.rows.filter((r) => r.lib === "1o1-utils");
       const lodashRows = suite.rows.filter((r) => r.lib === lodashLib);
-      if (oneOOneRows.length > 0 && lodashRows.length > 0) {
-        const ratios = oneOOneRows
+      if (ownRows.length > 0 && lodashRows.length > 0) {
+        const ratios = ownRows
           .map((o) => {
             const l = lodashRows.find((lr) => lr.size === o.size);
             return l && l.opsMedian > 0 ? o.opsMedian / l.opsMedian : null;
@@ -288,11 +288,11 @@ function generateReadme(suites: SuiteResult[]): string {
 
     const computeVerdict = (targetLib: string | undefined): string => {
       if (!targetLib) return "—";
-      const oneOOneRows = suite.rows.filter((r) => r.lib === "1o1-utils");
+      const ownRows = suite.rows.filter((r) => r.lib === "1o1-utils");
       const targetRows = suite.rows.filter((r) => r.lib === targetLib);
-      if (oneOOneRows.length === 0 || targetRows.length === 0) return "—";
+      if (ownRows.length === 0 || targetRows.length === 0) return "—";
 
-      const ratios = oneOOneRows
+      const ratios = ownRows
         .map((o) => {
           const t = targetRows.find((tr) => tr.size === o.size);
           return t && t.opsMedian > 0 ? o.opsMedian / t.opsMedian : null;

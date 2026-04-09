@@ -5,6 +5,4 @@ interface GroupByParams<T> {
 
 type GroupByResult<T> = Record<string, T[]>;
 
-type GroupBy<T> = (params: GroupByParams<T>) => GroupByResult<T>;
-
-export type { GroupBy, GroupByParams, GroupByResult };
+export type { GroupByParams, GroupByResult };
