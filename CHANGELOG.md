@@ -1,5 +1,14 @@
 # 1o1-utils
 
+## 1.3.0
+
+### Minor Changes
+
+- f443a46: Add `groupBy` utility to group array items by a given key
+- d1c1f3c: Add `omit` utility for objects with nested key support via dot notation
+- f877e0b: Add `pick` utility for objects with nested key support via dot notation
+- cabbd39: Add `sortBy` utility for arrays with dot notation key support and numeric fast path
+
 ## 1.2.0
 
 ### Minor Changes
