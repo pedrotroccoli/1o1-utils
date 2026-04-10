@@ -28,6 +28,10 @@
 		"./pick": {
 			"import": "./dist/objects/pick/index.js",
 			"types": "./dist/objects/pick/index.d.ts"
+		},
+		"./sort-by": {
+			"import": "./dist/arrays/sort-by/index.js",
+			"types": "./dist/arrays/sort-by/index.d.ts"
 		}
 	},
 	"scripts": {
