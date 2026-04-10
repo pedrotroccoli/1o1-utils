@@ -6,6 +6,11 @@ import type { Bench, Task } from "tinybench";
 
 const isCI = process.argv.includes("--ci");
 if (isCI) process.env.BENCH_CI = "1";
+const writeMd = process.argv.includes("--md");
+const filter = process.argv.find(
+  (a) =>
+    a !== "--ci" && a !== "--md" && !a.startsWith("/") && !a.includes("run.ts"),
+);
 const rootDir = resolve(import.meta.dirname, "../..");
 const benchDir = join(rootDir, "benchmarks");
 
@@ -82,6 +87,11 @@ const SUITE_META: Record<string, { slug: string; description: string }> = {
     slug: "chunk",
     description:
       "Splits an array into groups of the given size. Compared against `lodash.chunk` and a native `for + slice` loop.",
+  },
+  omit: {
+    slug: "omit",
+    description:
+      "Omits specified keys from an object, with support for nested dot notation. Compared against `lodash.omit` and `radash.omit`.",
   },
   pick: {
     slug: "pick",
@@ -329,9 +339,19 @@ function generateReadme(suites: SuiteResult[]): string {
 // --- Main ---
 
 async function main() {
-  const benchFiles = await discoverBenchFiles();
+  let benchFiles = await discoverBenchFiles();
+
+  if (filter) {
+    const lower = filter.toLowerCase();
+    benchFiles = benchFiles.filter((f) => f.toLowerCase().includes(lower));
+    if (benchFiles.length === 0) {
+      console.log(`\nNo benchmark suites matching "${filter}"\n`);
+      return;
+    }
+  }
 
   console.log(`\nFound ${benchFiles.length} benchmark suite(s)`);
+  if (filter) console.log(`(filtered by "${filter}")`);
   if (isCI) console.log("(CI mode: capped at 1M items)");
   console.log("");
   console.log("=".repeat(80));
@@ -364,18 +384,22 @@ async function main() {
     console.log("=".repeat(80));
   }
 
-  // Write markdown files
-  await mkdir(benchDir, { recursive: true });
+  // Write markdown files (skip README when filtered)
+  if (!filter || writeMd) {
+    await mkdir(benchDir, { recursive: true });
 
-  for (const suite of suites) {
-    const md = generateSuiteMarkdown(suite);
-    await writeFile(join(benchDir, `${suite.slug}.md`), md);
-    console.log(`  wrote benchmarks/${suite.slug}.md`);
+    for (const suite of suites) {
+      const md = generateSuiteMarkdown(suite);
+      await writeFile(join(benchDir, `${suite.slug}.md`), md);
+      console.log(`  wrote benchmarks/${suite.slug}.md`);
+    }
+
+    if (!filter) {
+      const readme = generateReadme(suites);
+      await writeFile(join(benchDir, "README.md"), readme);
+      console.log("  wrote benchmarks/README.md");
+    }
   }
-
-  const readme = generateReadme(suites);
-  await writeFile(join(benchDir, "README.md"), readme);
-  console.log("  wrote benchmarks/README.md");
 
   console.log("\nDone.\n");
 }

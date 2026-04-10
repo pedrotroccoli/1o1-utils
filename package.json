@@ -25,6 +25,10 @@
 			"import": "./dist/arrays/group-by/index.js",
 			"types": "./dist/arrays/group-by/index.d.ts"
 		},
+		"./omit": {
+			"import": "./dist/objects/omit/index.js",
+			"types": "./dist/objects/omit/index.d.ts"
+		},
 		"./pick": {
 			"import": "./dist/objects/pick/index.js",
 			"types": "./dist/objects/pick/index.d.ts"
