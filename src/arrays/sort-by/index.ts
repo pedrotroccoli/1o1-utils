@@ -29,9 +29,12 @@ function sortBy<T>({ array, key, order = "asc" }: SortByParams<T>): T[] {
   const sorted = array.slice();
   const isDotted = typeof key === "string" && key.indexOf(".") !== -1;
 
-  const sample = sorted.length > 0
-    ? (isDotted ? getByPath(sorted[0], key as string) : sorted[0][key as keyof T])
-    : undefined;
+  const sample =
+    sorted.length > 0
+      ? isDotted
+        ? getByPath(sorted[0], key as string)
+        : sorted[0][key as keyof T]
+      : undefined;
   const isNumeric = typeof sample === "number";
 
   if (isNumeric && !isDotted) {
@@ -44,8 +47,12 @@ function sortBy<T>({ array, key, order = "asc" }: SortByParams<T>): T[] {
   } else {
     const direction = order === "desc" ? -1 : 1;
     sorted.sort((a, b) => {
-      const valA = (isDotted ? getByPath(a, key as string) : a[key as keyof T]) as string | number;
-      const valB = (isDotted ? getByPath(b, key as string) : b[key as keyof T]) as string | number;
+      const valA = (
+        isDotted ? getByPath(a, key as string) : a[key as keyof T]
+      ) as string | number;
+      const valB = (
+        isDotted ? getByPath(b, key as string) : b[key as keyof T]
+      ) as string | number;
 
       if (valA < valB) return -1 * direction;
       if (valA > valB) return 1 * direction;
