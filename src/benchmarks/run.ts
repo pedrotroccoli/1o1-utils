@@ -113,6 +113,21 @@ const SUITE_META: Record<string, { slug: string; description: string }> = {
     description:
       "Converts an array into a hash/object keyed by a given property. Compared against `lodash.keyBy`, `radash.objectify`, and a native `for` loop.",
   },
+  isEmpty: {
+    slug: "is-empty",
+    description:
+      "Checks if a value is empty (null, undefined, empty string, empty array, empty object, empty Map/Set). Compared against `lodash.isEmpty` and `radash.isEmpty`.",
+  },
+  sleep: {
+    slug: "sleep",
+    description:
+      "Async delay function. Compared against `radash.sleep` and native `setTimeout`.",
+  },
+  retry: {
+    slug: "retry",
+    description:
+      "Retries an async function with configurable attempts, delay, and backoff strategy. Compared against `radash.retry` and a native retry loop.",
+  },
 };
 
 function getSizes(rows: TaskRow[]): string[] {
