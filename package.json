@@ -48,6 +48,14 @@
 		"./retry": {
 			"import": "./dist/async/retry/index.js",
 			"types": "./dist/async/retry/index.d.ts"
+		},
+		"./slugify": {
+			"import": "./dist/strings/slugify/index.js",
+			"types": "./dist/strings/slugify/index.d.ts"
+		},
+		"./truncate": {
+			"import": "./dist/strings/truncate/index.js",
+			"types": "./dist/strings/truncate/index.d.ts"
 		}
 	},
 	"scripts": {

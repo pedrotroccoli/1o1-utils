@@ -8,3 +8,5 @@ export { sleep } from "./async/sleep/index.js";
 export { isEmpty } from "./objects/is-empty/index.js";
 export { omit } from "./objects/omit/index.js";
 export { pick } from "./objects/pick/index.js";
+export { slugify } from "./strings/slugify/index.js";
+export { truncate } from "./strings/truncate/index.js";
