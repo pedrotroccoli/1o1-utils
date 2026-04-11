@@ -36,6 +36,18 @@
 		"./sort-by": {
 			"import": "./dist/arrays/sort-by/index.js",
 			"types": "./dist/arrays/sort-by/index.d.ts"
+		},
+		"./is-empty": {
+			"import": "./dist/objects/is-empty/index.js",
+			"types": "./dist/objects/is-empty/index.d.ts"
+		},
+		"./sleep": {
+			"import": "./dist/async/sleep/index.js",
+			"types": "./dist/async/sleep/index.d.ts"
+		},
+		"./retry": {
+			"import": "./dist/async/retry/index.js",
+			"types": "./dist/async/retry/index.d.ts"
 		}
 	},
 	"scripts": {
