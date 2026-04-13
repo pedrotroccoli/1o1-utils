@@ -6,8 +6,7 @@ import type {
 
 const VALID_STYLES = new Set<CaseStyle>(["camel", "kebab", "snake", "pascal"]);
 
-const WORD_RE =
-  /[A-Z]+(?=[A-Z][a-z])|[A-Z][a-z0-9]*|[a-z][a-z0-9]*|[0-9]+/g;
+const WORD_RE = /[A-Z]+(?=[A-Z][a-z])|[A-Z][a-z0-9]*|[a-z][a-z0-9]*|[0-9]+/g;
 
 function splitWords(str: string): string[] {
   return str.match(WORD_RE) ?? [];

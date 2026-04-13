@@ -8,12 +8,12 @@ function throttle<T extends (...args: unknown[]) => unknown>({
     throw new Error("The 'fn' parameter must be a function");
   }
 
-  if (typeof ms !== "number" || ms !== ms || ms < 0) {
-    throw new Error(
-      ms !== ms || typeof ms !== "number"
-        ? "The 'ms' parameter must be a number"
-        : "The 'ms' parameter must be a non-negative number",
-    );
+  if (typeof ms !== "number" || Number.isNaN(ms)) {
+    throw new Error("The 'ms' parameter must be a number");
+  }
+
+  if (ms < 0) {
+    throw new Error("The 'ms' parameter must be a non-negative number");
   }
 
   let lastCallTime = 0;
@@ -31,19 +31,22 @@ function throttle<T extends (...args: unknown[]) => unknown>({
     } else {
       lastArgs = args;
       if (timeoutId === undefined) {
-        timeoutId = setTimeout(() => {
-          lastCallTime = Date.now();
-          timeoutId = undefined;
-          if (lastArgs !== undefined) {
-            fn(...lastArgs);
-            lastArgs = undefined;
-          }
-        }, ms - (now - lastCallTime));
+        timeoutId = setTimeout(
+          () => {
+            lastCallTime = Date.now();
+            timeoutId = undefined;
+            if (lastArgs !== undefined) {
+              fn(...lastArgs);
+              lastArgs = undefined;
+            }
+          },
+          ms - (now - lastCallTime),
+        );
       }
     }
   }
 
-  throttled.cancel = function () {
+  throttled.cancel = () => {
     if (timeoutId !== undefined) {
       clearTimeout(timeoutId);
       timeoutId = undefined;
