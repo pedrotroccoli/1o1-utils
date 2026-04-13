@@ -1,0 +1,16 @@
+{
+	"all": true,
+	"src": ["src"],
+	"exclude": [
+		"src/**/*.spec.ts",
+		"src/**/*.bench.ts",
+		"src/**/types.ts",
+		"src/index.ts"
+	],
+	"reporter": ["text", "lcov"],
+	"check-coverage": true,
+	"lines": 80,
+	"branches": 80,
+	"functions": 80,
+	"statements": 80
+}
