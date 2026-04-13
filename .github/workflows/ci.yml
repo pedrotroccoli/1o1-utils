@@ -28,8 +28,8 @@ jobs:
       - name: Type check
         run: pnpm tsc --noEmit
 
-      - name: Tests
-        run: pnpm test
+      - name: Tests with coverage
+        run: pnpm test:coverage
 
       - name: Build
         run: pnpm build

@@ -4,6 +4,6 @@ A library of many common utilities used across many typescript & javascript proj
 
 ### Benchmarks
 
-All utilities are benchmarked against lodash, radash, and native JavaScript. See [benchmarks/](./benchmarks/README.md) for detailed results.
+All utilities are benchmarked against lodash, radash, and native JavaScript. See [benchmarks/](./docs/benchmarks/README.md) for detailed results.
 
 > Run `pnpm bench` to reproduce locally.
