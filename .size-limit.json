@@ -1,0 +1,93 @@
+[
+  {
+    "name": "Total (tree-shaken + gzipped)",
+    "path": "dist/index.js",
+    "import": "*",
+    "limit": "5 kB"
+  },
+  {
+    "name": "array-to-hash",
+    "path": "dist/arrays/array-to-hash/index.js",
+    "limit": "1 kB"
+  },
+  {
+    "name": "chunk",
+    "path": "dist/arrays/chunk/index.js",
+    "limit": "1 kB"
+  },
+  {
+    "name": "group-by",
+    "path": "dist/arrays/group-by/index.js",
+    "limit": "1 kB"
+  },
+  {
+    "name": "sort-by",
+    "path": "dist/arrays/sort-by/index.js",
+    "limit": "2 kB"
+  },
+  {
+    "name": "unique",
+    "path": "dist/arrays/unique/index.js",
+    "limit": "1 kB"
+  },
+  {
+    "name": "deep-merge",
+    "path": "dist/objects/deep-merge/index.js",
+    "limit": "2 kB"
+  },
+  {
+    "name": "is-empty",
+    "path": "dist/objects/is-empty/index.js",
+    "limit": "1 kB"
+  },
+  {
+    "name": "omit",
+    "path": "dist/objects/omit/index.js",
+    "limit": "2 kB"
+  },
+  {
+    "name": "pick",
+    "path": "dist/objects/pick/index.js",
+    "limit": "2 kB"
+  },
+  {
+    "name": "capitalize",
+    "path": "dist/strings/capitalize/index.js",
+    "limit": "1 kB"
+  },
+  {
+    "name": "slugify",
+    "path": "dist/strings/slugify/index.js",
+    "limit": "1 kB"
+  },
+  {
+    "name": "transform-case",
+    "path": "dist/strings/transform-case/index.js",
+    "limit": "2 kB"
+  },
+  {
+    "name": "truncate",
+    "path": "dist/strings/truncate/index.js",
+    "limit": "1 kB"
+  },
+  {
+    "name": "debounce",
+    "path": "dist/async/debounce/index.js",
+    "limit": "1 kB"
+  },
+  {
+    "name": "retry",
+    "path": "dist/async/retry/index.js",
+    "limit": "2 kB"
+  },
+  {
+    "name": "sleep",
+    "path": "dist/async/sleep/index.js",
+    "limit": "1 kB"
+  },
+  {
+    "name": "throttle",
+    "path": "dist/async/throttle/index.js",
+    "limit": "2 kB"
+  }
+]
