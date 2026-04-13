@@ -12,7 +12,7 @@ const filter = process.argv.find(
     a !== "--ci" && a !== "--md" && !a.startsWith("/") && !a.includes("run.ts"),
 );
 const rootDir = resolve(import.meta.dirname, "../..");
-const benchDir = join(rootDir, "benchmarks");
+const benchDir = join(rootDir, "docs", "benchmarks");
 
 // --- Discovery ---
 
