@@ -5,6 +5,7 @@
 		"src/**/*.spec.ts",
 		"src/**/*.bench.ts",
 		"src/**/types.ts",
+		"src/benchmarks/**",
 		"src/index.ts"
 	],
 	"reporter": ["text", "lcov"],
