@@ -1,13 +1,14 @@
-name: CI
+name: Bundle Size
 
 on:
-  push:
-    branches: [main]
   pull_request:
     branches: [main]
 
+permissions:
+  pull-requests: write
+
 jobs:
-  ci:
+  size:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,17 +23,8 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - name: Biome check
-        run: pnpm check
-
-      - name: Type check
-        run: pnpm tsc --noEmit
-
-      - name: Tests
-        run: pnpm test
-
-      - name: Build
-        run: pnpm build
-
-      - name: Bundle size check
-        run: pnpm size
+      - uses: andresz1/size-limit-action@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          build_script: build
+          skip_step: install
