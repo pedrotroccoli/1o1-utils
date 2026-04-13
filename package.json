@@ -49,9 +49,25 @@
 			"import": "./dist/async/retry/index.js",
 			"types": "./dist/async/retry/index.d.ts"
 		},
+		"./capitalize": {
+			"import": "./dist/strings/capitalize/index.js",
+			"types": "./dist/strings/capitalize/index.d.ts"
+		},
+		"./debounce": {
+			"import": "./dist/async/debounce/index.js",
+			"types": "./dist/async/debounce/index.d.ts"
+		},
 		"./slugify": {
 			"import": "./dist/strings/slugify/index.js",
 			"types": "./dist/strings/slugify/index.d.ts"
+		},
+		"./throttle": {
+			"import": "./dist/async/throttle/index.js",
+			"types": "./dist/async/throttle/index.d.ts"
+		},
+		"./transform-case": {
+			"import": "./dist/strings/transform-case/index.js",
+			"types": "./dist/strings/transform-case/index.d.ts"
 		},
 		"./truncate": {
 			"import": "./dist/strings/truncate/index.js",

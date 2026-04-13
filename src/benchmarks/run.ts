@@ -128,6 +128,26 @@ const SUITE_META: Record<string, { slug: string; description: string }> = {
     description:
       "Retries an async function with configurable attempts, delay, and backoff strategy. Compared against `radash.retry` and a native retry loop.",
   },
+  capitalize: {
+    slug: "capitalize",
+    description:
+      "Capitalizes the first letter of a string. Compared against `lodash.capitalize`.",
+  },
+  transformCase: {
+    slug: "transform-case",
+    description:
+      "Transforms strings between camelCase, kebab-case, snake_case, and PascalCase. Compared against lodash case functions.",
+  },
+  debounce: {
+    slug: "debounce",
+    description:
+      "Delays function execution until after a specified quiet period. Compared against `lodash.debounce`.",
+  },
+  throttle: {
+    slug: "throttle",
+    description:
+      "Limits function execution to once per specified time window. Compared against `lodash.throttle`.",
+  },
 };
 
 function getSizes(rows: TaskRow[]): string[] {
