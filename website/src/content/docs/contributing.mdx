@@ -125,7 +125,16 @@ Add a size-limit entry to `.size-limit.json`:
 }
 ```
 
-### 4. Create a changeset
+### 4. Update `llms.txt` and `llms-full.txt`
+
+Add the new utility to both files at the root of the repository:
+
+- **`llms.txt`** — add a link entry under the appropriate category section
+- **`llms-full.txt`** — add a full documentation block with signature, parameters, return type, example, and edge cases
+
+These files are served on the docs site for AI tool discoverability.
+
+### 5. Create a changeset
 
 ```bash
 pnpm changeset
@@ -167,6 +176,7 @@ Each utility must stay under its size limit (1-2 kB gzipped). The total library 
 - [ ] Export added to `src/index.ts`
 - [ ] Export entry added to `package.json`
 - [ ] Size-limit entry added to `.size-limit.json`
+- [ ] Utility added to `llms.txt` and `llms-full.txt`
 - [ ] `pnpm check` passes
 - [ ] `pnpm test` passes with >80% coverage
 - [ ] `pnpm build && pnpm size` passes

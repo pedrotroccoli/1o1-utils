@@ -1,0 +1,482 @@
+# 1o1-utils
+
+> Lightweight, tree-shakeable TypeScript utility library. 2 kB gzipped, zero dependencies.
+
+Install: npm install 1o1-utils
+Import: import { chunk, pick, slugify, retry } from "1o1-utils";
+Individual: import { chunk } from "1o1-utils/chunk";
+
+All functions use named object parameters: fn({ param1, param2 }).
+
+---
+
+## Arrays
+
+### arrayToHash
+
+Convert an array of objects into a hash map keyed by a property. Useful for fast lookups by a unique identifier.
+
+Import: import { arrayToHash } from "1o1-utils/array-to-hash";
+
+Signature:
+function arrayToHash<T>({ array, key }: ArrayToHashParams<T>): Record<string, T>
+
+Parameters:
+- array (T[], required): The array of objects to convert
+- key (keyof T, required): The property to use as hash key
+
+Returns: Record<string, T>
+
+Example:
+const users = [
+  { id: "a1", name: "Alice" },
+  { id: "b2", name: "Bob" },
+];
+arrayToHash({ array: users, key: "id" });
+// => { a1: { id: "a1", name: "Alice" }, b2: { id: "b2", name: "Bob" } }
+
+Throws: Error if array is not an array. Error if key is not a string.
+Skips items where the key value is falsy or not a string.
+
+---
+
+### chunk
+
+Split an array into smaller arrays of a specified size. The last chunk may contain fewer elements.
+
+Import: import { chunk } from "1o1-utils/chunk";
+
+Signature:
+function chunk<T>({ array, size }: ChunkParams<T>): T[][]
+
+Parameters:
+- array (T[], required): The array to split
+- size (number, required): Max items per chunk (positive integer)
+
+Returns: T[][]
+
+Example:
+chunk({ array: [1, 2, 3, 4, 5], size: 2 });
+// => [[1, 2], [3, 4], [5]]
+
+Throws: Error if array is not an array. Error if size is not a positive integer.
+Returns [] for an empty array.
+
+---
+
+### groupBy
+
+Group array elements into an object keyed by the value of a specified property.
+
+Import: import { groupBy } from "1o1-utils/group-by";
+
+Signature:
+function groupBy<T>({ array, key }: GroupByParams<T>): Record<string, T[]>
+
+Parameters:
+- array (T[], required): The array to group
+- key (keyof T, required): The property to group by
+
+Returns: Record<string, T[]>
+
+Example:
+const items = [
+  { name: "Alice", role: "admin" },
+  { name: "Bob", role: "user" },
+  { name: "Carol", role: "admin" },
+];
+groupBy({ array: items, key: "role" });
+// => { admin: [{ name: "Alice", role: "admin" }, { name: "Carol", role: "admin" }], user: [{ name: "Bob", role: "user" }] }
+
+Throws: Error if array is not an array. Error if key is undefined or null.
+Groups are keyed by String(value[key]).
+
+---
+
+### sortBy
+
+Return a new array sorted by a specified property. Supports ascending/descending and dot notation for nested properties.
+
+Import: import { sortBy } from "1o1-utils/sort-by";
+
+Signature:
+function sortBy<T>({ array, key, order = "asc" }: SortByParams<T>): T[]
+
+Parameters:
+- array (T[], required): The array to sort
+- key (keyof T | string, required): Property to sort by (supports dot notation)
+- order ("asc" | "desc", optional): Sort direction (default: "asc")
+
+Returns: T[] — A new sorted array (does not mutate the original).
+
+Example:
+sortBy({ array: [{ age: 30 }, { age: 20 }], key: "age" });
+// => [{ age: 20 }, { age: 30 }]
+
+sortBy({ array: [{ age: 30 }, { age: 20 }], key: "age", order: "desc" });
+// => [{ age: 30 }, { age: 20 }]
+
+sortBy({ array: users, key: "address.city" }); // nested dot notation
+
+Throws: Error if array is not an array. Error if key is undefined or null.
+Supports both numeric and string comparisons.
+
+---
+
+### unique
+
+Return a new array with duplicate elements removed. For objects, specify a key to determine uniqueness.
+
+Import: import { unique } from "1o1-utils/unique";
+
+Signature:
+function unique<T>({ array, key }: UniqueParams<T>): T[]
+
+Parameters:
+- array (T[], required): The array to deduplicate
+- key (keyof T, optional): Property to determine uniqueness for objects
+
+Returns: T[]
+
+Example:
+unique({ array: [1, 2, 2, 3, 1] });
+// => [1, 2, 3]
+
+unique({ array: [{ id: 1, name: "Alice" }, { id: 2, name: "Bob" }, { id: 1, name: "Alice Copy" }], key: "id" });
+// => [{ id: 1, name: "Alice" }, { id: 2, name: "Bob" }]
+
+Throws: Error if array is not an array.
+Without key, uses Set for primitive deduplication. With key, keeps the first occurrence.
+
+---
+
+## Objects
+
+### deepMerge
+
+Recursively merge two objects into a new object. Nested plain objects are merged deeply; arrays and other types are overwritten.
+
+Import: import { deepMerge } from "1o1-utils/deep-merge";
+
+Signature:
+function deepMerge({ target, source }: DeepMergeParams): Record<string, unknown>
+
+Parameters:
+- target (Record<string, unknown>, required): The base object
+- source (Record<string, unknown>, required): The object to merge into target
+
+Returns: Record<string, unknown> — A new merged object (neither input is mutated).
+
+Example:
+deepMerge({
+  target: { a: 1, b: { x: 10 } },
+  source: { b: { y: 20 }, c: 3 },
+});
+// => { a: 1, b: { x: 10, y: 20 }, c: 3 }
+
+Throws: Error if target is not a plain object. Error if source is not a plain object.
+Uses a stack-based (non-recursive) algorithm to avoid stack overflow on deeply nested objects.
+
+---
+
+### isEmpty
+
+Check whether a given value is considered empty. Supports strings, arrays, plain objects, Maps, and Sets.
+
+Import: import { isEmpty } from "1o1-utils/is-empty";
+
+Signature:
+function isEmpty({ value }: IsEmptyParams): boolean
+
+Parameters:
+- value (unknown, required): The value to check
+
+Returns: boolean
+
+What counts as empty: null, undefined, "" (empty string), [] (empty array), {} (empty plain object), empty Map, empty Set.
+What is NOT empty: 0, false, class instances, non-plain objects.
+
+Example:
+isEmpty({ value: "" });        // => true
+isEmpty({ value: [] });        // => true
+isEmpty({ value: {} });        // => true
+isEmpty({ value: null });      // => true
+isEmpty({ value: new Map() }); // => true
+isEmpty({ value: "hello" });   // => false
+isEmpty({ value: [1, 2] });    // => false
+isEmpty({ value: 0 });         // => false
+isEmpty({ value: false });     // => false
+
+---
+
+### omit
+
+Create a new object with the specified keys removed. Supports dot notation for nested keys.
+
+Import: import { omit } from "1o1-utils/omit";
+
+Signature:
+function omit<T extends Record<string, unknown>>({ obj, keys }: OmitParams<T>): Record<string, unknown>
+
+Parameters:
+- obj (T, required): The source object
+- keys ((keyof T | string)[], required): Keys to exclude (supports dot notation)
+
+Returns: Record<string, unknown>
+
+Example:
+omit({ obj: { a: 1, b: 2, c: 3 }, keys: ["b", "c"] });
+// => { a: 1 }
+
+omit({ obj: { a: 1, b: { x: 10, y: 20 } }, keys: ["b.x"] });
+// => { a: 1, b: { y: 20 } }
+
+Throws: Error if obj is not an object. Error if keys is not an array.
+Does not mutate the original object.
+
+---
+
+### pick
+
+Create a new object containing only the specified keys. Supports dot notation for nested keys.
+
+Import: import { pick } from "1o1-utils/pick";
+
+Signature:
+function pick<T extends Record<string, unknown>>({ obj, keys }: PickParams<T>): Record<string, unknown>
+
+Parameters:
+- obj (T, required): The source object
+- keys ((keyof T | string)[], required): Keys to include (supports dot notation)
+
+Returns: Record<string, unknown>
+
+Example:
+pick({ obj: { a: 1, b: 2, c: 3 }, keys: ["a", "c"] });
+// => { a: 1, c: 3 }
+
+pick({ obj: { a: 1, b: { x: 10, y: 20 } }, keys: ["a", "b.x"] });
+// => { a: 1, b: { x: 10 } }
+
+Throws: Error if obj is not an object. Error if keys is not an array.
+Missing keys are silently skipped.
+
+---
+
+## Strings
+
+### capitalize
+
+Capitalize the first character of a string, with an option to preserve or lowercase the rest.
+
+Import: import { capitalize } from "1o1-utils/capitalize";
+
+Signature:
+function capitalize({ str, preserveRest }: CapitalizeParams): string
+
+Parameters:
+- str (string, required): The string to capitalize
+- preserveRest (boolean, optional): If true, keeps the rest as-is; if false, lowercases it (default: false)
+
+Returns: string
+
+Example:
+capitalize({ str: "hello" });                    // => "Hello"
+capitalize({ str: "hELLO", preserveRest: true }); // => "HELLO"
+capitalize({ str: "hELLO" });                     // => "Hello"
+
+Throws: Error if str is not a string.
+Returns "" for empty string.
+
+---
+
+### slugify
+
+Convert a string to a URL-friendly slug by lowercasing, stripping accents, and replacing non-alphanumeric characters with hyphens.
+
+Import: import { slugify } from "1o1-utils/slugify";
+
+Signature:
+function slugify({ str }: SlugifyParams): string
+
+Parameters:
+- str (string, required): The string to slugify
+
+Returns: string
+
+Example:
+slugify({ str: "Hello World!" });             // => "hello-world"
+slugify({ str: "Cafe au lait" });             // => "cafe-au-lait"
+slugify({ str: "  --Multiple   Spaces--  " }); // => "multiple-spaces"
+
+Throws: Error if str is not a string.
+Handles Unicode normalization (NFD) to strip accents. Removes leading/trailing hyphens. Collapses multiple non-alphanumeric characters into a single hyphen.
+
+---
+
+### transformCase
+
+Convert a string between common case styles: camelCase, kebab-case, snake_case, and PascalCase.
+
+Import: import { transformCase } from "1o1-utils/transform-case";
+
+Signature:
+function transformCase({ str, to }: TransformCaseParams): string
+
+Parameters:
+- str (string, required): The string to convert
+- to ("camel" | "kebab" | "snake" | "pascal", required): Target case style
+
+Returns: string
+
+Example:
+transformCase({ str: "hello world", to: "camel" });  // => "helloWorld"
+transformCase({ str: "hello world", to: "kebab" });  // => "hello-world"
+transformCase({ str: "hello world", to: "snake" });  // => "hello_world"
+transformCase({ str: "hello world", to: "pascal" }); // => "HelloWorld"
+transformCase({ str: "myVariableName", to: "kebab" }); // => "my-variable-name"
+
+Throws: Error if str is not a string. Error if to is not one of: camel, kebab, snake, pascal.
+Splits on word boundaries (uppercase transitions, hyphens, underscores, spaces).
+
+---
+
+### truncate
+
+Truncate a string to a specified length, appending a configurable suffix.
+
+Import: import { truncate } from "1o1-utils/truncate";
+
+Signature:
+function truncate({ str, length, suffix }: TruncateParams): string
+
+Parameters:
+- str (string, required): The string to truncate
+- length (number, required): Maximum length (positive integer)
+- suffix (string, optional): String appended when truncated (default: "...")
+
+Returns: string
+
+Example:
+truncate({ str: "Hello, World!", length: 5 });              // => "Hello..."
+truncate({ str: "Hello, World!", length: 5, suffix: "..." }); // => "Hello..."
+truncate({ str: "Hi", length: 10 });                         // => "Hi"
+
+Throws: Error if str is not a string. Error if length is not a positive integer.
+Returns the original string if its length does not exceed length. The suffix is appended beyond the length limit.
+
+---
+
+## Async
+
+### debounce
+
+Create a debounced version of a function that delays invocation until after a specified number of milliseconds have elapsed since the last call.
+
+Import: import { debounce } from "1o1-utils/debounce";
+
+Signature:
+function debounce<T>({ fn, ms }: DebounceParams<T>): Debounced<T>
+
+Parameters:
+- fn (T, required): The function to debounce
+- ms (number, required): Delay in milliseconds (non-negative)
+
+Returns: Debounced<T> — The debounced function with a .cancel() method.
+
+Example:
+const debouncedSearch = debounce({
+  fn: (query: string) => search(query),
+  ms: 300,
+});
+input.addEventListener("input", (e) => debouncedSearch(e.target.value));
+debouncedSearch.cancel(); // Cancel pending execution
+
+Throws: Error if fn is not a function. Error if ms is not a number, is NaN, or is negative.
+Each call resets the delay timer. .cancel() clears any pending timeout.
+
+---
+
+### retry
+
+Retry an async (or sync) function up to a specified number of attempts, with configurable delay and backoff strategy.
+
+Import: import { retry } from "1o1-utils/retry";
+
+Signature:
+async function retry<T>({ fn, attempts, delay, backoff, onRetry }: RetryParams<T>): Promise<T>
+
+Parameters:
+- fn (() => Promise<T> | T, required): The function to retry
+- attempts (number, optional): Maximum attempts (positive integer, default: 3)
+- delay (number, optional): Delay between retries in ms (default: 1000)
+- backoff ("fixed" | "exponential", optional): Backoff strategy (default: "fixed")
+- onRetry ((error, attempt) => void, optional): Callback invoked on each retry
+
+Returns: Promise<T> — The result of the first successful call.
+
+Example:
+const data = await retry({
+  fn: () => fetch("/api/data").then((r) => r.json()),
+  attempts: 5,
+  delay: 2000,
+  backoff: "exponential",
+});
+
+await retry({
+  fn: fetchData,
+  onRetry: (error, attempt) => console.log(`Attempt ${attempt} failed:`, error),
+});
+
+Throws: Error if fn is not a function. Error if attempts is not a positive integer. Error if delay is negative or NaN. Error if backoff is not "fixed" or "exponential".
+With exponential backoff, delay is delay * 2^i for attempt i. Throws the last error after all attempts are exhausted.
+
+---
+
+### sleep
+
+Pause execution for a given number of milliseconds by returning a promise.
+
+Import: import { sleep } from "1o1-utils/sleep";
+
+Signature:
+function sleep({ ms }: SleepParams): Promise<void>
+
+Parameters:
+- ms (number, required): Duration in milliseconds (non-negative)
+
+Returns: Promise<void>
+
+Example:
+await sleep({ ms: 1000 }); // waits 1 second
+
+Throws: Error if ms is not a number or is NaN. Error if ms is negative.
+sleep({ ms: 0 }) resolves on the next tick.
+
+---
+
+### throttle
+
+Create a throttled version of a function that only invokes the original at most once per specified interval.
+
+Import: import { throttle } from "1o1-utils/throttle";
+
+Signature:
+function throttle<T>({ fn, ms }: ThrottleParams<T>): Throttled<T>
+
+Parameters:
+- fn (T, required): The function to throttle
+- ms (number, required): Minimum interval between calls in milliseconds (non-negative)
+
+Returns: Throttled<T> — The throttled function with a .cancel() method.
+
+Example:
+const throttledScroll = throttle({
+  fn: () => updatePosition(),
+  ms: 100,
+});
+window.addEventListener("scroll", throttledScroll);
+throttledScroll.cancel(); // Cancel pending trailing call
+
+Throws: Error if fn is not a function. Error if ms is not a number, is NaN, or is negative.
+First call executes immediately. Subsequent calls within ms are queued; the last one fires after the interval. .cancel() clears pending calls and resets state.

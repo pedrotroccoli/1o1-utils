@@ -1,0 +1,40 @@
+# 1o1-utils
+
+> Lightweight, tree-shakeable TypeScript utility library. 2 kB gzipped, zero dependencies.
+
+## Docs
+
+- [Getting Started](https://pedrotroccoli.github.io/1o1-utils/getting-started/): Install and start using 1o1-utils
+- [Why 1o1-utils](https://pedrotroccoli.github.io/1o1-utils/why-1o1-utils/): Design philosophy, benchmarks, and comparison with alternatives
+- [Benchmarks](https://pedrotroccoli.github.io/1o1-utils/benchmarks/): Performance comparison against lodash, radash, and native implementations
+- [API Reference](https://pedrotroccoli.github.io/1o1-utils/api/): Full TypeDoc API reference
+- [Contributing](https://pedrotroccoli.github.io/1o1-utils/contributing/): How to add new utilities
+
+## Arrays
+
+- [arrayToHash](https://pedrotroccoli.github.io/1o1-utils/arrays/array-to-hash/): Convert an array of objects into a hash map keyed by a property
+- [chunk](https://pedrotroccoli.github.io/1o1-utils/arrays/chunk/): Split an array into groups of a given size
+- [groupBy](https://pedrotroccoli.github.io/1o1-utils/arrays/group-by/): Group array elements by a property value
+- [sortBy](https://pedrotroccoli.github.io/1o1-utils/arrays/sort-by/): Sort an array of objects by a property with dot notation support
+- [unique](https://pedrotroccoli.github.io/1o1-utils/arrays/unique/): Remove duplicate elements from an array by value or key
+
+## Objects
+
+- [deepMerge](https://pedrotroccoli.github.io/1o1-utils/objects/deep-merge/): Recursively merge two objects without mutation
+- [isEmpty](https://pedrotroccoli.github.io/1o1-utils/objects/is-empty/): Check if a value is empty (strings, arrays, objects, Maps, Sets)
+- [omit](https://pedrotroccoli.github.io/1o1-utils/objects/omit/): Create an object with specified keys removed (supports dot notation)
+- [pick](https://pedrotroccoli.github.io/1o1-utils/objects/pick/): Create an object with only the specified keys (supports dot notation)
+
+## Strings
+
+- [capitalize](https://pedrotroccoli.github.io/1o1-utils/strings/capitalize/): Capitalize the first character of a string
+- [slugify](https://pedrotroccoli.github.io/1o1-utils/strings/slugify/): Convert a string to a URL-friendly slug with accent handling
+- [transformCase](https://pedrotroccoli.github.io/1o1-utils/strings/transform-case/): Convert between camelCase, kebab-case, snake_case, and PascalCase
+- [truncate](https://pedrotroccoli.github.io/1o1-utils/strings/truncate/): Truncate a string to a length with a configurable suffix
+
+## Async
+
+- [debounce](https://pedrotroccoli.github.io/1o1-utils/async/debounce/): Create a debounced function with cancel support
+- [retry](https://pedrotroccoli.github.io/1o1-utils/async/retry/): Retry async operations with fixed or exponential backoff
+- [sleep](https://pedrotroccoli.github.io/1o1-utils/async/sleep/): Promise-based delay
+- [throttle](https://pedrotroccoli.github.io/1o1-utils/async/throttle/): Create a throttled function with cancel support

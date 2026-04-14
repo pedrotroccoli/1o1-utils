@@ -130,7 +130,20 @@ export { myUtil } from "./<category>/my-util/index.js";
 
 Most utilities fit in 1 kB. Use 2 kB only if needed.
 
-### 6. Create a changeset
+### 6. Update `llms.txt` and `llms-full.txt`
+
+Add the new utility to both files at the root of the repository:
+
+- **`llms.txt`** — add a link entry under the appropriate category section:
+  ```
+  - [myUtil](https://pedrotroccoli.github.io/1o1-utils/<category>/my-util/): One-line description
+  ```
+
+- **`llms-full.txt`** — add a full documentation block under the appropriate category section with: signature, parameters, return type, example, and throws/edge cases.
+
+These files are symlinked into `website/public/` and served on the docs site for AI tool discoverability.
+
+### 7. Create a changeset
 
 ```bash
 pnpm changeset
@@ -180,6 +193,7 @@ Each utility must stay under its size limit (1-2 kB gzipped). Run `pnpm size` to
 - [ ] Export added to `src/index.ts`
 - [ ] Export entry added to `package.json`
 - [ ] Size-limit entry added to `.size-limit.json`
+- [ ] Utility added to `llms.txt` and `llms-full.txt`
 - [ ] `pnpm check` passes
 - [ ] `pnpm test` passes with >80% coverage
 - [ ] `pnpm build && pnpm size` passes
