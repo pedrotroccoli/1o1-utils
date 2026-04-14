@@ -61,16 +61,20 @@ Each individual module is under 2 kB gzipped.
 ```ts
 import { chunk, sortBy, unique } from "1o1-utils";
 
-const data = [3, 1, 2, 1, 4, 2, 5];
+const users = [
+  { name: "Alice", age: 30 },
+  { name: "Bob", age: 25 },
+  { name: "Alice", age: 30 },
+];
 
-const deduplicated = unique({ array: data });
-// => [3, 1, 2, 4, 5]
+const deduplicated = unique({ array: users, key: "name" });
+// => [{ name: "Alice", age: 30 }, { name: "Bob", age: 25 }]
 
-const sorted = sortBy({ array: deduplicated, key: undefined as never });
-// For primitives, just use Array.sort()
+const sorted = sortBy({ array: deduplicated, key: "age" });
+// => [{ name: "Bob", age: 25 }, { name: "Alice", age: 30 }]
 
-const batches = chunk({ array: deduplicated, size: 2 });
-// => [[3, 1], [2, 4], [5]]
+const batches = chunk({ array: sorted, size: 1 });
+// => [[{ name: "Bob", age: 25 }], [{ name: "Alice", age: 30 }]]
 ```
 
 ## Available utilities

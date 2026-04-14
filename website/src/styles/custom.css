@@ -531,6 +531,8 @@ starlight-toc a[aria-current="true"] {
 
 /* ========================================
    SIDEBAR ICONS — iconoir via CSS masks
+   NOTE: Group icons use nth-child selectors tied to sidebar order in astro.config.mjs.
+   If sidebar sections are reordered or added, update the nth-child indices below.
    ======================================== */
 
 /* Base icon style for group labels */
