@@ -35,6 +35,23 @@ function joinWords(words: string[], to: CaseStyle): string {
   }
 }
 
+/**
+ * Converts a string between case styles.
+ *
+ * @param params - The parameters object
+ * @param params.str - The string to convert
+ * @param params.to - Target case style: "camel", "kebab", "snake", or "pascal"
+ * @returns The converted string
+ *
+ * @example
+ * ```ts
+ * transformCase({ str: "hello world", to: "camel" });
+ * // => "helloWorld"
+ * ```
+ *
+ * @throws Error if `str` is not a string
+ * @throws Error if `to` is not a valid case style
+ */
 function transformCase({ str, to }: TransformCaseParams): TransformCaseResult {
   if (typeof str !== "string") {
     throw new Error("The 'str' parameter must be a string");

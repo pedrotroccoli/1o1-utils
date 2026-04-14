@@ -6,6 +6,23 @@ function isPlainObject(value: unknown): value is Record<string, unknown> {
   );
 }
 
+/**
+ * Recursively merges a source object into a target object.
+ *
+ * @param params - The parameters object
+ * @param params.target - The base object
+ * @param params.source - The object to merge into target
+ * @returns A new merged object (inputs are not mutated)
+ *
+ * @example
+ * ```ts
+ * deepMerge({ target: { a: 1, b: { x: 10 } }, source: { b: { y: 20 }, c: 3 } });
+ * // => { a: 1, b: { x: 10, y: 20 }, c: 3 }
+ * ```
+ *
+ * @throws Error if `target` is not a plain object
+ * @throws Error if `source` is not a plain object
+ */
 function deepMerge({ target, source }: DeepMergeParams): DeepMergeResult {
   if (!isPlainObject(target)) {
     throw new Error("The 'target' parameter is not an object");

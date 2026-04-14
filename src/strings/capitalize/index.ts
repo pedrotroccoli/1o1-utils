@@ -1,5 +1,21 @@
 import type { CapitalizeParams, CapitalizeResult } from "./types.js";
 
+/**
+ * Capitalizes the first character of a string.
+ *
+ * @param params - The parameters object
+ * @param params.str - The string to capitalize
+ * @param params.preserveRest - If true, keeps the rest as-is; if false (default), lowercases it
+ * @returns The capitalized string
+ *
+ * @example
+ * ```ts
+ * capitalize({ str: "hello" });
+ * // => "Hello"
+ * ```
+ *
+ * @throws Error if `str` is not a string
+ */
 function capitalize({
   str,
   preserveRest = false,

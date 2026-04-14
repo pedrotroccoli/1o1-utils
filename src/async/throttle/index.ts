@@ -1,5 +1,24 @@
 import type { Throttled, ThrottleParams } from "./types.js";
 
+/**
+ * Creates a throttled version of a function that executes at most once
+ * every `ms` milliseconds.
+ *
+ * @param params - The parameters object
+ * @param params.fn - The function to throttle
+ * @param params.ms - Minimum interval between calls in milliseconds (non-negative)
+ * @returns The throttled function with a `.cancel()` method
+ *
+ * @example
+ * ```ts
+ * const throttledFn = throttle({ fn: onScroll, ms: 100 });
+ * window.addEventListener("scroll", throttledFn);
+ * throttledFn.cancel(); // cancel pending trailing call
+ * ```
+ *
+ * @throws Error if `fn` is not a function
+ * @throws Error if `ms` is not a number or is negative
+ */
 function throttle<T extends (...args: unknown[]) => unknown>({
   fn,
   ms,

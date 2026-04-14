@@ -1,5 +1,23 @@
 import type { TruncateParams, TruncateResult } from "./types.js";
 
+/**
+ * Truncates a string to a specified length with an optional suffix.
+ *
+ * @param params - The parameters object
+ * @param params.str - The string to truncate
+ * @param params.length - Maximum length (positive integer)
+ * @param params.suffix - String appended when truncated (default: "...")
+ * @returns The truncated string, or the original if shorter than `length`
+ *
+ * @example
+ * ```ts
+ * truncate({ str: "Hello, World!", length: 5 });
+ * // => "Hello..."
+ * ```
+ *
+ * @throws Error if `str` is not a string
+ * @throws Error if `length` is not a positive integer
+ */
 function truncate({
   str,
   length,

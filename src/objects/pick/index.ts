@@ -42,6 +42,23 @@ function pickNested(
   tgt[lastSeg] = value;
 }
 
+/**
+ * Creates an object with only the specified keys.
+ *
+ * @param params - The parameters object
+ * @param params.obj - The source object
+ * @param params.keys - Keys to include (supports dot notation for nested keys)
+ * @returns A new object containing only the specified keys
+ *
+ * @example
+ * ```ts
+ * pick({ obj: { a: 1, b: 2, c: 3 }, keys: ["a", "c"] });
+ * // => { a: 1, c: 3 }
+ * ```
+ *
+ * @throws Error if `obj` is not an object
+ * @throws Error if `keys` is not an array
+ */
 function pick<T extends Record<string, unknown>>({
   obj,
   keys,
