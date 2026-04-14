@@ -1,0 +1,59 @@
+---
+title: transformCase
+description: Convert a string between case styles
+---
+
+Converts a string between common case styles such as camelCase, kebab-case, snake_case, and PascalCase.
+
+## Import
+
+```ts
+import { transformCase } from "1o1-utils";
+```
+
+```ts
+import { transformCase } from "1o1-utils/transform-case";
+```
+
+## Signature
+
+```ts
+function transformCase({ str, to }: TransformCaseParams): string
+```
+
+## Parameters
+
+| Name | Type                                           | Required | Description              |
+| ---- | ---------------------------------------------- | -------- | ------------------------ |
+| str  | `string`                                       | Yes      | The string to convert    |
+| to   | `"camel" \| "kebab" \| "snake" \| "pascal"`    | Yes      | Target case style        |
+
+## Returns
+
+`string`
+
+## Examples
+
+```ts
+transformCase({ str: "hello world", to: "camel" });
+// => "helloWorld"
+
+transformCase({ str: "hello world", to: "kebab" });
+// => "hello-world"
+
+transformCase({ str: "hello world", to: "snake" });
+// => "hello_world"
+
+transformCase({ str: "hello world", to: "pascal" });
+// => "HelloWorld"
+
+transformCase({ str: "myVariableName", to: "kebab" });
+// => "my-variable-name"
+```
+
+## Edge Cases
+
+- Throws if `str` is not a string.
+- Throws if `to` is not one of: `camel`, `kebab`, `snake`, `pascal`.
+- Returns `""` for empty string.
+- Splits on word boundaries (uppercase transitions, hyphens, underscores, spaces).

@@ -1,0 +1,54 @@
+---
+title: sortBy
+description: Sort an array of objects by a property
+---
+
+Returns a new array sorted by a specified property. Supports ascending and descending order, as well as nested properties via dot notation.
+
+## Import
+
+```ts
+import { sortBy } from "1o1-utils";
+```
+
+```ts
+import { sortBy } from "1o1-utils/sort-by";
+```
+
+## Signature
+
+```ts
+function sortBy<T>({ array, key, order = "asc" }: SortByParams<T>): T[]
+```
+
+## Parameters
+
+| Name  | Type                  | Required | Description                                                        |
+| ----- | --------------------- | -------- | ------------------------------------------------------------------ |
+| array | `T[]`                 | Yes      | The array to sort                                                  |
+| key   | `keyof T \| string`   | Yes      | Property to sort by (supports dot notation for nested properties)  |
+| order | `"asc" \| "desc"`     | No       | Sort direction (default: `"asc"`)                                  |
+
+## Returns
+
+`T[]` — A new sorted array (does not mutate the original).
+
+## Examples
+
+```ts
+sortBy({ array: [{ age: 30 }, { age: 20 }], key: "age" });
+// => [{ age: 20 }, { age: 30 }]
+
+sortBy({ array: [{ age: 30 }, { age: 20 }], key: "age", order: "desc" });
+// => [{ age: 30 }, { age: 20 }]
+
+// Nested properties with dot notation
+sortBy({ array: users, key: "address.city" });
+```
+
+## Edge Cases
+
+- Throws if `array` is not an array.
+- Throws if `key` is undefined or null.
+- Supports both numeric and string comparisons.
+- Supports nested keys via dot notation (e.g., `"address.city"`).

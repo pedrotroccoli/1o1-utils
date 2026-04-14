@@ -1,0 +1,57 @@
+---
+title: debounce
+description: Create a debounced version of a function
+---
+
+Creates a debounced version of a function that delays invocation until after a specified number of milliseconds have elapsed since the last call.
+
+## Import
+
+```ts
+import { debounce } from "1o1-utils";
+```
+
+```ts
+import { debounce } from "1o1-utils/debounce";
+```
+
+## Signature
+
+```ts
+function debounce<T>({ fn, ms }: DebounceParams<T>): Debounced<T>
+```
+
+## Parameters
+
+| Name | Type     | Required | Description                          |
+| ---- | -------- | -------- | ------------------------------------ |
+| fn   | `T`      | Yes      | The function to debounce             |
+| ms   | `number` | Yes      | Delay in milliseconds (non-negative) |
+
+## Returns
+
+`Debounced<T>` — The debounced function with a `.cancel()` method.
+
+## Examples
+
+```ts
+const debouncedSearch = debounce({
+  fn: (query: string) => search(query),
+  ms: 300,
+});
+
+input.addEventListener("input", (e) => {
+  debouncedSearch(e.target.value);
+});
+
+// Cancel pending execution
+debouncedSearch.cancel();
+```
+
+## Edge Cases
+
+- Throws if `fn` is not a function.
+- Throws if `ms` is not a number or is `NaN`.
+- Throws if `ms` is negative.
+- Calling `.cancel()` clears any pending timeout.
+- Each call resets the delay timer.

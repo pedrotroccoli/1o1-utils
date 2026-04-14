@@ -1,5 +1,24 @@
 import type { Debounced, DebounceParams } from "./types.js";
 
+/**
+ * Creates a debounced version of a function that delays invocation until
+ * after `ms` milliseconds have elapsed since the last call.
+ *
+ * @param params - The parameters object
+ * @param params.fn - The function to debounce
+ * @param params.ms - Delay in milliseconds (non-negative)
+ * @returns The debounced function with a `.cancel()` method
+ *
+ * @example
+ * ```ts
+ * const debouncedFn = debounce({ fn: search, ms: 300 });
+ * debouncedFn("query");
+ * debouncedFn.cancel(); // cancel pending call
+ * ```
+ *
+ * @throws Error if `fn` is not a function
+ * @throws Error if `ms` is not a number or is negative
+ */
 function debounce<T extends (...args: unknown[]) => unknown>({
   fn,
   ms,

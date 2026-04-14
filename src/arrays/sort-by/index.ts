@@ -17,6 +17,24 @@ function getByPath(obj: unknown, path: string): unknown {
   return (current as Record<string, unknown>)[path.substring(start)];
 }
 
+/**
+ * Sorts an array of objects by a specified property.
+ *
+ * @param params - The parameters object
+ * @param params.array - The array to sort
+ * @param params.key - The property to sort by (supports dot notation for nested properties)
+ * @param params.order - Sort direction: "asc" (default) or "desc"
+ * @returns A new sorted array (does not mutate the original)
+ *
+ * @example
+ * ```ts
+ * sortBy({ array: [{ age: 30 }, { age: 20 }], key: "age" });
+ * // => [{ age: 20 }, { age: 30 }]
+ * ```
+ *
+ * @throws Error if `array` is not an array
+ * @throws Error if `key` is undefined or null
+ */
 function sortBy<T>({ array, key, order = "asc" }: SortByParams<T>): T[] {
   if (!Array.isArray(array)) {
     throw new Error("The 'array' parameter is not an array");

@@ -89,7 +89,10 @@
 		"check:fix": "biome check --write ./src",
 		"bench": "NODE_OPTIONS='--max-old-space-size=8192' tsx src/benchmarks/run.ts",
 		"size": "size-limit",
-		"size:json": "size-limit --json"
+		"size:json": "size-limit --json",
+		"docs:dev": "cd website && pnpm dev",
+		"docs:build": "cd website && pnpm build",
+		"docs:preview": "cd website && pnpm preview"
 	},
 	"packageManager": "pnpm@10.9.0",
 	"engines": {

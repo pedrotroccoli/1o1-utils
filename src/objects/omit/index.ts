@@ -33,6 +33,23 @@ function omitNested(target: Record<string, unknown>, key: string): void {
   delete tgt[lastSeg];
 }
 
+/**
+ * Creates an object with the specified keys removed.
+ *
+ * @param params - The parameters object
+ * @param params.obj - The source object
+ * @param params.keys - Keys to exclude (supports dot notation for nested keys)
+ * @returns A new object without the specified keys
+ *
+ * @example
+ * ```ts
+ * omit({ obj: { a: 1, b: 2, c: 3 }, keys: ["b", "c"] });
+ * // => { a: 1 }
+ * ```
+ *
+ * @throws Error if `obj` is not an object
+ * @throws Error if `keys` is not an array
+ */
 function omit<T extends Record<string, unknown>>({
   obj,
   keys,

@@ -1,0 +1,55 @@
+---
+title: groupBy
+description: Group array elements by a property value
+---
+
+Groups the elements of an array into an object, keyed by the value of a specified property. Each key maps to an array of items that share that value.
+
+## Import
+
+```ts
+import { groupBy } from "1o1-utils";
+```
+
+```ts
+import { groupBy } from "1o1-utils/group-by";
+```
+
+## Signature
+
+```ts
+function groupBy<T>({ array, key }: GroupByParams<T>): Record<string, T[]>
+```
+
+## Parameters
+
+| Name  | Type      | Required | Description            |
+| ----- | --------- | -------- | ---------------------- |
+| array | `T[]`     | Yes      | The array to group     |
+| key   | `keyof T` | Yes      | The property to group by |
+
+## Returns
+
+`Record<string, T[]>` — Object where keys are group values and values are arrays of matching items.
+
+## Examples
+
+```ts
+const items = [
+  { name: "Alice", role: "admin" },
+  { name: "Bob", role: "user" },
+  { name: "Carol", role: "admin" },
+];
+
+groupBy({ array: items, key: "role" });
+// => {
+//   admin: [{ name: "Alice", role: "admin" }, { name: "Carol", role: "admin" }],
+//   user: [{ name: "Bob", role: "user" }]
+// }
+```
+
+## Edge Cases
+
+- Throws if `array` is not an array.
+- Throws if `key` is undefined or null.
+- Groups are keyed by `String(value[key])`.

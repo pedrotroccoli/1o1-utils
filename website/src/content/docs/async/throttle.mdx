@@ -1,0 +1,56 @@
+---
+title: throttle
+description: Create a throttled version of a function
+---
+
+Creates a throttled version of a function that only invokes the original at most once per specified interval.
+
+## Import
+
+```ts
+import { throttle } from "1o1-utils";
+```
+
+```ts
+import { throttle } from "1o1-utils/throttle";
+```
+
+## Signature
+
+```ts
+function throttle<T>({ fn, ms }: ThrottleParams<T>): Throttled<T>
+```
+
+## Parameters
+
+| Name | Type     | Required | Description                                              |
+| ---- | -------- | -------- | -------------------------------------------------------- |
+| fn   | `T`      | Yes      | The function to throttle                                 |
+| ms   | `number` | Yes      | Minimum interval between calls in milliseconds (non-negative) |
+
+## Returns
+
+`Throttled<T>` — The throttled function with a `.cancel()` method.
+
+## Examples
+
+```ts
+const throttledScroll = throttle({
+  fn: () => updatePosition(),
+  ms: 100,
+});
+
+window.addEventListener("scroll", throttledScroll);
+
+// Cancel pending trailing call
+throttledScroll.cancel();
+```
+
+## Edge Cases
+
+- Throws if `fn` is not a function.
+- Throws if `ms` is not a number or is `NaN`.
+- Throws if `ms` is negative.
+- First call executes immediately.
+- Subsequent calls within `ms` are queued; the last one fires after the interval.
+- `.cancel()` clears pending calls and resets state.

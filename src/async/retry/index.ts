@@ -1,5 +1,24 @@
 import type { RetryParams } from "./types.js";
 
+/**
+ * Retries an async function with configurable backoff strategy.
+ *
+ * @param params - The parameters object
+ * @param params.fn - The function to retry
+ * @param params.attempts - Maximum number of attempts (default: 3)
+ * @param params.delay - Delay between retries in ms (default: 1000)
+ * @param params.backoff - Backoff strategy: "fixed" (default) or "exponential"
+ * @param params.onRetry - Optional callback invoked on each retry
+ * @returns The result of the first successful call
+ *
+ * @example
+ * ```ts
+ * const data = await retry({ fn: () => fetch("/api"), attempts: 5, backoff: "exponential" });
+ * ```
+ *
+ * @throws Error if `fn` is not a function
+ * @throws The last error if all attempts fail
+ */
 async function retry<T>({
   fn,
   attempts = 3,

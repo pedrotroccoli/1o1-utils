@@ -1,5 +1,23 @@
 import type { IsEmptyParams } from "./types.js";
 
+/**
+ * Checks if a value is empty.
+ *
+ * A value is considered empty if it is: `null`, `undefined`, an empty string,
+ * an empty array, an empty Map, an empty Set, or a plain object with no own
+ * enumerable properties.
+ *
+ * @param params - The parameters object
+ * @param params.value - The value to check
+ * @returns `true` if the value is empty, `false` otherwise
+ *
+ * @example
+ * ```ts
+ * isEmpty({ value: {} });   // => true
+ * isEmpty({ value: "" });   // => true
+ * isEmpty({ value: [1] });  // => false
+ * ```
+ */
 function isEmpty({ value }: IsEmptyParams): boolean {
   if (value === null || value === undefined) return true;
   if (typeof value === "string") return value.length === 0;

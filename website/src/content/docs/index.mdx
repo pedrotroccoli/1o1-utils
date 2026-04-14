@@ -1,0 +1,33 @@
+---
+title: 1o1-utils
+description: Lightweight, tree-shakeable TypeScript utility library
+template: splash
+hero:
+  title: 'The most basic <span class="accent">1o1-utils</span> your project needs!'
+  tagline: 3x faster than competitors, easy to use. Perfect for your product.
+  actions:
+    - text: Get Started
+      link: /1o1-utils/getting-started/
+      icon: right-arrow
+      variant: primary
+    - text: Why 1o1-utils
+      link: /1o1-utils/why-1o1-utils/
+      variant: minimal
+---
+
+import { Card, CardGrid } from "@astrojs/starlight/components";
+
+<CardGrid>
+  <Card title="Zero dependencies" icon="rocket">
+    Pure TypeScript. No transitive deps. No supply chain risk.
+  </Card>
+  <Card title="Tree-shakeable" icon="seti:json">
+    Import the full library or individual modules — your bundler only ships what you use.
+  </Card>
+  <Card title="TypeScript-first" icon="seti:typescript">
+    Strict types, named object parameters, and full IntelliSense out of the box.
+  </Card>
+  <Card title="Ultra fast" icon="star">
+    Up to 11x faster than lodash. Every utility is benchmarked.
+  </Card>
+</CardGrid>

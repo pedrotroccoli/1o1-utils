@@ -1,0 +1,146 @@
+---
+title: Why 1o1-utils
+description: Zero deps, ultra lightweight, ultra simple, ultra fast — what makes 1o1-utils different
+---
+
+import { Card, CardGrid } from "@astrojs/starlight/components";
+
+<CardGrid>
+  <Card title="Zero deps" icon="rocket">
+    Pure TypeScript. No transitive dependencies. No supply chain risk.
+  </Card>
+  <Card title="Ultra lightweight" icon="seti:json">
+    2.1 kB total gzipped. Individual utilities weigh 139–366 bytes.
+  </Card>
+  <Card title="Ultra simple" icon="pencil">
+    Named object params. One function, one job. No config, no magic.
+  </Card>
+  <Card title="Ultra fast" icon="star">
+    Up to 11x faster than lodash. Every utility is benchmarked.
+  </Card>
+  <Card title="Verbose by design" icon="open-book">
+    Declarative, readable names. Code that explains itself without comments.
+  </Card>
+</CardGrid>
+
+---
+
+## Zero deps
+
+Every utility is implemented in pure TypeScript using only built-in language features. The entire dependency tree is... nothing.
+
+```json
+"dependencies": {}
+```
+
+No transitive dependencies means no supply chain risk, no version conflicts, no surprise breaking changes from packages you've never heard of. What you install is what you get.
+
+## Ultra lightweight
+
+The **entire library** is **2.1 kB gzipped**. For comparison, lodash is 70 kB and radash is 12 kB.
+
+Each utility is a self-contained module you can import individually:
+
+```ts
+import { chunk } from "1o1-utils/chunk";   // 199 B
+import { pick } from "1o1-utils/pick";     // 320 B
+import { sleep } from "1o1-utils/sleep";   // 139 B
+```
+
+### Bundle sizes (gzipped)
+
+| Utility | Size |
+|---------|------|
+| sleep | 139 B |
+| slugify | 147 B |
+| isEmpty | 164 B |
+| capitalize | 169 B |
+| truncate | 170 B |
+| arrayToHash | 173 B |
+| unique | 173 B |
+| groupBy | 180 B |
+| debounce | 198 B |
+| chunk | 199 B |
+| deepMerge | 248 B |
+| throttle | 258 B |
+| pick | 320 B |
+| retry | 321 B |
+| transformCase | 330 B |
+| sortBy | 350 B |
+| omit | 366 B |
+| **Total** | **2.1 kB** |
+
+Every utility stays under strict size limits enforced in CI. If a PR makes a utility heavier, the build fails.
+
+## Ultra simple
+
+### Named object parameters
+
+No positional args. No guessing what the second parameter does. Every function call reads like English:
+
+```ts
+// lodash — what's the 2nd argument?
+_.chunk(array, 2);
+_.truncate(str, { length: 20, separator: "..." });
+_.sortBy(users, ["age"]);
+
+// 1o1-utils — self-documenting
+chunk({ array, size: 2 });
+truncate({ str, length: 20, suffix: "..." });
+sortBy({ array: users, key: "age" });
+```
+
+### One function, one job
+
+Each utility does exactly one thing. No overloaded signatures, no option objects with 15 fields, no implicit behavior. Read the source in under a minute.
+
+### TypeScript-first
+
+Built with `strict: true` from day one. Full type inference, generics, and IntelliSense for every parameter — no `@types/*` package needed.
+
+## Verbose by design
+
+Function and parameter names are declarative and intentionally simple. You should never need to check the docs to understand what a call does:
+
+```ts
+// What does this do? You need to know the API.
+_.keyBy(users, "id");
+_.uniqBy(items, "sku");
+_.get(obj, "a.b.c");
+
+// What does this do? Read it out loud.
+arrayToHash({ array: users, key: "id" });
+unique({ array: items, key: "sku" });
+pick({ obj, keys: ["a.b.c"] });
+```
+
+Names follow plain English — `arrayToHash`, not `keyBy`. `unique`, not `uniqBy`. `deepMerge`, not `merge` (which might or might not be deep). `isEmpty`, not `empty` (is it a verb or an adjective?).
+
+Parameters are equally explicit: `{ array, key }` instead of positional `(collection, iteratee)`. `{ str, length, suffix }` instead of `(string, options)`. Every call site is self-documenting — your code becomes the documentation.
+
+## Ultra fast
+
+1o1-utils is consistently faster than lodash and radash on every operation it implements:
+
+| Utility | vs lodash | vs radash | vs native |
+|---------|-----------|-----------|-----------|
+| chunk | **4.9x faster** | on par | on par |
+| pick | **3.3x faster** | on par | — |
+| unique | **2.7x faster** | **1.6x faster** | on par |
+| groupBy | **1.3x faster** | on par | on par |
+| arrayToHash | on par | on par | on par |
+
+On specific dataset sizes, chunk reaches **up to 11.4x faster** than lodash.
+
+Every utility includes a benchmark file. Run `pnpm bench` to reproduce locally.
+See the full [benchmark results](/1o1-utils/benchmarks/) for methodology and detailed numbers.
+
+---
+
+## When to use 1o1-utils
+
+- You need a few utility functions without the weight of a full library
+- You care about bundle size — every byte counts
+- You prefer self-documenting APIs with named parameters
+- You want TypeScript-first utilities with strict types
+- You don't want to audit a dependency tree of 50+ packages

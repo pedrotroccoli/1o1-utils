@@ -1,0 +1,51 @@
+---
+title: capitalize
+description: Capitalize the first character of a string
+---
+
+Capitalizes the first character of a string, with an option to preserve or lowercase the remaining characters.
+
+## Import
+
+```ts
+import { capitalize } from "1o1-utils";
+```
+
+```ts
+import { capitalize } from "1o1-utils/capitalize";
+```
+
+## Signature
+
+```ts
+function capitalize({ str, preserveRest }: CapitalizeParams): string
+```
+
+## Parameters
+
+| Name         | Type      | Required | Description                                                                 |
+| ------------ | --------- | -------- | --------------------------------------------------------------------------- |
+| str          | `string`  | Yes      | The string to capitalize                                                    |
+| preserveRest | `boolean` | No       | If `true`, keeps the rest of the string as-is; if `false`, lowercases it (default: `false`) |
+
+## Returns
+
+`string`
+
+## Examples
+
+```ts
+capitalize({ str: "hello" });
+// => "Hello"
+
+capitalize({ str: "hELLO", preserveRest: true });
+// => "HELLO" — rest preserved
+
+capitalize({ str: "hELLO" });
+// => "Hello" — rest lowercased
+```
+
+## Edge Cases
+
+- Throws if `str` is not a string.
+- Returns `""` for empty string.
