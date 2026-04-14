@@ -1,0 +1,37 @@
+---
+title: Benchmarks
+description: Performance comparison of 1o1-utils against lodash, radash, and native JavaScript
+---
+
+All benchmarks run on Node.js with [tinybench](https://github.com/tinylibs/tinybench). Results are reproducible — run `pnpm bench` locally to verify.
+
+## Summary
+
+| Utility | vs lodash | vs radash | vs native |
+|---------|-----------|-----------|-----------|
+| arrayToHash / keyBy | on par | on par | on par |
+| chunk | **4.9x faster** | on par | on par |
+| groupBy | **1.3x faster** | on par | 1.1x slower |
+| unique (by key) | **2.7x faster** | **1.6x faster** | on par |
+| pick | **3.3x faster** | on par | — |
+
+## Environment
+
+- **Machine**: arm64
+- **Runtime**: Node.js v25.2.1
+- **OS**: darwin 24.3.0
+- **Benchmark tool**: tinybench v6
+
+## Running benchmarks
+
+```bash
+pnpm bench
+```
+
+This runs all benchmarks across multiple dataset sizes (small, medium, large) and outputs a comparison table.
+
+### Adding benchmarks for a new utility
+
+Each utility has its own benchmark file at `src/<category>/<util-name>/index.bench.ts`. Benchmarks compare against lodash, radash, and native JavaScript equivalents using the `getDatasets()` helper for consistent dataset sizes.
+
+See the [Contributing guide](/1o1-utils/contributing/) for the benchmark file template.

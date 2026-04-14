@@ -1,0 +1,52 @@
+---
+title: slugify
+description: Convert a string to a URL-friendly slug
+---
+
+Converts a string to a URL-friendly slug by lowercasing, stripping accents, and replacing non-alphanumeric characters with hyphens.
+
+## Import
+
+```ts
+import { slugify } from "1o1-utils";
+```
+
+```ts
+import { slugify } from "1o1-utils/slugify";
+```
+
+## Signature
+
+```ts
+function slugify({ str }: SlugifyParams): string
+```
+
+## Parameters
+
+| Name | Type     | Required | Description            |
+| ---- | -------- | -------- | ---------------------- |
+| str  | `string` | Yes      | The string to slugify  |
+
+## Returns
+
+`string` — A lowercase, hyphen-separated slug.
+
+## Examples
+
+```ts
+slugify({ str: "Hello World!" });
+// => "hello-world"
+
+slugify({ str: "Café au lait" });
+// => "cafe-au-lait"
+
+slugify({ str: "  --Multiple   Spaces--  " });
+// => "multiple-spaces"
+```
+
+## Edge Cases
+
+- Throws if `str` is not a string.
+- Handles Unicode normalization (NFD) to strip accents.
+- Removes leading/trailing hyphens.
+- Collapses multiple non-alphanumeric characters into a single hyphen.

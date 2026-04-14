@@ -1,0 +1,83 @@
+---
+title: Getting Started
+description: Install and start using 1o1-utils
+---
+
+import { Tabs, TabItem } from "@astrojs/starlight/components";
+
+## Installation
+
+<Tabs>
+  <TabItem label="npm">
+    ```bash
+    npm install 1o1-utils
+    ```
+  </TabItem>
+  <TabItem label="pnpm">
+    ```bash
+    pnpm add 1o1-utils
+    ```
+  </TabItem>
+  <TabItem label="yarn">
+    ```bash
+    yarn add 1o1-utils
+    ```
+  </TabItem>
+  <TabItem label="bun">
+    ```bash
+    bun add 1o1-utils
+    ```
+  </TabItem>
+</Tabs>
+
+## Import
+
+### Full library
+
+```ts
+import { chunk, pick, slugify, retry } from "1o1-utils";
+```
+
+### Individual modules
+
+For the smallest possible bundle, import only the utilities you need:
+
+```ts
+import { chunk } from "1o1-utils/chunk";
+import { pick } from "1o1-utils/pick";
+import { slugify } from "1o1-utils/slugify";
+import { retry } from "1o1-utils/retry";
+```
+
+Each individual module is under 2 kB gzipped.
+
+## Requirements
+
+- **Node.js** >= 20
+- **ESM only** — this package uses `"type": "module"`
+
+## Quick example
+
+```ts
+import { chunk, sortBy, unique } from "1o1-utils";
+
+const data = [3, 1, 2, 1, 4, 2, 5];
+
+const deduplicated = unique({ array: data });
+// => [3, 1, 2, 4, 5]
+
+const sorted = sortBy({ array: deduplicated, key: undefined as never });
+// For primitives, just use Array.sort()
+
+const batches = chunk({ array: deduplicated, size: 2 });
+// => [[3, 1], [2, 4], [5]]
+```
+
+## Available utilities
+
+| Category | Utilities |
+|----------|-----------|
+| **Arrays** | `arrayToHash`, `chunk`, `groupBy`, `sortBy`, `unique` |
+| **Objects** | `deepMerge`, `isEmpty`, `omit`, `pick` |
+| **Strings** | `capitalize`, `slugify`, `transformCase`, `truncate` |
+| **Async** | `debounce`, `retry`, `sleep`, `throttle` |

@@ -1,0 +1,49 @@
+---
+title: chunk
+description: Split an array into groups of a given size
+---
+
+Splits an array into smaller arrays (chunks) of a specified size. The last chunk may contain fewer elements if the array doesn't divide evenly.
+
+## Import
+
+```ts
+import { chunk } from "1o1-utils";
+```
+
+```ts
+import { chunk } from "1o1-utils/chunk";
+```
+
+## Signature
+
+```ts
+function chunk<T>({ array, size }: ChunkParams<T>): T[][]
+```
+
+## Parameters
+
+| Name  | Type     | Required | Description                           |
+| ----- | -------- | -------- | ------------------------------------- |
+| array | `T[]`    | Yes      | The array to split                    |
+| size  | `number` | Yes      | Max items per chunk (positive integer) |
+
+## Returns
+
+`T[][]` — An array of arrays, each with at most `size` elements.
+
+## Examples
+
+```ts
+chunk({ array: [1, 2, 3, 4, 5], size: 2 });
+// => [[1, 2], [3, 4], [5]]
+
+chunk({ array: ["a", "b", "c", "d"], size: 3 });
+// => [["a", "b", "c"], ["d"]]
+```
+
+## Edge Cases
+
+- Throws if `array` is not an array.
+- Throws if `size` is not a positive integer.
+- Returns `[]` for an empty array.

@@ -1,0 +1,54 @@
+---
+title: truncate
+description: Truncate a string to a specified length
+---
+
+Truncates a string to a specified length, appending a configurable suffix when the string exceeds the limit.
+
+## Import
+
+```ts
+import { truncate } from "1o1-utils";
+```
+
+```ts
+import { truncate } from "1o1-utils/truncate";
+```
+
+## Signature
+
+```ts
+function truncate({ str, length, suffix }: TruncateParams): string
+```
+
+## Parameters
+
+| Name   | Type     | Required | Description                                        |
+| ------ | -------- | -------- | -------------------------------------------------- |
+| str    | `string` | Yes      | The string to truncate                             |
+| length | `number` | Yes      | Maximum length (positive integer)                  |
+| suffix | `string` | No       | String appended when truncated (default: `"..."`)  |
+
+## Returns
+
+`string`
+
+## Examples
+
+```ts
+truncate({ str: "Hello, World!", length: 5 });
+// => "Hello..."
+
+truncate({ str: "Hello, World!", length: 5, suffix: "…" });
+// => "Hello…"
+
+truncate({ str: "Hi", length: 10 });
+// => "Hi" — no truncation needed
+```
+
+## Edge Cases
+
+- Throws if `str` is not a string.
+- Throws if `length` is not a positive integer.
+- Returns the original string if its length does not exceed `length`.
+- The suffix is appended beyond the `length` limit.

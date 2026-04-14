@@ -1,0 +1,51 @@
+---
+title: pick
+description: Create an object with only the specified keys
+---
+
+Creates a new object containing only the specified keys from the source object. Supports dot notation for selecting nested keys.
+
+## Import
+
+```ts
+import { pick } from "1o1-utils";
+```
+
+```ts
+import { pick } from "1o1-utils/pick";
+```
+
+## Signature
+
+```ts
+function pick<T extends Record<string, unknown>>({ obj, keys }: PickParams<T>): Record<string, unknown>
+```
+
+## Parameters
+
+| Name   | Type                     | Required | Description                                            |
+| ------ | ------------------------ | -------- | ------------------------------------------------------ |
+| `obj`  | `T`                      | Yes      | The source object                                      |
+| `keys` | `(keyof T \| string)[]`  | Yes      | Keys to include (supports dot notation for nested keys) |
+
+## Returns
+
+`Record<string, unknown>` — A new object with only the specified keys.
+
+## Examples
+
+```ts
+pick({ obj: { a: 1, b: 2, c: 3 }, keys: ["a", "c"] });
+// => { a: 1, c: 3 }
+
+// Nested keys with dot notation
+pick({ obj: { a: 1, b: { x: 10, y: 20 } }, keys: ["a", "b.x"] });
+// => { a: 1, b: { x: 10 } }
+```
+
+## Edge Cases
+
+- Throws if `obj` is not an object.
+- Throws if `keys` is not an array.
+- Supports nested key selection via dot notation.
+- Missing keys are silently skipped.

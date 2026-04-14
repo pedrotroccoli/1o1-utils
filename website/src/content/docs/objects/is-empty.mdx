@@ -1,0 +1,61 @@
+---
+title: isEmpty
+description: Check if a value is empty
+---
+
+Checks whether a given value is considered empty. Supports strings, arrays, plain objects, Maps, and Sets.
+
+## Import
+
+```ts
+import { isEmpty } from "1o1-utils";
+```
+
+```ts
+import { isEmpty } from "1o1-utils/is-empty";
+```
+
+## Signature
+
+```ts
+function isEmpty({ value }: IsEmptyParams): boolean
+```
+
+## Parameters
+
+| Name    | Type      | Required | Description          |
+| ------- | --------- | -------- | -------------------- |
+| `value` | `unknown` | Yes      | The value to check   |
+
+## Returns
+
+`boolean` — `true` if the value is considered empty.
+
+What counts as empty:
+
+- `null` and `undefined`
+- Empty string (`""`)
+- Empty array (`[]`)
+- Empty `Map` and `Set`
+- Plain object with no own enumerable properties (`{}`)
+
+## Examples
+
+```ts
+isEmpty({ value: "" });        // => true
+isEmpty({ value: [] });        // => true
+isEmpty({ value: {} });        // => true
+isEmpty({ value: null });      // => true
+isEmpty({ value: new Map() }); // => true
+
+isEmpty({ value: "hello" });   // => false
+isEmpty({ value: [1, 2] });    // => false
+isEmpty({ value: 0 });         // => false
+isEmpty({ value: false });     // => false
+```
+
+## Edge Cases
+
+- Numbers (including `0`) and booleans are never empty.
+- Only plain objects (prototype is `Object.prototype` or `null`) are checked for emptiness.
+- Class instances and other non-plain objects return `false`.

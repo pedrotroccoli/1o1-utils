@@ -1,0 +1,27 @@
+{
+  "name": "1o1-utils-docs",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/starlight": "^0.38",
+    "astro": "^6.1",
+    "astro-og-canvas": "^0.11.0",
+    "canvaskit-wasm": "^0.41.1",
+    "iconoir": "^7.11.0",
+    "sharp": "^0.33",
+    "starlight-typedoc": "^0.21",
+    "typedoc": "^0.28",
+    "typedoc-plugin-markdown": "^4.6"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp"
+    ]
+  }
+}

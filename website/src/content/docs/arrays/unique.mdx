@@ -1,0 +1,55 @@
+---
+title: unique
+description: Remove duplicate elements from an array
+---
+
+Returns a new array with duplicate elements removed. For arrays of objects, you can specify a property to determine uniqueness.
+
+## Import
+
+```ts
+import { unique } from "1o1-utils";
+```
+
+```ts
+import { unique } from "1o1-utils/unique";
+```
+
+## Signature
+
+```ts
+function unique<T>({ array, key }: UniqueParams<T>): T[]
+```
+
+## Parameters
+
+| Name  | Type      | Required | Description                                      |
+| ----- | --------- | -------- | ------------------------------------------------ |
+| array | `T[]`     | Yes      | The array to deduplicate                         |
+| key   | `keyof T` | No       | Property to determine uniqueness for objects      |
+
+## Returns
+
+`T[]` — A new array with duplicates removed.
+
+## Examples
+
+```ts
+unique({ array: [1, 2, 2, 3, 1] });
+// => [1, 2, 3]
+
+const users = [
+  { id: 1, name: "Alice" },
+  { id: 2, name: "Bob" },
+  { id: 1, name: "Alice Copy" },
+];
+
+unique({ array: users, key: "id" });
+// => [{ id: 1, name: "Alice" }, { id: 2, name: "Bob" }]
+```
+
+## Edge Cases
+
+- Throws if `array` is not an array.
+- Without `key`, uses `Set` for primitive deduplication.
+- With `key`, keeps the first occurrence of each unique value.

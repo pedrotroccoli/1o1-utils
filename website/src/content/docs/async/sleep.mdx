@@ -1,0 +1,44 @@
+---
+title: sleep
+description: Pause execution for a given duration
+---
+
+Pauses execution for a given number of milliseconds by returning a promise that resolves after the specified delay.
+
+## Import
+
+```ts
+import { sleep } from "1o1-utils";
+```
+
+```ts
+import { sleep } from "1o1-utils/sleep";
+```
+
+## Signature
+
+```ts
+function sleep({ ms }: SleepParams): Promise<void>
+```
+
+## Parameters
+
+| Name | Type     | Required | Description                           |
+| ---- | -------- | -------- | ------------------------------------- |
+| ms   | `number` | Yes      | Duration in milliseconds (non-negative) |
+
+## Returns
+
+`Promise<void>`
+
+## Examples
+
+```ts
+await sleep({ ms: 1000 }); // waits 1 second
+```
+
+## Edge Cases
+
+- Throws if `ms` is not a number or is `NaN`.
+- Throws if `ms` is negative.
+- `sleep({ ms: 0 })` resolves on the next tick.

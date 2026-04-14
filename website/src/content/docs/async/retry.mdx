@@ -1,0 +1,64 @@
+---
+title: retry
+description: Retry an async function with configurable backoff
+---
+
+Retries an async (or sync) function up to a specified number of attempts, with configurable delay and backoff strategy.
+
+## Import
+
+```ts
+import { retry } from "1o1-utils";
+```
+
+```ts
+import { retry } from "1o1-utils/retry";
+```
+
+## Signature
+
+```ts
+async function retry<T>({ fn, attempts, delay, backoff, onRetry }: RetryParams<T>): Promise<T>
+```
+
+## Parameters
+
+| Name     | Type                              | Required | Description                                          |
+| -------- | --------------------------------- | -------- | ---------------------------------------------------- |
+| fn       | `() => Promise<T> \| T`          | Yes      | The function to retry                                |
+| attempts | `number`                          | No       | Maximum number of attempts (positive integer, default: `3`) |
+| delay    | `number`                          | No       | Delay between retries in ms (default: `1000`)        |
+| backoff  | `"fixed" \| "exponential"`       | No       | Backoff strategy (default: `"fixed"`)                |
+| onRetry  | `(error, attempt) => void`        | No       | Callback invoked on each retry                       |
+
+## Returns
+
+`Promise<T>` — The result of the first successful call.
+
+## Examples
+
+```ts
+const data = await retry({
+  fn: () => fetch("/api/data").then((r) => r.json()),
+  attempts: 5,
+  delay: 2000,
+  backoff: "exponential",
+});
+
+// With retry callback
+await retry({
+  fn: fetchData,
+  onRetry: (error, attempt) => {
+    console.log(`Attempt ${attempt} failed:`, error);
+  },
+});
+```
+
+## Edge Cases
+
+- Throws if `fn` is not a function.
+- Throws if `attempts` is not a positive integer.
+- Throws if `delay` is negative or `NaN`.
+- Throws if `backoff` is not `"fixed"` or `"exponential"`.
+- With exponential backoff, delay is `delay * 2^i` for attempt `i`.
+- Throws the last error after all attempts are exhausted.
