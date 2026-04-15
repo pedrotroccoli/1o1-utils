@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./website/public/logo.png" alt="1o1-utils logo" width="120">
+  <img src="https://raw.githubusercontent.com/pedrotroccoli/1o1-utils/main/website/public/logo.png" alt="1o1-utils logo" width="120">
   <h1 align="center">1o1-utils</h1>
   <p align="center">Lightweight, fastest, tree-shakeable TypeScript utilities. 2 kB gzipped.</p>
 </p>
