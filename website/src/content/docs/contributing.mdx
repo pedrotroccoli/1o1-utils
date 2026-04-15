@@ -31,7 +31,7 @@ pnpm install
 src/<category>/<util-name>/
 ```
 
-Categories: `arrays`, `async`, `objects`, `strings`. Use kebab-case for the folder name.
+Categories: `arrays`, `async`, `browser`, `comparisons`, `formatters`, `functions`, `numbers`, `objects`, `strings`, `validators`. Use kebab-case for the folder name.
 
 ### 2. Create the files
 
@@ -56,6 +56,12 @@ export type { MyUtil, MyUtilParams, MyUtilResult };
 ```ts
 import type { MyUtilParams, MyUtilResult } from "./types.js";
 
+/**
+ * Brief description of what this utility does.
+ *
+ * @keywords common term 1, common term 2, common term 3
+ * @see RFC/Standard reference if applicable (https://...)
+ */
 function myUtil({ param1, param2 }: MyUtilParams): MyUtilResult {
   // validate inputs
   // implementation
@@ -135,12 +141,51 @@ Choose `minor` for new utilities, `patch` for bug fixes.
 
 ## Code conventions
 
-- **Named object parameters** — all functions take a single object, never positional args
+- **Named object parameters** — all functions take a single object, never positional args. Exception: function composition utilities (`pipe`, `once`) may use positional/variadic args when it's the idiomatic pattern.
 - **Type naming** — `<Name>Params`, `<Name>Result`, `<Name>` (function type)
 - **No external dependencies** — use only TypeScript/JS builtins
 - **Import extensions** — always use `.js` in import paths (required for ESM)
-- **Input validation** — validate parameters and throw descriptive errors
+- **Input validation** — validate parameters and throw descriptive errors. Exception: checker functions (`isNil`, `isCircular`, `isEmpty`) return `false` instead of throwing; `safely` returns a `[error, result]` tuple; `get` returns `undefined` or a default value.
 - **Named exports only** — no default exports
+- **Immutability** — all array/object utils must return new instances, never mutate inputs
+
+### Naming conventions
+
+| Pattern | Convention | Example |
+|---------|-----------|---------|
+| Boolean checks | `isX` | `isNil`, `isEmpty`, `isCircular` |
+| Validators | `isValidX` | `isValidUrl`, `isValidEmail` |
+| Conversions | `toX` | `toNumber` |
+| Formatters | `formatX` | `formatSeconds` |
+| Generators | `generateX` | `generateString` |
+| Normalizers | `normalizeX` | `normalizeEmail` |
+| No type suffix | Don't add the type to the name | `clamp` not `clampNumber` |
+
+### Discoverability (mandatory)
+
+Every utility **must** include:
+
+1. **`@keywords` in JSDoc** — common-language terms developers might search for:
+   ```ts
+   /**
+    * Clamps a number between a minimum and maximum bound.
+    *
+    * @keywords limit number, restrict range, min max, bound
+    */
+   ```
+
+2. **`@see` in JSDoc** — RFC or standard reference, if the util aligns with one:
+   ```ts
+   /**
+    * @see RFC 5321 — SMTP (https://datatracker.ietf.org/doc/html/rfc5321)
+    */
+   ```
+
+3. **"Also known as"** on the docs page — alternative names for the same concept:
+   > **Also known as:** limit number, restrict range, min/max bound
+
+4. **"Prompt suggestion"** on the docs page — a ready-to-copy prompt for AI assistants:
+   > **Prompt suggestion:** `Show me how to use clamp from 1o1-utils to restrict a slider value between min and max`
 
 ### Style (enforced by Biome)
 
@@ -167,6 +212,10 @@ Each utility must stay under its size limit (1-2 kB gzipped). The total library 
 - [ ] Export added to `src/index.ts`
 - [ ] Export entry added to `package.json`
 - [ ] Size-limit entry added to `.size-limit.json`
+- [ ] `@keywords` added to JSDoc
+- [ ] `@see` RFC/standard reference added (if applicable)
+- [ ] "Also known as" section added to docs page
+- [ ] "Prompt suggestion" section added to docs page
 - [ ] `pnpm check` passes
 - [ ] `pnpm test` passes with >80% coverage
 - [ ] `pnpm build && pnpm size` passes
