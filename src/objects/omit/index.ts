@@ -47,6 +47,8 @@ function omitNested(target: Record<string, unknown>, key: string): void {
  * // => { a: 1 }
  * ```
  *
+ * @keywords exclude keys, remove properties, without keys, strip fields
+ *
  * @throws Error if `obj` is not an object
  * @throws Error if `keys` is not an array
  */

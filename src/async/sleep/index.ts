@@ -12,6 +12,8 @@ import type { SleepParams } from "./types.js";
  * await sleep({ ms: 1000 }); // waits 1 second
  * ```
  *
+ * @keywords wait, delay, pause, setTimeout promise
+ *
  * @throws Error if `ms` is not a number or is NaN
  * @throws Error if `ms` is negative
  */

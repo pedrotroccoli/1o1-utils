@@ -13,6 +13,8 @@ import type { SlugifyParams, SlugifyResult } from "./types.js";
  * // => "hello-world"
  * ```
  *
+ * @keywords url slug, url friendly, permalink, dash case url
+ *
  * @throws Error if `str` is not a string
  */
 function slugify({ str }: SlugifyParams): SlugifyResult {

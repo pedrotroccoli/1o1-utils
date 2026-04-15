@@ -14,6 +14,8 @@ import type { CapitalizeParams, CapitalizeResult } from "./types.js";
  * // => "Hello"
  * ```
  *
+ * @keywords uppercase first, first letter uppercase, initial cap
+ *
  * @throws Error if `str` is not a string
  */
 function capitalize({
