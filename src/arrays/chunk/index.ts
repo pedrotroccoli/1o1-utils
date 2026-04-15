@@ -14,6 +14,8 @@ import type { ChunkParams, ChunkResult } from "./types.js";
  * // => [[1, 2], [3, 4], [5]]
  * ```
  *
+ * @keywords split array, batch, divide, paginate, group by size
+ *
  * @throws Error if `array` is not an array
  * @throws Error if `size` is not a positive integer
  */

@@ -17,6 +17,8 @@ import type { IsEmptyParams } from "./types.js";
  * isEmpty({ value: "" });   // => true
  * isEmpty({ value: [1] });  // => false
  * ```
+ *
+ * @keywords is empty, is blank, has value, null check, empty check
  */
 function isEmpty({ value }: IsEmptyParams): boolean {
   if (value === null || value === undefined) return true;

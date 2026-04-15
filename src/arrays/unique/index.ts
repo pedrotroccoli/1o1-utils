@@ -14,6 +14,8 @@ import type { UniqueParams, UniqueResult } from "./types.js";
  * // => [1, 2, 3]
  * ```
  *
+ * @keywords deduplicate, distinct, uniq, remove duplicates
+ *
  * @throws Error if `array` is not an array
  */
 function unique<T>({ array, key }: UniqueParams<T>): UniqueResult<T> {

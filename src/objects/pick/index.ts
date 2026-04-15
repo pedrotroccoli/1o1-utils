@@ -56,6 +56,8 @@ function pickNested(
  * // => { a: 1, c: 3 }
  * ```
  *
+ * @keywords select keys, extract properties, subset object, pluck
+ *
  * @throws Error if `obj` is not an object
  * @throws Error if `keys` is not an array
  */

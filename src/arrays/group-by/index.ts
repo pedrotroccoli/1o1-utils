@@ -14,6 +14,8 @@ import type { GroupByParams, GroupByResult } from "./types.js";
  * // => { admin: [{ role: "admin", name: "Alice" }], user: [{ role: "user", name: "Bob" }] }
  * ```
  *
+ * @keywords categorize, bucket, cluster, group array
+ *
  * @throws Error if `array` is not an array
  * @throws Error if `key` is undefined or null
  */

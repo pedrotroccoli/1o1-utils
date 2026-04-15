@@ -16,6 +16,8 @@ import type { Throttled, ThrottleParams } from "./types.js";
  * throttledFn.cancel(); // cancel pending trailing call
  * ```
  *
+ * @keywords rate limit, limit calls, scroll handler, resize handler
+ *
  * @throws Error if `fn` is not a function
  * @throws Error if `ms` is not a number or is negative
  */

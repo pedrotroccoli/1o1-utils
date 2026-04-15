@@ -14,6 +14,8 @@ import type { ArrayToHashParams, ArrayToHashResult } from "./types.js";
  * // => { a: { id: "a", name: "Alice" } }
  * ```
  *
+ * @keywords array to object, keyBy, objectify, index by, lookup table, dictionary
+ *
  * @throws Error if `array` is not an array
  * @throws Error if `key` is not a string
  */

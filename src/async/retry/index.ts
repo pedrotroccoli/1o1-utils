@@ -16,6 +16,8 @@ import type { RetryParams } from "./types.js";
  * const data = await retry({ fn: () => fetch("/api"), attempts: 5, backoff: "exponential" });
  * ```
  *
+ * @keywords retry on failure, exponential backoff, resilient call, auto retry
+ *
  * @throws Error if `fn` is not a function
  * @throws The last error if all attempts fail
  */

@@ -32,6 +32,8 @@ function getByPath(obj: unknown, path: string): unknown {
  * // => [{ age: 20 }, { age: 30 }]
  * ```
  *
+ * @keywords order by, sort array, arrange, rank
+ *
  * @throws Error if `array` is not an array
  * @throws Error if `key` is undefined or null
  */

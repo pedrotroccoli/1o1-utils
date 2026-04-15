@@ -16,6 +16,8 @@ import type { Debounced, DebounceParams } from "./types.js";
  * debouncedFn.cancel(); // cancel pending call
  * ```
  *
+ * @keywords delay call, wait idle, input delay, search delay
+ *
  * @throws Error if `fn` is not a function
  * @throws Error if `ms` is not a number or is negative
  */

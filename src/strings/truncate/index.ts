@@ -15,6 +15,8 @@ import type { TruncateParams, TruncateResult } from "./types.js";
  * // => "Hello..."
  * ```
  *
+ * @keywords shorten text, ellipsis, cut string, text overflow
+ *
  * @throws Error if `str` is not a string
  * @throws Error if `length` is not a positive integer
  */

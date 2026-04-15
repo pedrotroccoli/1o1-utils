@@ -20,6 +20,8 @@ function isPlainObject(value: unknown): value is Record<string, unknown> {
  * // => { a: 1, b: { x: 10, y: 20 }, c: 3 }
  * ```
  *
+ * @keywords merge objects, recursive merge, combine objects, extend deep
+ *
  * @throws Error if `target` is not a plain object
  * @throws Error if `source` is not a plain object
  */

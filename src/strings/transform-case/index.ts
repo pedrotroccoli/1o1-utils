@@ -49,6 +49,8 @@ function joinWords(words: string[], to: CaseStyle): string {
  * // => "helloWorld"
  * ```
  *
+ * @keywords camelCase, snake_case, kebab-case, PascalCase, convert case
+ *
  * @throws Error if `str` is not a string
  * @throws Error if `to` is not a valid case style
  */
