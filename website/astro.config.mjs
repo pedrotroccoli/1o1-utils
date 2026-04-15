@@ -103,6 +103,15 @@ export default defineConfig({
             href: "/1o1-utils/apple-touch-icon.png",
           },
         },
+        {
+          tag: "link",
+          attrs: {
+            rel: "help",
+            type: "text/markdown",
+            title: "LLM instructions",
+            href: "/1o1-utils/llms.txt",
+          },
+        },
       ],
       components: {
         Head: "./src/components/Head.astro",

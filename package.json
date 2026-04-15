@@ -1,7 +1,8 @@
 {
 	"name": "1o1-utils",
-	"version": "1.3.0",
+	"version": "1.4.0",
 	"description": "A collection of utility functions for TypeScript & Javascript",
+	"license": "MIT",
 	"type": "module",
 	"types": "dist/index.d.ts",
 	"sideEffects": false,

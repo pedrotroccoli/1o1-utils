@@ -1,5 +1,31 @@
 # 1o1-utils
 
+## 1.4.0
+
+### Minor Changes
+
+- f0ccd3d: Add capitalize, transformCase, debounce, and throttle utilities
+
+  - `capitalize`: capitalize the first letter of a string with optional `preserveRest`
+  - `transformCase`: convert strings between camelCase, kebab-case, snake_case, and PascalCase
+  - `debounce`: delay function execution until after a quiet period, with cancel support
+  - `throttle`: limit function execution to once per time window (leading + trailing), with cancel support
+
+- f2e8fec: Add deepMerge object utility
+
+  - `deepMerge`: recursively merge two objects with source taking precedence
+
+- 0b8986b: Add isEmpty, sleep, and retry utilities
+
+  - `isEmpty`: check if a value is empty (null, undefined, empty string, array, object, Map, Set)
+  - `sleep`: async delay function with input validation
+  - `retry`: retry async functions with configurable attempts, delay, and backoff (fixed or exponential)
+
+- f53e55e: Add truncate and slugify string utilities
+
+  - `truncate`: truncate a string to a given length with configurable suffix (default `...`)
+  - `slugify`: convert a string to a URL-friendly slug with accent support
+
 ## 1.3.0
 
 ### Minor Changes
