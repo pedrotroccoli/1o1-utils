@@ -1,6 +1,7 @@
 import lodashCamelCase from "lodash/camelCase.js";
 import lodashKebabCase from "lodash/kebabCase.js";
 import lodashSnakeCase from "lodash/snakeCase.js";
+import lodashStartCase from "lodash/startCase.js";
 import { Bench } from "tinybench";
 import { transformCase } from "./index.js";
 
@@ -64,6 +65,33 @@ bench
   })
   .add("lodash snakeCase (short)", () => {
     lodashSnakeCase(short);
+  });
+
+// camel -> title
+bench
+  .add("1o1-utils camel→title (short)", () => {
+    transformCase({ str: short, to: "title" });
+  })
+  .add("lodash startCase (short)", () => {
+    lodashStartCase(short);
+  });
+
+bench
+  .add("1o1-utils camel→title (medium)", () => {
+    transformCase({ str: medium, to: "title" });
+  })
+  .add("lodash startCase (medium)", () => {
+    lodashStartCase(medium);
+  });
+
+// preserveAcronyms
+const acronymInput = "myHTMLParserXMLConfig";
+bench
+  .add("1o1-utils title preserveAcronyms", () => {
+    transformCase({ str: acronymInput, to: "title", preserveAcronyms: true });
+  })
+  .add("1o1-utils title default", () => {
+    transformCase({ str: acronymInput, to: "title" });
   });
 
 export { bench };
