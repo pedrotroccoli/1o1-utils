@@ -203,6 +203,66 @@ Uses a stack-based (non-recursive) algorithm to avoid stack overflow on deeply n
 
 ---
 
+### defaults
+
+Fill `undefined` (or missing) properties in target with values from source. Existing defined values — including `null`, `0`, `""`, and `false` — are preserved. Only shallow; for nested objects use `defaultsDeep`.
+
+Import: import { defaults } from "1o1-utils/defaults";
+
+Signature:
+function defaults({ target, source }: DefaultsParams): Record<string, unknown>
+
+Parameters:
+- target (Record<string, unknown>, required): The base object whose defined values win
+- source (Record<string, unknown>, required): The object supplying defaults for missing keys
+
+Returns: Record<string, unknown> — A new object (neither input is mutated).
+
+Example:
+defaults({
+  target: { a: 1 },
+  source: { a: 99, b: 2 },
+});
+// => { a: 1, b: 2 }
+
+defaults({
+  target: { a: null, b: 0, c: "" },
+  source: { a: 1, b: 99, c: "fallback", d: 4 },
+});
+// => { a: null, b: 0, c: "", d: 4 }
+
+Throws: Error if target is not a plain object. Error if source is not a plain object.
+Only `undefined` (or missing) keys are replaced — other falsy values are preserved.
+
+---
+
+### defaultsDeep
+
+Recursively fill `undefined` (or missing) properties in target with values from source. When both sides have plain objects at the same key, they are merged recursively. Arrays in target are preserved (not merged with source arrays).
+
+Import: import { defaultsDeep } from "1o1-utils/defaults-deep";
+
+Signature:
+function defaultsDeep({ target, source }: DefaultsDeepParams): Record<string, unknown>
+
+Parameters:
+- target (Record<string, unknown>, required): The base object whose defined values win
+- source (Record<string, unknown>, required): The object supplying defaults for missing keys
+
+Returns: Record<string, unknown> — A new object (neither input is mutated).
+
+Example:
+defaultsDeep({
+  target: { db: { port: 5432 } },
+  source: { db: { port: 3306, host: "localhost" }, debug: false },
+});
+// => { db: { port: 5432, host: "localhost" }, debug: false }
+
+Throws: Error if target is not a plain object. Error if source is not a plain object.
+Uses a stack-based (non-recursive) algorithm. Arrays and non-plain-object values in target are treated as leaves — not merged.
+
+---
+
 ### isEmpty
 
 Check whether a given value is considered empty. Supports strings, arrays, plain objects, Maps, and Sets.

@@ -1,0 +1,68 @@
+---
+title: defaultsDeep
+description: Recursively fill undefined properties with defaults from another object
+---
+
+Recursively assigns default values from `source` to `target`. For each property, if the target's value is `undefined` (or missing), the source's value is used. When both sides have plain objects at the same key, they are merged recursively. Existing `null`, `0`, `""`, `false`, and array values in the target are preserved.
+
+## Import
+
+```ts
+import { defaultsDeep } from "1o1-utils";
+```
+
+```ts
+import { defaultsDeep } from "1o1-utils/defaults-deep";
+```
+
+## Signature
+
+```ts
+function defaultsDeep({ target, source }: DefaultsDeepParams): Record<string, unknown>
+```
+
+## Parameters
+
+| Name     | Type                       | Required | Description                                |
+| -------- | -------------------------- | -------- | ------------------------------------------ |
+| `target` | `Record<string, unknown>`  | Yes      | The base object whose defined values win   |
+| `source` | `Record<string, unknown>`  | Yes      | The object supplying defaults              |
+
+## Returns
+
+`Record<string, unknown>` — A new object (neither input is mutated).
+
+## Examples
+
+```ts
+defaultsDeep({
+  target: { db: { port: 5432 } },
+  source: { db: { port: 3306, host: "localhost" }, debug: false },
+});
+// => { db: { port: 5432, host: "localhost" }, debug: false }
+```
+
+```ts
+defaultsDeep({
+  target: { tags: [1, 2] },
+  source: { tags: [3, 4, 5] },
+});
+// => { tags: [1, 2] }  — arrays in target are preserved, not merged
+```
+
+## Edge Cases
+
+- Throws if `target` is not a plain object.
+- Throws if `source` is not a plain object.
+- Only replaces values that are strictly `undefined` — `null`, `0`, `""`, and `false` are preserved.
+- Arrays are treated as leaves — target arrays are preserved and not merged with source arrays.
+- Only merges plain objects recursively; other value types overwrite only when target is `undefined`.
+- Uses a stack-based (non-recursive) algorithm to avoid stack overflow on deeply nested objects.
+
+## Also known as
+
+deep defaults, nested defaults, fill undefined recursive, fallback object deep
+
+## Prompt suggestion
+
+> `Show me how to use defaultsDeep from 1o1-utils to merge a nested config with default values without overriding user settings`

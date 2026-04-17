@@ -41,6 +41,16 @@
     "limit": "2 kB"
   },
   {
+    "name": "defaults",
+    "path": "dist/objects/defaults/index.js",
+    "limit": "1 kB"
+  },
+  {
+    "name": "defaults-deep",
+    "path": "dist/objects/defaults-deep/index.js",
+    "limit": "2 kB"
+  },
+  {
     "name": "is-empty",
     "path": "dist/objects/is-empty/index.js",
     "limit": "1 kB"
