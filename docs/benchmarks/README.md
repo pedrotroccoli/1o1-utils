@@ -10,6 +10,8 @@ Run `pnpm bench` to reproduce these results locally.
 
 - [arrayToHash / keyBy](./array-to-hash.md) — on par with lodash
 - [chunk](./chunk.md) — **1.4–11.4× faster** than lodash
+- [defaults](./defaults.md) — **1.5–1.8× faster** than lodash
+- [defaultsDeep](./defaults-deep.md) — **3.7–5.9× faster** than lodash
 - [groupBy](./group-by.md) — **1.2× faster** than lodash
 - [unique (by key)](./unique.md) — **2.7× faster** than lodash
 - [pick](./pick.md) — **2.6–4.0× faster** than lodash
@@ -22,6 +24,8 @@ Run `pnpm bench` to reproduce these results locally.
 | ------- | --------- | --------- | --------- |
 | arrayToHash / keyBy | on par | on par | on par |
 | chunk | **4.9× faster** | on par | on par |
+| defaults | **1.6× faster** | — | **2.1× faster** |
+| defaultsDeep | **4.8× faster** | — | — |
 | groupBy | **1.3× faster** | on par | 1.1× slower |
 | unique (by key) | **2.7× faster** | **1.6× faster** | on par |
 | pick | **3.3× faster** | on par | — |

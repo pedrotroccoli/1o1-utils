@@ -69,6 +69,14 @@
 			"import": "./dist/objects/deep-merge/index.js",
 			"types": "./dist/objects/deep-merge/index.d.ts"
 		},
+		"./defaults": {
+			"import": "./dist/objects/defaults/index.js",
+			"types": "./dist/objects/defaults/index.d.ts"
+		},
+		"./defaults-deep": {
+			"import": "./dist/objects/defaults-deep/index.js",
+			"types": "./dist/objects/defaults-deep/index.d.ts"
+		},
 		"./omit": {
 			"import": "./dist/objects/omit/index.js",
 			"types": "./dist/objects/omit/index.d.ts"

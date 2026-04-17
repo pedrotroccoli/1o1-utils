@@ -9,6 +9,8 @@ export { sleep } from "./async/sleep/index.js";
 export { throttle } from "./async/throttle/index.js";
 export { cloneDeep } from "./objects/clone-deep/index.js";
 export { deepMerge } from "./objects/deep-merge/index.js";
+export { defaults } from "./objects/defaults/index.js";
+export { defaultsDeep } from "./objects/defaults-deep/index.js";
 export { isEmpty } from "./objects/is-empty/index.js";
 export { omit } from "./objects/omit/index.js";
 export { pick } from "./objects/pick/index.js";

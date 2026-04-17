@@ -1,0 +1,66 @@
+---
+title: defaults
+description: Fill undefined properties with defaults from another object
+---
+
+Assigns default values from `source` to `target` for properties that are `undefined` or missing. Existing `null`, `0`, `""`, and `false` values in the target are preserved — only `undefined` triggers replacement.
+
+## Import
+
+```ts
+import { defaults } from "1o1-utils";
+```
+
+```ts
+import { defaults } from "1o1-utils/defaults";
+```
+
+## Signature
+
+```ts
+function defaults({ target, source }: DefaultsParams): Record<string, unknown>
+```
+
+## Parameters
+
+| Name     | Type                       | Required | Description                                |
+| -------- | -------------------------- | -------- | ------------------------------------------ |
+| `target` | `Record<string, unknown>`  | Yes      | The base object whose defined values win   |
+| `source` | `Record<string, unknown>`  | Yes      | The object supplying defaults              |
+
+## Returns
+
+`Record<string, unknown>` — A new object (neither input is mutated).
+
+## Examples
+
+```ts
+defaults({
+  target: { a: 1 },
+  source: { a: 99, b: 2 },
+});
+// => { a: 1, b: 2 }
+```
+
+```ts
+defaults({
+  target: { a: null, b: 0, c: "" },
+  source: { a: 1, b: 99, c: "fallback", d: 4 },
+});
+// => { a: null, b: 0, c: "", d: 4 }
+```
+
+## Edge Cases
+
+- Throws if `target` is not a plain object.
+- Throws if `source` is not a plain object.
+- Only replaces values that are strictly `undefined` — `null`, `0`, `""`, and `false` are preserved.
+- Nested objects are copied by reference. Use `defaultsDeep` for recursive merging.
+
+## Also known as
+
+default values, fill undefined, fallback object, with defaults
+
+## Prompt suggestion
+
+> `Show me how to use defaults from 1o1-utils to merge a config object with fallback values without overriding explicit nulls`
