@@ -1,0 +1,85 @@
+---
+title: cloneDeep
+description: Create a deep clone of a value
+---
+
+Creates a deep clone of any value. Handles plain objects, arrays, `Date`, `RegExp`, `Map`, `Set`, typed arrays, `ArrayBuffer`, `Error`, and circular references. Functions are copied by reference.
+
+Native `structuredClone` is a close alternative but throws on functions, class instances, and DOM nodes. `cloneDeep` covers those gaps and is 2–4× faster than `lodash.cloneDeep`.
+
+:::note[About `radash.clone`]
+`radash.clone` appears faster in benchmarks, but it is **not a true deep clone** — nested objects, arrays, Maps, and Sets keep their original references. It is a shallow-ish copy and not comparable to `cloneDeep`, `lodash.cloneDeep`, or `structuredClone`. If you mutate a nested value on a `radash.clone` result, the original mutates too.
+:::
+
+## Import
+
+```ts
+import { cloneDeep } from "1o1-utils";
+```
+
+```ts
+import { cloneDeep } from "1o1-utils/clone-deep";
+```
+
+## Signature
+
+```ts
+function cloneDeep<T>({ value }: CloneDeepParams<T>): T
+```
+
+## Parameters
+
+| Name    | Type | Required | Description           |
+| ------- | ---- | -------- | --------------------- |
+| `value` | `T`  | Yes      | The value to clone    |
+
+## Returns
+
+`T` — A deep clone of the input. The return type matches the input type.
+
+## Examples
+
+```ts
+const original = { a: { b: [1, 2] }, date: new Date() };
+const cloned = cloneDeep({ value: original });
+
+cloned.a.b.push(3);
+original.a.b; // [1, 2] — unaffected
+```
+
+```ts
+// Circular references are handled
+const node: Record<string, unknown> = { name: "root" };
+node.self = node;
+
+const clone = cloneDeep({ value: node });
+clone.self === clone; // true
+clone.self === node;  // false
+```
+
+```ts
+// Built-in types are preserved
+cloneDeep({ value: new Date("2024-06-01") });       // new Date instance
+cloneDeep({ value: /foo/gi });                      // new RegExp instance
+cloneDeep({ value: new Map([["key", { x: 1 }]]) }); // new Map, values deep cloned
+cloneDeep({ value: new Uint8Array([1, 2, 3]) });    // new TypedArray with independent buffer
+```
+
+## Edge Cases
+
+- Primitives (numbers, strings, booleans, `null`, `undefined`, symbols, bigints) are returned as-is.
+- Functions are copied by reference — not cloned.
+- `Map` values are deep cloned; `Map` keys are kept by reference (so lookups by object keys still work).
+- `Set` object values are deep cloned.
+- Typed arrays clone only the viewed portion of the underlying buffer (respects `byteOffset`/`byteLength`).
+- Circular references are detected via a `WeakMap`; the clone preserves the same cycle structure.
+- Uses an iterative, stack-based algorithm to avoid stack overflow on deeply nested structures.
+- Custom class prototype chains are **not** preserved — cloned objects become plain objects. Use `structuredClone` if you need prototype preservation for serializable classes.
+
+## Also known as
+
+deep clone, deep copy, clone object, copy object, structuredClone alternative
+
+## Prompt suggestion
+
+> `Show me how to use cloneDeep from 1o1-utils to snapshot nested state before mutating it`

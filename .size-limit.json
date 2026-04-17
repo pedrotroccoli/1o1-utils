@@ -31,6 +31,11 @@
     "limit": "1 kB"
   },
   {
+    "name": "clone-deep",
+    "path": "dist/objects/clone-deep/index.js",
+    "limit": "2 kB"
+  },
+  {
     "name": "deep-merge",
     "path": "dist/objects/deep-merge/index.js",
     "limit": "2 kB"

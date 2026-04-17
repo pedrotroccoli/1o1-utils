@@ -152,6 +152,30 @@ Without key, uses Set for primitive deduplication. With key, keeps the first occ
 
 ## Objects
 
+### cloneDeep
+
+Create a deep clone of any value. Handles plain objects, arrays, Date, RegExp, Map, Set, typed arrays, ArrayBuffer, Error, and circular references. Functions are copied by reference.
+
+Import: import { cloneDeep } from "1o1-utils/clone-deep";
+
+Signature:
+function cloneDeep<T>({ value }: CloneDeepParams<T>): T
+
+Parameters:
+- value (T, required): The value to clone
+
+Returns: T — A deep clone of the input. The return type matches the input type.
+
+Example:
+const original = { a: { b: [1, 2] }, date: new Date() };
+const cloned = cloneDeep({ value: original });
+cloned.a.b.push(3);
+original.a.b; // [1, 2] — unaffected
+
+Primitives are returned as-is. Functions are copied by reference. Map values are deep cloned but keys are kept by reference. Circular references are detected via a WeakMap. Uses an iterative, stack-based algorithm to avoid stack overflow on deeply nested structures. Custom class prototype chains are not preserved.
+
+---
+
 ### deepMerge
 
 Recursively merge two objects into a new object. Nested plain objects are merged deeply; arrays and other types are overwritten.
