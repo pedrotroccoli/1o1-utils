@@ -41,8 +41,10 @@ Full methodology on the [Benchmarks page](/1o1-utils/benchmarks/).
 | `clone(obj)` | `cloneDeep({ obj })` | Always deep |
 | `assign(a, b)` | `deepMerge({ target, source })` | Explicit "deep" |
 | `isEmpty(v)` | `isEmpty({ value })` | |
+| `get(obj, path, default)` | `get({ obj, path, defaultValue })` | |
 | `omit(obj, keys)` | `omit({ obj, keys })` | |
 | `pick(obj, keys)` | `pick({ obj, keys })` | |
+| `set(obj, path, val)` | `set({ obj, path, value })` | Immutable |
 | `capitalize(str)` | `capitalize({ str })` | |
 | `camel` / `snake` / `dash` | `transformCase({ str, to })` | One function |
 | `debounce({ delay }, fn)` | `debounce({ fn, wait })` | |
