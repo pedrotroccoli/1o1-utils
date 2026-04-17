@@ -20,6 +20,7 @@
 
 ## Objects
 
+- [cloneDeep](https://pedrotroccoli.github.io/1o1-utils/objects/clone-deep/): Deep clone any value — handles objects, arrays, Date, RegExp, Map, Set, typed arrays, and circular references
 - [deepMerge](https://pedrotroccoli.github.io/1o1-utils/objects/deep-merge/): Recursively merge two objects without mutation
 - [isEmpty](https://pedrotroccoli.github.io/1o1-utils/objects/is-empty/): Check if a value is empty (strings, arrays, objects, Maps, Sets)
 - [omit](https://pedrotroccoli.github.io/1o1-utils/objects/omit/): Create an object with specified keys removed (supports dot notation)

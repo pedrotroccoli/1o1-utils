@@ -83,6 +83,11 @@ interface SuiteResult {
 }
 
 const SUITE_META: Record<string, { slug: string; description: string }> = {
+  cloneDeep: {
+    slug: "clone-deep",
+    description:
+      "Creates a deep clone of a value. Handles objects, arrays, dates, regexes, maps, sets, typed arrays, and circular references. Compared against `lodash.cloneDeep`, `radash.clone`, and native `structuredClone`.\n\n> **Note:** `radash.clone` is **not a true deep clone** — nested objects, arrays, Maps, and Sets keep their original references. Its numbers are shown for reference only and are not comparable to the others.",
+  },
   chunk: {
     slug: "chunk",
     description:
