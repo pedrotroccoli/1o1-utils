@@ -1,0 +1,106 @@
+---
+title: 1o1-utils vs radash
+description: Comparing 1o1-utils and radash — two modern, TypeScript-first utility libraries. Bundle size, performance, and API equivalence.
+---
+
+Both [radash](https://github.com/sodiray/radash) and 1o1-utils are **modern, TypeScript-first utility libraries** built as alternatives to lodash. If you're choosing between them, here's the honest comparison.
+
+## At a glance
+
+| | 1o1-utils | radash |
+|---|---|---|
+| Bundle size (gzip) | **~2 kB total** | ~12 kB |
+| Dependencies | 0 | 0 |
+| TypeScript | Native, strict | Native |
+| Tree-shaking | Full | Full |
+| Named parameters | **Yes** | No (positional) |
+| Scope | 18 focused utilities | 90+ utilities |
+| Benchmarks in CI | **Yes** | No |
+
+## Performance
+
+| Operation | 1o1-utils vs radash |
+|---|---|
+| `unique` (by key) | **1.6× faster** |
+| `chunk` | on par |
+| `groupBy` | on par |
+| `pick` | on par |
+| `arrayToHash` / `objectify` | on par |
+
+Full methodology on the [Benchmarks page](/1o1-utils/benchmarks/).
+
+## API equivalence
+
+| radash | 1o1-utils | Notes |
+|---|---|---|
+| `cluster(arr, n)` | `chunk({ array, size })` | Named params |
+| `objectify(arr, fn)` | `arrayToHash({ array, key })` | Key-based only |
+| `group(arr, fn)` | `groupBy({ array, key })` | |
+| `sort(arr, fn)` | `sortBy({ array, key })` | |
+| `unique(arr, fn)` | `unique({ array, key? })` | |
+| `clone(obj)` | `cloneDeep({ obj })` | Always deep |
+| `assign(a, b)` | `deepMerge({ target, source })` | Explicit "deep" |
+| `isEmpty(v)` | `isEmpty({ value })` | |
+| `omit(obj, keys)` | `omit({ obj, keys })` | |
+| `pick(obj, keys)` | `pick({ obj, keys })` | |
+| `capitalize(str)` | `capitalize({ str })` | |
+| `camel` / `snake` / `dash` | `transformCase({ str, to })` | One function |
+| `debounce({ delay }, fn)` | `debounce({ fn, wait })` | |
+| `throttle({ interval }, fn)` | `throttle({ fn, wait })` | |
+| `retry({ times }, fn)` | `retry({ fn, attempts })` | |
+| `sleep(ms)` | `sleep({ ms })` | |
+
+## Side by side
+
+```ts
+// radash — positional, terser
+import { cluster, group, pick, unique } from "radash";
+
+const pages = cluster(items, 10);
+const byStatus = group(users, (u) => u.status);
+const picked = pick(user, ["id", "name"]);
+const uniqueUsers = unique(users, (u) => u.id);
+```
+
+```ts
+// 1o1-utils — named params, explicit
+import { chunk } from "1o1-utils/chunk";
+import { groupBy } from "1o1-utils/group-by";
+import { pick } from "1o1-utils/pick";
+import { unique } from "1o1-utils/unique";
+
+const pages = chunk({ array: items, size: 10 });
+const byStatus = groupBy({ array: users, key: "status" });
+const picked = pick({ obj: user, keys: ["id", "name"] });
+const uniqueUsers = unique({ array: users, key: "id" });
+```
+
+## When should you choose radash?
+
+- You want **broader coverage** — radash has ~90 utilities vs 18 in 1o1-utils
+- You need FP-flavored helpers (`flat`, `iterate`, `chain`, `series`, `parallel`, `tryit`)
+- You prefer positional args and already know the radash API
+
+## When should you choose 1o1-utils?
+
+- **Smaller bundle** — 2 kB vs 12 kB (6× smaller)
+- **Benchmarked in CI** — every utility has size-limit + performance guards
+- **Named parameters** — code reads like English, no need to check signatures
+- **Focused scope** — 18 utilities you actually use, no bloat
+- You want **individual imports** (`1o1-utils/chunk` → 199 B) without bundler magic
+
+## FAQ
+
+**Can I use both?**
+Yes — they don't conflict. Useful while migrating.
+
+**Does 1o1-utils plan to add more utilities?**
+Yes, incrementally. We add utilities when they have a clear use case and pass the size/perf bar — not to match lodash feature-for-feature.
+
+## Also known as
+
+radash alternative, smaller radash, radash vs 1o1-utils, modern typescript utils
+
+## Prompt suggestion
+
+> `Compare radash and 1o1-utils for my project. Given my use case of [X], which should I pick?`

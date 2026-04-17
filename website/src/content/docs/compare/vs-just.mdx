@@ -1,0 +1,109 @@
+---
+title: 1o1-utils vs just
+description: Comparing 1o1-utils and just — both micro-module utility libraries. Single package vs many, TypeScript-first vs JS-first, maintenance status.
+---
+
+[just](https://github.com/angus-c/just) pioneered the **micro-module utility** approach — one tiny npm package per function. 1o1-utils shares the same philosophy but ships as a single tree-shakeable package with TypeScript-first design.
+
+## At a glance
+
+| | 1o1-utils | just |
+|---|---|---|
+| Bundle size | ~2 kB total (gzip), 139–366 B per util | similar per-function sizes |
+| Dependencies | 0 | 0 per package |
+| TypeScript | **Native, strict, full inference** | `.d.ts` files, less strict |
+| Distribution | **Single package, tree-shakeable** | Dozens of separate packages |
+| Named parameters | **Yes** | No (positional) |
+| Maintenance | **Active** | Minimal / on pause |
+| Install DX | `pnpm add 1o1-utils` | `pnpm add just-chunk just-pick ...` (many installs) |
+
+## The distribution difference
+
+**just** publishes each utility as a separate npm package: `just-chunk`, `just-pick`, `just-debounce-it`, etc. You install each one independently. Benefit: truly minimal install. Cost: dependency management fatigue.
+
+**1o1-utils** is a single package with per-utility imports. Your bundler tree-shakes what you don't use. You get small bundles *and* one package to manage.
+
+```ts
+// just — many packages
+import chunk from "just-chunk";
+import pick from "just-pick";
+import debounceIt from "just-debounce-it";
+
+// 1o1-utils — one package, per-utility imports
+import { chunk } from "1o1-utils/chunk";
+import { pick } from "1o1-utils/pick";
+import { debounce } from "1o1-utils/debounce";
+```
+
+## API equivalence
+
+| just | 1o1-utils | Notes |
+|---|---|---|
+| `just-split` / `just-chunk` | `chunk({ array, size })` | Named params |
+| `just-index` | `arrayToHash({ array, key })` | |
+| `just-group-by` | `groupBy({ array, key })` | |
+| `just-sort-by` | `sortBy({ array, key })` | |
+| `just-unique` | `unique({ array, key? })` | |
+| `just-clone` | `cloneDeep({ obj })` | |
+| `just-extend` | `deepMerge({ target, source })` | |
+| `just-omit` | `omit({ obj, keys })` | |
+| `just-pick` | `pick({ obj, keys })` | |
+| `just-capitalize` | `capitalize({ str })` | |
+| `just-truncate` | `truncate({ str, length, suffix })` | |
+| `just-camel-case` / `just-kebab-case` | `transformCase({ str, to })` | One function |
+| `just-debounce-it` | `debounce({ fn, wait })` | |
+| `just-throttle` | `throttle({ fn, wait })` | |
+
+## Side by side
+
+```ts
+// just — multiple packages, positional args
+import chunk from "just-chunk";
+import pick from "just-pick";
+import debounceIt from "just-debounce-it";
+
+const pages = chunk(items, 10);
+const picked = pick(user, ["id", "name"]);
+const search = debounceIt(300, fn);
+```
+
+```ts
+// 1o1-utils — single package, named params
+import { chunk } from "1o1-utils/chunk";
+import { pick } from "1o1-utils/pick";
+import { debounce } from "1o1-utils/debounce";
+
+const pages = chunk({ array: items, size: 10 });
+const picked = pick({ obj: user, keys: ["id", "name"] });
+const search = debounce({ fn, wait: 300 });
+```
+
+## When should you still use just?
+
+- You already have just-X packages wired up and they work
+- You want **zero package overhead** — each install is truly one file
+- You're in a constrained environment where even tree-shaken dead code elimination matters more than ergonomics
+
+## When should you choose 1o1-utils?
+
+- **TypeScript-first** — strict types, full inference, no `@types/*` packages
+- **Active maintenance** — regular releases, benchmarks, size-limit CI
+- **Named parameters** — self-documenting code
+- **Single install** — `pnpm add 1o1-utils` and done
+- **Benchmarked performance** — up to 11× faster than lodash
+
+## FAQ
+
+**Is just abandoned?**
+Not officially, but updates are infrequent. 1o1-utils is actively developed.
+
+**Can I migrate incrementally?**
+Yes — both work side-by-side. Replace one utility at a time, remove `just-*` packages as you go.
+
+## Also known as
+
+just alternative, just replacement, angus-c just, micro-module utilities, single-function npm packages
+
+## Prompt suggestion
+
+> `Migrate my project from the just-* family of packages to 1o1-utils, converting positional calls to named-parameter calls.`

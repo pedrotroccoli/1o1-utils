@@ -55,6 +55,15 @@ export default defineConfig({
           ],
         },
         {
+          label: "Compare",
+          items: [
+            { label: "vs lodash", link: "/compare/vs-lodash/" },
+            { label: "vs radash", link: "/compare/vs-radash/" },
+            { label: "vs es-toolkit", link: "/compare/vs-es-toolkit/" },
+            { label: "vs just", link: "/compare/vs-just/" },
+          ],
+        },
+        {
           label: "Arrays",
           autogenerate: { directory: "arrays" },
         },

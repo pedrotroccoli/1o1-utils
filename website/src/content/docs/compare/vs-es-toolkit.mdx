@@ -1,0 +1,93 @@
+---
+title: 1o1-utils vs es-toolkit
+description: Comparing 1o1-utils and es-toolkit — modern TypeScript utility libraries. Bundle size, performance, and API equivalence.
+---
+
+[es-toolkit](https://github.com/toss/es-toolkit) is a modern, high-performance utility library from the Toss team. It's a direct lodash alternative with broader coverage than 1o1-utils but a larger footprint.
+
+## At a glance
+
+| | 1o1-utils | es-toolkit |
+|---|---|---|
+| Bundle size (gzip) | **~2 kB total** | ~6 kB |
+| Dependencies | 0 | 0 |
+| TypeScript | Native, strict | Native |
+| Tree-shaking | Full | Full |
+| Named parameters | **Yes** | No (lodash-style positional) |
+| Scope | 18 focused utilities | 200+ utilities |
+| Maintained by | Pedro Troccoli | Toss (fintech) |
+
+## API equivalence
+
+| es-toolkit | 1o1-utils | Notes |
+|---|---|---|
+| `chunk(arr, n)` | `chunk({ array, size })` | Named params |
+| `keyBy(arr, fn)` | `arrayToHash({ array, key })` | Key-based only |
+| `groupBy(arr, fn)` | `groupBy({ array, key })` | |
+| `sortBy(arr, keys)` | `sortBy({ array, key })` | |
+| `uniq` / `uniqBy` | `unique({ array, key? })` | Unified |
+| `cloneDeep(obj)` | `cloneDeep({ obj })` | |
+| `merge(a, b)` | `deepMerge({ target, source })` | Explicit "deep" |
+| `isEmpty(v)` | `isEmpty({ value })` | |
+| `omit(obj, keys)` | `omit({ obj, keys })` | |
+| `pick(obj, keys)` | `pick({ obj, keys })` | |
+| `capitalize(str)` | `capitalize({ str })` | |
+| `camelCase` / `snakeCase` / `kebabCase` | `transformCase({ str, to })` | One function |
+| `debounce(fn, ms)` | `debounce({ fn, wait })` | |
+| `throttle(fn, ms)` | `throttle({ fn, wait })` | |
+
+## Side by side
+
+```ts
+// es-toolkit — lodash-style, positional
+import { chunk, keyBy, pick, debounce } from "es-toolkit";
+
+const pages = chunk(items, 10);
+const byId = keyBy(users, (u) => u.id);
+const picked = pick(user, ["id", "name"]);
+const search = debounce(fn, 300);
+```
+
+```ts
+// 1o1-utils — named params, declarative
+import { chunk } from "1o1-utils/chunk";
+import { arrayToHash } from "1o1-utils/array-to-hash";
+import { pick } from "1o1-utils/pick";
+import { debounce } from "1o1-utils/debounce";
+
+const pages = chunk({ array: items, size: 10 });
+const byId = arrayToHash({ array: users, key: "id" });
+const picked = pick({ obj: user, keys: ["id", "name"] });
+const search = debounce({ fn, wait: 300 });
+```
+
+## When should you choose es-toolkit?
+
+- You want a **near drop-in lodash replacement** with familiar positional API
+- You need **broader coverage** (math, chain, curry, partial, memoize, FP suite)
+- You're migrating existing lodash code and want minimal refactor
+- You value a library backed by a large fintech team (Toss)
+
+## When should you choose 1o1-utils?
+
+- **3× smaller bundle** (2 kB vs 6 kB)
+- **Named parameters** — self-documenting call sites, no signature guessing
+- **Benchmarked in CI** with strict size limits
+- Focused on **the 18 utilities 90% of apps actually use** — no bloat
+- You want per-utility imports with predictable tiny sizes (`1o1-utils/chunk` → 199 B)
+
+## FAQ
+
+**Are the two libraries compatible?**
+Yes — you can use both. 1o1-utils covers the core; supplement with es-toolkit or lodash for niche utilities.
+
+**Is 1o1-utils a fork of es-toolkit?**
+No. Independent implementation with a different design philosophy (named params, focused scope).
+
+## Also known as
+
+es-toolkit alternative, smaller es-toolkit, es-toolkit vs 1o1-utils, lodash alternative, toss es-toolkit
+
+## Prompt suggestion
+
+> `Given my project needs [X], compare es-toolkit and 1o1-utils and recommend which to use.`

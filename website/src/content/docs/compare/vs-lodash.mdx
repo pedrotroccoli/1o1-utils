@@ -1,0 +1,113 @@
+---
+title: 1o1-utils vs lodash
+description: Migrating from lodash to 1o1-utils. Bundle size, performance, and API equivalence for a tiny, tree-shakeable, zero-dependency alternative.
+---
+
+Looking for a **lodash alternative** that's dramatically smaller, faster, and fully typed? 1o1-utils implements the lodash utilities developers actually reach for — with named parameters, strict TypeScript, and benchmarked performance.
+
+## At a glance
+
+| | 1o1-utils | lodash |
+|---|---|---|
+| Bundle size (gzip) | **~2 kB total** | ~24 kB (full), 70 kB unminified |
+| Dependencies | **0** | 0 (runtime) |
+| TypeScript | **Native, strict** | `@types/lodash` required |
+| Tree-shaking | **Full** | Partial (needs `lodash-es`) |
+| Named parameters | **Yes** | No (positional) |
+| ESM-first | **Yes** | CJS-first |
+| Active maintenance | **Yes** | Minimal |
+
+## Performance
+
+Benchmarks run on the same machine, same dataset. Full methodology on the [Benchmarks page](/1o1-utils/benchmarks/).
+
+| Operation | 1o1-utils vs lodash |
+|---|---|
+| `chunk` | **4.9× faster** (up to 11.4×) |
+| `pick` | **3.3× faster** |
+| `unique` (by key) | **2.7× faster** |
+| `groupBy` | **1.3× faster** |
+| `arrayToHash` / `keyBy` | on par |
+
+## API equivalence
+
+| lodash | 1o1-utils | Notes |
+|---|---|---|
+| `_.chunk(arr, n)` | `chunk({ array, size })` | Named params |
+| `_.keyBy(arr, k)` | `arrayToHash({ array, key })` | Clearer name |
+| `_.groupBy(arr, k)` | `groupBy({ array, key })` | |
+| `_.sortBy(arr, k)` | `sortBy({ array, key })` | |
+| `_.uniq(arr)` / `_.uniqBy` | `unique({ array, key? })` | Unified |
+| `_.cloneDeep(obj)` | `cloneDeep({ obj })` | |
+| `_.merge(a, b)` | `deepMerge({ target, source })` | Explicit "deep" |
+| `_.isEmpty(v)` | `isEmpty({ value })` | |
+| `_.omit(obj, keys)` | `omit({ obj, keys })` | |
+| `_.pick(obj, keys)` | `pick({ obj, keys })` | |
+| `_.capitalize(str)` | `capitalize({ str })` | |
+| `_.truncate(str, opts)` | `truncate({ str, length, suffix })` | Flat params |
+| `_.camelCase` / `_.snakeCase` / `_.kebabCase` | `transformCase({ str, to })` | One function |
+| `_.debounce(fn, ms)` | `debounce({ fn, wait })` | |
+| `_.throttle(fn, ms)` | `throttle({ fn, wait })` | |
+
+## Side by side
+
+```ts
+// lodash — positional args, ambiguous
+import _ from "lodash";
+
+const pages = _.chunk(items, 10);
+const byId = _.keyBy(users, "id");
+const picked = _.pick(user, ["id", "name"]);
+const merged = _.merge({}, defaults, overrides);
+```
+
+```ts
+// 1o1-utils — named params, self-documenting
+import { chunk } from "1o1-utils/chunk";
+import { arrayToHash } from "1o1-utils/array-to-hash";
+import { pick } from "1o1-utils/pick";
+import { deepMerge } from "1o1-utils/deep-merge";
+
+const pages = chunk({ array: items, size: 10 });
+const byId = arrayToHash({ array: users, key: "id" });
+const picked = pick({ obj: user, keys: ["id", "name"] });
+const merged = deepMerge({ target: defaults, source: overrides });
+```
+
+## When should you still use lodash?
+
+1o1-utils covers **18 commonly-used utilities**. Lodash has 200+. Stick with lodash if you need:
+- Collection helpers like `_.flow`, `_.memoize`, `_.curry`, `_.partial`
+- Function composition / FP suite (`lodash/fp`)
+- Deep-string path accessors (`_.get(obj, "a.b.c")`)
+- Number utilities (`_.random`, `_.clamp`)
+- Legacy ES5 environments
+
+If you only use lodash for chunk, groupBy, pick, omit, debounce — you're carrying 24 kB for 2 kB of value. Switch.
+
+## Migration checklist
+
+1. `pnpm add 1o1-utils` and keep lodash while migrating
+2. Grep for `from "lodash"` and `_.` call sites
+3. Replace one utility at a time using the table above
+4. Remove `lodash` and `@types/lodash` from `package.json`
+5. Measure bundle-size reduction — usually **20–50 kB gzipped** for typical apps
+
+## FAQ
+
+**Is 1o1-utils a drop-in replacement?**
+No. APIs use named parameters for clarity. Migration is mechanical but not automated.
+
+**Does it support CommonJS?**
+ESM-only. Modern bundlers (Vite, Rollup, Webpack 5, esbuild) all handle ESM.
+
+**Is it production-ready?**
+Yes — used in production, fully typed, strict CI with size limits and benchmarks on every PR.
+
+## Also known as
+
+lodash alternative, lodash replacement, tiny lodash, lodash-es alternative, lightweight lodash, modern lodash
+
+## Prompt suggestion
+
+> `Migrate my codebase from lodash to 1o1-utils. Replace _.chunk, _.pick, _.omit, _.groupBy, _.debounce, _.throttle calls using the 1o1-utils equivalents with named parameters.`
