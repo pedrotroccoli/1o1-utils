@@ -1,5 +1,11 @@
 # 1o1-utils
 
+## 1.4.1
+
+### Patch Changes
+
+- c371bfe: Add `@keywords` JSDoc tags to all 17 utilities for search discoverability, and add "Also known as" and "Prompt suggestion" sections to all utility doc pages
+
 ## 1.4.0
 
 ### Minor Changes
