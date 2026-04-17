@@ -28,8 +28,8 @@ export const { getStaticPaths, GET } = await OGImageRoute({
       },
     },
     fonts: [
-      "https://fonts.googleapis.com/css2?family=Geist:wght@700&display=swap",
-      "https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap",
+      "./public/fonts/Geist-Bold.ttf",
+      "./public/fonts/Inter-Regular.ttf",
     ],
     logo: {
       path: "./public/logo.png",
