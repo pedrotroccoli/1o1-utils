@@ -153,6 +153,16 @@ const SUITE_META: Record<string, { slug: string; description: string }> = {
     description:
       "Limits function execution to once per specified time window. Compared against `lodash.throttle`.",
   },
+  defaults: {
+    slug: "defaults",
+    description:
+      'Fills `undefined` properties in the target with values from the source. Existing `null`, `0`, `""`, and `false` values are preserved. Compared against `lodash.defaults` and a native `Object.assign` spread.',
+  },
+  defaultsDeep: {
+    slug: "defaults-deep",
+    description:
+      "Recursively fills `undefined` properties in the target with values from the source. Arrays and non-plain-object values in the target are preserved. Compared against `lodash.defaultsDeep`.",
+  },
 };
 
 function getSizes(rows: TaskRow[]): string[] {
