@@ -65,6 +65,7 @@ import { pick } from "1o1-utils/pick";
 
 | Utility | Description | Import |
 | --- | --- | --- |
+| `cloneDeep` | Deep clone objects, arrays, Maps, Sets, etc. | `1o1-utils/clone-deep` |
 | `deepMerge` | Recursively merge objects | `1o1-utils/deep-merge` |
 | `get` | Read a nested value via dot notation | `1o1-utils/get` |
 | `isEmpty` | Check if a value is empty | `1o1-utils/is-empty` |
