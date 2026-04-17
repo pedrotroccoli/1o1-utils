@@ -38,7 +38,17 @@ function defaults({ target, source }: DefaultsParams): DefaultsResult {
     throw new Error("The 'source' parameter is not an object");
   }
 
-  const result = Object.assign({}, target);
+  const result: Record<string, unknown> = {};
+  const targetKeys = Object.keys(target);
+
+  for (let i = 0; i < targetKeys.length; i++) {
+    const key = targetKeys[i];
+    const value = target[key];
+    if (value !== undefined) {
+      result[key] = value;
+    }
+  }
+
   const sourceKeys = Object.keys(source);
 
   for (let i = 0; i < sourceKeys.length; i++) {
