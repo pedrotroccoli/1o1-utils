@@ -23,21 +23,19 @@ function once<T extends (...args: never[]) => unknown>(fn: T): T {
     throw new Error("The 'fn' parameter must be a function");
   }
 
-  let called = false;
+  let n = 1;
   let result: unknown;
 
-  function wrapped(this: unknown, ...args: unknown[]): unknown {
-    if (!called) {
-      called = true;
+  return function (this: unknown) {
+    if (n-- > 0) {
       result = (fn as unknown as (...a: unknown[]) => unknown).apply(
         this,
-        args,
+        // biome-ignore lint/complexity/noArguments: fast-path, avoids rest-params allocation
+        arguments as unknown as unknown[],
       );
     }
     return result;
-  }
-
-  return wrapped as unknown as T;
+  } as unknown as T;
 }
 
 export { once };
