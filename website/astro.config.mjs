@@ -79,6 +79,10 @@ export default defineConfig({
           label: "Async",
           autogenerate: { directory: "async" },
         },
+        {
+          label: "Functions",
+          autogenerate: { directory: "functions" },
+        },
       ],
       lastUpdated: true,
       routeMiddleware: "./src/starlightRouteData.ts",

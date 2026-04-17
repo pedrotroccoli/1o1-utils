@@ -1,0 +1,65 @@
+---
+title: once
+description: Create a function that runs only once and caches its result
+---
+
+Creates a version of a function that runs only once. Subsequent calls return the cached result from the first invocation and ignore any new arguments.
+
+## Import
+
+```ts
+import { once } from "1o1-utils";
+```
+
+```ts
+import { once } from "1o1-utils/once";
+```
+
+## Signature
+
+```ts
+function once<T extends (...args: never[]) => unknown>(fn: T): T
+```
+
+## Parameters
+
+| Name | Type | Required | Description           |
+| ---- | ---- | -------- | --------------------- |
+| fn   | `T`  | Yes      | The function to wrap  |
+
+## Returns
+
+`T` — A wrapped function with the same signature that executes `fn` at most once.
+
+## Examples
+
+```ts
+const init = once(() => ({ id: Math.random() }));
+
+const a = init();
+const b = init();
+a === b; // true — same cached object
+```
+
+```ts
+// Lazy singleton
+const getClient = once(() => new ApiClient({ token: process.env.TOKEN }));
+
+getClient(); // creates client
+getClient(); // returns same instance
+```
+
+## Edge Cases
+
+- Throws if `fn` is not a function.
+- Arguments from the first call are forwarded to `fn`; later arguments are ignored.
+- The wrapper preserves `this` from the first invocation.
+- A return value of `undefined` is cached — `fn` will not run again.
+
+## Also known as
+
+run once, single call, lazy init, singleton, memoize no-arg
+
+## Prompt suggestion
+
+> `Show me how to use once from 1o1-utils to lazily initialize a singleton client`

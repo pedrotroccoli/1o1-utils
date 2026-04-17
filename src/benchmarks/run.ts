@@ -163,6 +163,11 @@ const SUITE_META: Record<string, { slug: string; description: string }> = {
     description:
       "Recursively fills `undefined` properties in the target with values from the source. Arrays and non-plain-object values in the target are preserved. Compared against `lodash.defaultsDeep`.",
   },
+  once: {
+    slug: "once",
+    description:
+      "Wraps a function so it runs at most once; subsequent calls return the cached result. Compared against `lodash.once`.",
+  },
 };
 
 function getSizes(rows: TaskRow[]): string[] {

@@ -114,5 +114,10 @@
     "name": "throttle",
     "path": "dist/async/throttle/index.js",
     "limit": "2 kB"
+  },
+  {
+    "name": "once",
+    "path": "dist/functions/once/index.js",
+    "limit": "1 kB"
   }
 ]
