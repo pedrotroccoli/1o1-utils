@@ -1,0 +1,65 @@
+---
+title: set
+description: Set a nested value via dot notation without mutating the input
+---
+
+Sets a nested value on an object using a dot-notation path. Non-mutating: returns a new object with only the nodes on the path cloned (structural sharing).
+
+## Import
+
+```ts
+import { set } from "1o1-utils";
+```
+
+```ts
+import { set } from "1o1-utils/set";
+```
+
+## Signature
+
+```ts
+function set<T extends Record<string, unknown>>({ obj, path, value, objectify }: SetParams<T>): Record<string, unknown>
+```
+
+## Parameters
+
+| Name        | Type      | Required | Description                                                                              |
+| ----------- | --------- | -------- | ---------------------------------------------------------------------------------------- |
+| `obj`       | `T`       | Yes      | The source object                                                                        |
+| `path`      | `string`  | Yes      | Dot-notation path (e.g. `"address.city"`)                                                |
+| `value`     | `unknown` | Yes      | The value to write at `path`                                                             |
+| `objectify` | `boolean` | No       | When `true`, numeric segments create objects with string keys instead of arrays (default `false`) |
+
+## Returns
+
+`Record<string, unknown>` — A new object with `value` set at `path`. Input is never mutated.
+
+## Examples
+
+```ts
+set({ obj: { a: { b: 1 } }, path: "a.b", value: 2 });
+// => { a: { b: 2 } }
+
+// Numeric segments create arrays by default
+set({ obj: {}, path: "items.0.name", value: "x" });
+// => { items: [{ name: "x" }] }
+
+// Force plain objects with objectify
+set({ obj: {}, path: "items.0.name", value: "x", objectify: true });
+// => { items: { "0": { name: "x" } } }
+```
+
+## Edge Cases
+
+- Throws if `obj` is not an object, `path` is not a string, or `path` is empty.
+- Does not mutate the input — only nodes on the path are cloned; siblings keep their reference.
+- Creates missing intermediate containers: arrays when the next segment is numeric (default), objects otherwise. Set `objectify: true` to always create objects.
+- Overwrites intermediate primitives (`null`, strings, numbers) with fresh objects/arrays.
+
+## Also known as
+
+write nested, dot notation, deep set, property path, immutable set, lodash set
+
+## Prompt suggestion
+
+> `Show me how to use set from 1o1-utils to immutably update a deeply nested field in a Redux-style state`

@@ -41,8 +41,10 @@ Benchmarks run on the same machine, same dataset. Full methodology on the [Bench
 | `_.cloneDeep(obj)` | `cloneDeep({ obj })` | |
 | `_.merge(a, b)` | `deepMerge({ target, source })` | Explicit "deep" |
 | `_.isEmpty(v)` | `isEmpty({ value })` | |
+| `_.get(obj, path, default)` | `get({ obj, path, defaultValue })` | Never throws |
 | `_.omit(obj, keys)` | `omit({ obj, keys })` | |
 | `_.pick(obj, keys)` | `pick({ obj, keys })` | |
+| `_.set(obj, path, val)` | `set({ obj, path, value })` | Immutable (non-mutating) |
 | `_.capitalize(str)` | `capitalize({ str })` | |
 | `_.truncate(str, opts)` | `truncate({ str, length, suffix })` | Flat params |
 | `_.camelCase` / `_.snakeCase` / `_.kebabCase` | `transformCase({ str, to })` | One function |

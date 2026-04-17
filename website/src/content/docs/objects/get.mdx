@@ -1,0 +1,63 @@
+---
+title: get
+description: Read a nested value from an object via dot notation with a default fallback
+---
+
+Reads a nested value from an object using a dot-notation path. Returns `defaultValue` (or `undefined`) when the path does not resolve. Never throws.
+
+## Import
+
+```ts
+import { get } from "1o1-utils";
+```
+
+```ts
+import { get } from "1o1-utils/get";
+```
+
+## Signature
+
+```ts
+function get<T>({ obj, path, defaultValue }: GetParams<T>): unknown
+```
+
+## Parameters
+
+| Name           | Type      | Required | Description                                              |
+| -------------- | --------- | -------- | -------------------------------------------------------- |
+| `obj`          | `T`       | Yes      | The source object                                        |
+| `path`         | `string`  | Yes      | Dot-notation path (e.g. `"address.city"`)                |
+| `defaultValue` | `unknown` | No       | Returned when the path does not resolve                  |
+
+## Returns
+
+`unknown` — The value at `path`, or `defaultValue` when the path is unreachable.
+
+## Examples
+
+```ts
+get({ obj: { address: { city: "São Paulo" } }, path: "address.city" });
+// => "São Paulo"
+
+get({ obj: { a: 1 }, path: "a.b", defaultValue: "BR" });
+// => "BR"
+
+// Arrays via numeric segments
+get({ obj: { items: [{ name: "a" }, { name: "b" }] }, path: "items.1.name" });
+// => "b"
+```
+
+## Edge Cases
+
+- Returns `defaultValue` when the path is missing, `obj` is `null`/primitive, or `path` is empty.
+- Never throws — `get` is the "safe access" escape hatch.
+- `defaultValue: null` is preserved and not treated as undefined.
+- Values set to `undefined` on the target return `defaultValue`; values set to `null` are returned as-is.
+
+## Also known as
+
+read nested, dot notation, deep access, safe access, property path, lodash get
+
+## Prompt suggestion
+
+> `Show me how to use get from 1o1-utils to safely read a nested field from an API response with a default fallback`
