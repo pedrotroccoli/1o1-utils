@@ -22,27 +22,14 @@ import type { GetParams } from "./types.js";
  */
 function get<T>({ obj, path, defaultValue }: GetParams<T>): unknown {
   if (typeof path !== "string" || path.length === 0) return defaultValue;
-  if (typeof obj !== "object" || obj === null) return defaultValue;
 
+  const keys = path.split(".");
   let node: unknown = obj;
-  let start = 0;
-  let dot = path.indexOf(".");
-
-  while (dot !== -1) {
-    if (typeof node !== "object" || node === null) return defaultValue;
-    const seg = path.substring(start, dot);
-    if (!(seg in (node as Record<string, unknown>))) return defaultValue;
-    node = (node as Record<string, unknown>)[seg];
-    start = dot + 1;
-    dot = path.indexOf(".", start);
+  for (let i = 0; i < keys.length; i++) {
+    if (node === null || typeof node !== "object") return defaultValue;
+    node = (node as Record<string, unknown>)[keys[i]];
   }
-
-  if (typeof node !== "object" || node === null) return defaultValue;
-  const lastSeg = path.substring(start);
-  if (!(lastSeg in (node as Record<string, unknown>))) return defaultValue;
-
-  const value = (node as Record<string, unknown>)[lastSeg];
-  return value === undefined ? defaultValue : value;
+  return node === undefined ? defaultValue : node;
 }
 
 export { get };
