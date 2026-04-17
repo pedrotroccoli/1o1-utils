@@ -263,6 +263,36 @@ Uses a stack-based (non-recursive) algorithm. Arrays and non-plain-object values
 
 ---
 
+### get
+
+Read a nested value from an object using a dot-notation path. Returns a default value (or undefined) when the path does not resolve. Never throws.
+
+Import: import { get } from "1o1-utils/get";
+
+Signature:
+function get<T>({ obj, path, defaultValue }: GetParams<T>): unknown
+
+Parameters:
+- obj (T, required): The source object
+- path (string, required): Dot-notation path (e.g. "address.city")
+- defaultValue (unknown, optional): Returned when the path does not resolve
+
+Returns: unknown
+
+Example:
+get({ obj: { address: { city: "São Paulo" } }, path: "address.city" });
+// => "São Paulo"
+
+get({ obj: { a: 1 }, path: "a.b", defaultValue: "BR" });
+// => "BR"
+
+get({ obj: { items: [{ name: "a" }, { name: "b" }] }, path: "items.1.name" });
+// => "b"
+
+Returns defaultValue (or undefined) for missing paths, null or primitive intermediates, invalid input, or empty path. Never throws.
+
+---
+
 ### isEmpty
 
 Check whether a given value is considered empty. Supports strings, arrays, plain objects, Maps, and Sets.
@@ -344,6 +374,38 @@ pick({ obj: { a: 1, b: { x: 10, y: 20 } }, keys: ["a", "b.x"] });
 
 Throws: Error if obj is not an object. Error if keys is not an array.
 Missing keys are silently skipped.
+
+---
+
+### set
+
+Set a nested value on an object using a dot-notation path. Non-mutating: returns a new object with only the nodes on the path cloned (structural sharing).
+
+Import: import { set } from "1o1-utils/set";
+
+Signature:
+function set<T extends Record<string, unknown>>({ obj, path, value, objectify }: SetParams<T>): Record<string, unknown>
+
+Parameters:
+- obj (T, required): The source object
+- path (string, required): Dot-notation path (e.g. "address.city")
+- value (unknown, required): The value to write at path
+- objectify (boolean, optional): When true, numeric segments create plain objects with string keys instead of arrays (default: false)
+
+Returns: Record<string, unknown>
+
+Example:
+set({ obj: { a: { b: 1 } }, path: "a.b", value: 2 });
+// => { a: { b: 2 } }
+
+set({ obj: {}, path: "items.0.name", value: "x" });
+// => { items: [{ name: "x" }] }
+
+set({ obj: {}, path: "items.0.name", value: "x", objectify: true });
+// => { items: { "0": { name: "x" } } }
+
+Throws: Error if obj is not an object. Error if path is not a string. Error if path is empty.
+Does not mutate the input. Creates missing intermediate containers; arrays for numeric segments by default.
 
 ---
 

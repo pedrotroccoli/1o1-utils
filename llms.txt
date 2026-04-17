@@ -24,9 +24,11 @@
 - [deepMerge](https://pedrotroccoli.github.io/1o1-utils/objects/deep-merge/): Recursively merge two objects without mutation
 - [defaults](https://pedrotroccoli.github.io/1o1-utils/objects/defaults/): Fill `undefined` properties with defaults from another object
 - [defaultsDeep](https://pedrotroccoli.github.io/1o1-utils/objects/defaults-deep/): Recursively fill `undefined` properties with defaults from another object
+- [get](https://pedrotroccoli.github.io/1o1-utils/objects/get/): Read a nested value from an object via dot notation with a default fallback
 - [isEmpty](https://pedrotroccoli.github.io/1o1-utils/objects/is-empty/): Check if a value is empty (strings, arrays, objects, Maps, Sets)
 - [omit](https://pedrotroccoli.github.io/1o1-utils/objects/omit/): Create an object with specified keys removed (supports dot notation)
 - [pick](https://pedrotroccoli.github.io/1o1-utils/objects/pick/): Create an object with only the specified keys (supports dot notation)
+- [set](https://pedrotroccoli.github.io/1o1-utils/objects/set/): Set a nested value via dot notation without mutating the input
 
 ## Strings
 

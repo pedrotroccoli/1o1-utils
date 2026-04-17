@@ -51,6 +51,11 @@
     "limit": "2 kB"
   },
   {
+    "name": "get",
+    "path": "dist/objects/get/index.js",
+    "limit": "1 kB"
+  },
+  {
     "name": "is-empty",
     "path": "dist/objects/is-empty/index.js",
     "limit": "1 kB"
@@ -64,6 +69,11 @@
     "name": "pick",
     "path": "dist/objects/pick/index.js",
     "limit": "2 kB"
+  },
+  {
+    "name": "set",
+    "path": "dist/objects/set/index.js",
+    "limit": "1 kB"
   },
   {
     "name": "capitalize",

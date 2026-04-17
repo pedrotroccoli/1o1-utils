@@ -16,6 +16,8 @@
 		"chunk",
 		"pick",
 		"omit",
+		"get",
+		"set",
 		"debounce",
 		"throttle",
 		"deep-merge",
@@ -77,6 +79,10 @@
 			"import": "./dist/objects/defaults-deep/index.js",
 			"types": "./dist/objects/defaults-deep/index.d.ts"
 		},
+		"./get": {
+			"import": "./dist/objects/get/index.js",
+			"types": "./dist/objects/get/index.d.ts"
+		},
 		"./omit": {
 			"import": "./dist/objects/omit/index.js",
 			"types": "./dist/objects/omit/index.d.ts"
@@ -84,6 +90,10 @@
 		"./pick": {
 			"import": "./dist/objects/pick/index.js",
 			"types": "./dist/objects/pick/index.d.ts"
+		},
+		"./set": {
+			"import": "./dist/objects/set/index.js",
+			"types": "./dist/objects/set/index.d.ts"
 		},
 		"./sort-by": {
 			"import": "./dist/arrays/sort-by/index.js",
