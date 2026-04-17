@@ -1,5 +1,15 @@
 # 1o1-utils
 
+## 1.5.0
+
+### Minor Changes
+
+- 991751e: Add `defaults` and `defaultsDeep` utilities for filling `undefined` properties with fallback values. `defaults` handles shallow objects; `defaultsDeep` recurses into nested plain objects while preserving arrays and other non-plain values in the target.
+- 7357453: Add `get` and `set` utilities for dot-notation access to nested object properties.
+
+  - `get({ obj, path, defaultValue })` — safely reads a nested value; returns `defaultValue` (or `undefined`) when the path does not resolve. Never throws.
+  - `set({ obj, path, value, objectify })` — immutably writes a nested value using structural sharing; clones only nodes on the path. Numeric segments create arrays by default; pass `objectify: true` to create plain objects instead.
+
 ## 1.4.1
 
 ### Patch Changes
