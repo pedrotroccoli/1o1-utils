@@ -55,6 +55,8 @@ getClient(); // returns same instance
 - Arguments from the first call are forwarded to `fn`; later arguments are ignored.
 - The wrapper preserves `this` from the first invocation.
 - A return value of `undefined` is cached — `fn` will not run again.
+- If `fn` throws on the first call, the exception propagates and subsequent calls return `undefined` without retrying.
+- The reference to `fn` is released after the first call so any state it captures can be garbage-collected.
 
 ## Also known as
 

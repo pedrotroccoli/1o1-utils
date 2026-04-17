@@ -72,6 +72,19 @@ describe("once", () => {
     expect(obj.getValue()).to.equal(42);
   });
 
+  it("should not retry if fn throws on the first call", () => {
+    let callCount = 0;
+    const wrapped = once(() => {
+      callCount++;
+      throw new Error("boom");
+    });
+
+    expect(() => wrapped()).to.throw("boom");
+    expect(wrapped()).to.equal(undefined);
+    expect(wrapped()).to.equal(undefined);
+    expect(callCount).to.equal(1);
+  });
+
   it("should throw an error if fn is not a function", () => {
     // @ts-expect-error - we want to test the error case
     expect(() => once("not a function")).to.throw(
