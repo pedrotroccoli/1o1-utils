@@ -104,6 +104,36 @@ describe("pipe", () => {
     expect(() => failing(1)).to.throw("boom");
   });
 
+  it("should forward `this` to the first function", () => {
+    const obj = {
+      value: 42,
+      compute: pipe(
+        function (this: { value: number }) {
+          return this.value;
+        },
+        (n: number) => n * 2,
+      ),
+    };
+
+    expect(obj.compute()).to.equal(84);
+  });
+
+  it("should not forward the caller's `this` to subsequent stages", () => {
+    let receivedThis: unknown = "not called";
+    const composed = pipe(
+      (x: number) => x + 1,
+      function (this: unknown, x: number) {
+        receivedThis = this;
+        return x * 2;
+      },
+    );
+
+    const callerCtx = { marker: "caller-ctx" };
+    composed.call(callerCtx, 5);
+
+    expect(receivedThis).to.not.equal(callerCtx);
+  });
+
   it("should not mutate the input array of functions", () => {
     const fns = [
       (x: number) => x + 1,

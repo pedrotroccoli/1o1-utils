@@ -696,4 +696,4 @@ const sum = pipe(
 sum(2, 3); // 10
 
 Throws: Error if any argument is not a function.
-Execution is synchronous. If a function returns a Promise, the next function receives the Promise (not the awaited value). `pipe()` with no arguments returns an identity function that passes its first argument through unchanged.
+Execution is synchronous. If a function returns a Promise, the next function receives the Promise (not the awaited value). `pipe()` with no arguments returns an identity function that passes its first argument through unchanged. Only the first function receives the caller's `this` context; subsequent stages are called without `this` (differs from lodash/flow and es-toolkit/flow, which forward `this` to every stage).

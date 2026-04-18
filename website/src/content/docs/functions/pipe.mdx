@@ -77,6 +77,7 @@ const n: number = length("  abc  "); // 3
 - `pipe(fn)` with a single function returns that function unchanged — all arguments are forwarded.
 - Execution is synchronous. If a function returns a `Promise`, the next function receives the `Promise` (not the awaited value).
 - Exceptions thrown by composed functions propagate out of the composed function.
+- Only the first function receives the caller's `this` context; subsequent stages are called without `this`. Differs from `lodash/flow` and `es-toolkit/flow`, which forward `this` to every stage.
 
 ## Also known as
 

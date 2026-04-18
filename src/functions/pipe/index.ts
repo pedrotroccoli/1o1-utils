@@ -28,6 +28,9 @@ import type { PipeFn } from "./types.js";
  * With zero arguments, returns an identity function that passes its first
  * argument through unchanged. Execution is synchronous — if a function returns
  * a Promise, the next function receives the Promise (not the awaited value).
+ * Only the first function receives the caller's `this` context; subsequent
+ * stages are called without `this` (differs from `lodash/flow` and
+ * `es-toolkit/flow`, which forward `this` to every stage).
  */
 const pipe: PipeFn = ((...fns: Array<(...args: unknown[]) => unknown>) => {
   for (let i = 0; i < fns.length; i++) {
@@ -47,7 +50,8 @@ const pipe: PipeFn = ((...fns: Array<(...args: unknown[]) => unknown>) => {
   return function (this: unknown, ...args: unknown[]) {
     let result = fns[0].apply(this, args);
     for (let i = 1; i < fns.length; i++) {
-      result = fns[i](result);
+      const fn = fns[i];
+      result = fn(result);
     }
     return result;
   };
