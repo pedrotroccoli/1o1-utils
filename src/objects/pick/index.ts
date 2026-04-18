@@ -1,5 +1,7 @@
 import type { PickParams } from "./types.js";
 
+const UNSAFE_KEYS = new Set(["__proto__", "constructor", "prototype"]);
+
 function pickNested(
   source: Record<string, unknown>,
   target: Record<string, unknown>,
@@ -14,15 +16,17 @@ function pickNested(
   while (dot !== -1) {
     if (typeof src !== "object" || src === null) return;
     const seg = key.substring(start, dot);
-    if (!(seg in (src as Record<string, unknown>))) return;
+    if (UNSAFE_KEYS.has(seg)) return;
+    if (!Object.hasOwn(src, seg)) return;
     src = (src as Record<string, unknown>)[seg];
     start = dot + 1;
     dot = key.indexOf(".", start);
   }
 
   const lastSeg = key.substring(start, len);
+  if (UNSAFE_KEYS.has(lastSeg)) return;
   if (typeof src !== "object" || src === null) return;
-  if (!(lastSeg in (src as Record<string, unknown>))) return;
+  if (!Object.hasOwn(src, lastSeg)) return;
   const value = (src as Record<string, unknown>)[lastSeg];
 
   let tgt = target;
@@ -79,7 +83,8 @@ function pick<T extends Record<string, unknown>>({
     const key = keys[i] as string;
 
     if (key.indexOf(".") === -1) {
-      if (key in obj) {
+      if (UNSAFE_KEYS.has(key)) continue;
+      if (Object.hasOwn(obj, key)) {
         result[key] = obj[key];
       }
     } else {
