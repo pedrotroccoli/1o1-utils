@@ -119,5 +119,10 @@
     "name": "once",
     "path": "dist/functions/once/index.js",
     "limit": "1 kB"
+  },
+  {
+    "name": "pipe",
+    "path": "dist/functions/pipe/index.js",
+    "limit": "1 kB"
   }
 ]

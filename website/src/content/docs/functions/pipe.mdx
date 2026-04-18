@@ -1,0 +1,90 @@
+---
+title: pipe
+description: Compose functions left-to-right into a single function
+---
+
+Composes functions left-to-right. The first function receives the initial arguments; each subsequent function receives the previous function's return value. Aligned with the [TC39 pipe operator proposal](https://github.com/tc39/proposal-pipeline-operator).
+
+## Import
+
+```ts
+import { pipe } from "1o1-utils";
+```
+
+```ts
+import { pipe } from "1o1-utils/pipe";
+```
+
+## Signature
+
+```ts
+function pipe<A extends unknown[], B, C, ..., R>(
+  f1: (...args: A) => B,
+  f2: (b: B) => C,
+  // ...
+): (...args: A) => R
+```
+
+Overloads are typed up to 10 functions. Beyond that, the return type falls back to `unknown`.
+
+## Parameters
+
+| Name  | Type                       | Required | Description                                                     |
+| ----- | -------------------------- | -------- | --------------------------------------------------------------- |
+| `fns` | `Array<(...args) => any>`  | No       | Functions to compose, executed in the order provided (variadic) |
+
+## Returns
+
+A function that applies every `fn` in sequence. Calling `pipe()` with no arguments returns an identity function that passes its first argument through unchanged.
+
+## Examples
+
+```ts
+const slug = pipe(
+  (x: string) => x.trim(),
+  (x: string) => x.toLowerCase(),
+  (x: string) => x.replace(/\s+/g, "-"),
+);
+
+slug("  Hello World  "); // "hello-world"
+```
+
+```ts
+// First function can take multiple args
+const sum = pipe(
+  (a: number, b: number) => a + b,
+  (n: number) => n * 2,
+);
+
+sum(2, 3); // 10
+```
+
+```ts
+// Type inference flows across the chain
+const length = pipe(
+  (x: string) => x.trim(),
+  (x: string) => x.split(""),
+  (chars: string[]) => chars.length,
+);
+
+const n: number = length("  abc  "); // 3
+```
+
+## Edge Cases
+
+- Throws if any argument is not a function.
+- `pipe()` with zero arguments returns an identity function.
+- `pipe(fn)` with a single function returns that function unchanged — all arguments are forwarded.
+- Execution is synchronous. If a function returns a `Promise`, the next function receives the `Promise` (not the awaited value).
+- Exceptions thrown by composed functions propagate out of the composed function.
+- Only the first function receives the caller's `this` context; subsequent stages are called without `this`. Differs from `lodash/flow` and `es-toolkit/flow`, which forward `this` to every stage.
+
+## Also known as
+
+compose, function composition, flow, left-to-right, pipeline, chain, sequence, combine functions
+
+## Prompt suggestion
+
+```text
+I'm using 1o1-utils (npm: https://www.npmjs.com/package/1o1-utils, GitHub: https://github.com/pedrotroccoli/1o1-utils, LLM context: https://pedrotroccoli.github.io/1o1-utils/llms.txt). Show me how to use pipe to compose a string-transformation pipeline
+```
