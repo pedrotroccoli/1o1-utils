@@ -1,5 +1,12 @@
 # 1o1-utils
 
+## 1.6.0
+
+### Minor Changes
+
+- d4414cf: Add `once` utility and new `functions` category. `once(fn)` returns a wrapper that executes `fn` on the first call, caches the result, and ignores subsequent arguments — ideal for lazy initialization and singleton patterns.
+- f5463d6: Extend `transformCase` with a `"title"` target style (`transformCase({ str, to: "title" })` → `"Hello World"`) and a new `preserveAcronyms` option that keeps all-uppercase words like `"HTML"` intact instead of lowercasing them (e.g. `transformCase({ str: "HTMLParser", to: "title", preserveAcronyms: true })` → `"HTML Parser"`). In `camel`, the leading word is always lowercased for convention.
+
 ## 1.5.0
 
 ### Minor Changes
