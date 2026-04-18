@@ -33,7 +33,7 @@ export const { getStaticPaths, GET } = await OGImageRoute({
     ],
     logo: {
       path: "./public/logo.png",
-      size: [120],
+      size: [240],
     },
     border: {
       color: [107, 92, 231],
