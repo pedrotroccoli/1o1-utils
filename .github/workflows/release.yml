@@ -41,12 +41,29 @@ jobs:
         run: pnpm build
 
       - name: Create Release PR or Publish
+        id: changesets
         uses: changesets/action@v1
         with:
           publish: pnpm changeset publish
           title: "chore: version packages"
           commit: "chore: version packages"
+          createGithubReleases: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Ensure git tag exists for current version
+        if: ${{ startsWith(github.event.head_commit.message, 'chore: version packages') }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          TAG="v${VERSION}"
+          if git ls-remote --exit-code --tags origin "refs/tags/${TAG}" >/dev/null 2>&1; then
+            echo "Tag ${TAG} already exists on origin — nothing to do."
+            exit 0
+          fi
+          echo "Tag ${TAG} missing on origin — creating and pushing."
+          git tag -a "${TAG}" -m "${TAG}"
+          git push origin "${TAG}"
