@@ -9,6 +9,7 @@
   <a href="https://www.npmjs.com/package/1o1-utils"><img src="https://img.shields.io/npm/v/1o1-utils" alt="npm version"></a>
   <a href="https://bundlephobia.com/package/1o1-utils"><img src="https://img.shields.io/bundlephobia/minzip/1o1-utils" alt="bundle size"></a>
   <a href="https://github.com/pedrotroccoli/1o1-utils/blob/main/LICENSE"><img src="https://img.shields.io/npm/l/1o1-utils" alt="license"></a>
+  <a href="https://scorecard.dev/viewer/?uri=github.com/pedrotroccoli/1o1-utils"><img src="https://api.scorecard.dev/projects/github.com/pedrotroccoli/1o1-utils/badge" alt="OpenSSF Scorecard"></a>
 </p>
 
 ---
