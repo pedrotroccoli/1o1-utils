@@ -84,6 +84,10 @@ export default defineConfig({
           autogenerate: { directory: "async" },
         },
         {
+          label: "Comparisons",
+          autogenerate: { directory: "comparisons" },
+        },
+        {
           label: "Functions",
           autogenerate: { directory: "functions" },
         },

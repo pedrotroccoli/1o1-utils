@@ -1,0 +1,75 @@
+---
+title: shallowEqual
+description: Compare two values by their top-level entries using Object.is
+---
+
+Compares two values by their top-level entries. Returns `true` when both values are strictly the same, or when they are arrays or plain objects with identical own-enumerable entries at the first level. Nested values are compared by reference, not structurally — use `deepEqual` for recursive comparison.
+
+## Import
+
+```ts
+import { shallowEqual } from "1o1-utils";
+```
+
+```ts
+import { shallowEqual } from "1o1-utils/shallow-equal";
+```
+
+## Signature
+
+```ts
+function shallowEqual({ a, b }: ShallowEqualParams): boolean
+```
+
+## Parameters
+
+| Name | Type      | Required | Description                  |
+| ---- | --------- | -------- | ---------------------------- |
+| a    | `unknown` | Yes      | The first value to compare   |
+| b    | `unknown` | Yes      | The second value to compare  |
+
+## Returns
+
+`boolean` — `true` if the values are shallowly equal, `false` otherwise.
+
+## Examples
+
+```ts
+shallowEqual({ a: { x: 1, y: 2 }, b: { x: 1, y: 2 } });
+// => true
+
+shallowEqual({ a: { x: { n: 1 } }, b: { x: { n: 1 } } });
+// => false — nested refs differ
+
+shallowEqual({ a: [1, 2, 3], b: [1, 2, 3] });
+// => true
+
+shallowEqual({ a: Number.NaN, b: Number.NaN });
+// => true — Object.is semantics
+```
+
+```ts
+// Skip an expensive render when props haven't changed
+function shouldUpdate(prev, next) {
+  return !shallowEqual({ a: prev, b: next });
+}
+```
+
+## Edge Cases
+
+- Uses `Object.is`, so `NaN` equals `NaN` and `+0` is distinct from `-0`.
+- Returns `true` for identical references (fast path).
+- Arrays and plain objects are never equal to each other — type mismatch returns `false`.
+- Symbol-keyed properties, non-enumerable properties, and prototype differences are ignored.
+- Built-ins like `Map`, `Set`, `Date`, and `RegExp` fall back to reference equality — use `deepEqual` for structural comparison of those.
+- Nested objects and arrays are compared by reference only — this is what makes it "shallow".
+
+## Also known as
+
+shallow compare, shallow equality, props equal, state compare, memo compare
+
+## Prompt suggestion
+
+```text
+I'm using 1o1-utils (npm: https://www.npmjs.com/package/1o1-utils, GitHub: https://github.com/pedrotroccoli/1o1-utils, LLM context: https://pedrotroccoli.github.io/1o1-utils/llms.txt). Show me how to use shallowEqual to skip an unnecessary re-render when two prop objects have identical top-level entries
+```
