@@ -13,7 +13,7 @@ Only the latest minor version of `1o1-utils` receives security updates. Older ve
 
 Please report security issues **privately** via GitHub's [Security Advisories](https://github.com/pedrotroccoli/1o1-utils/security/advisories/new). Do not open a public issue.
 
-If GitHub Security Advisories is not an option, email `pedroaugustobelzkai@gmail.com` with:
+If GitHub Security Advisories is not an option, email `contact@pedrotroccoli.com` with:
 
 - A description of the issue
 - Steps to reproduce
