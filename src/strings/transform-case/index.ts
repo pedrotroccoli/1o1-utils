@@ -12,10 +12,18 @@ const VALID_STYLES = new Set<CaseStyle>([
   "title",
 ]);
 
-const WORD_RE = /[A-Z]+(?=[A-Z][a-z])|[A-Z][a-z0-9]*|[a-z][a-z0-9]*|[0-9]+/g;
-
 function splitWords(str: string): string[] {
-  return str.match(WORD_RE) ?? [];
+  // Insert spaces at case/digit transitions using bounded patterns, then split.
+  // Avoids a quantifier+lookahead regex (polynomial ReDoS).
+  const spaced = str
+    .replace(/([0-9])([A-Za-z])/g, "$1 $2")
+    .replace(/([a-z])([A-Z])/g, "$1 $2")
+    .replace(/([A-Z])([A-Z][a-z])/g, "$1 $2");
+  const words: string[] = [];
+  for (const word of spaced.split(/[^A-Za-z0-9]+/)) {
+    if (word) words.push(word);
+  }
+  return words;
 }
 
 function isAcronym(w: string): boolean {
