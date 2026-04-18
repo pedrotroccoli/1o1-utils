@@ -31,35 +31,24 @@ function joinWords(
   to: CaseStyle,
   preserveAcronyms: boolean,
 ): string {
-  if (words.length === 0) return "";
+  const n = words.length;
+  if (n === 0) return "";
 
-  const normalize = (w: string) =>
-    preserveAcronyms && isAcronym(w) ? w : w.toLowerCase();
+  const sep =
+    to === "kebab" ? "-" : to === "snake" ? "_" : to === "title" ? " " : "";
+  const titlelike = to === "title" || to === "pascal" || to === "camel";
 
-  const normalized = words.map(normalize);
-
-  switch (to) {
-    case "kebab":
-      return normalized.join("-");
-    case "snake":
-      return normalized.join("_");
-    case "title":
-      return normalized
-        .map((w) => (isAcronym(w) ? w : capitalizeFirst(w)))
-        .join(" ");
-    case "camel":
-      return (
-        normalized[0].toLowerCase() +
-        normalized
-          .slice(1)
-          .map((w) => (isAcronym(w) ? w : capitalizeFirst(w)))
-          .join("")
-      );
-    case "pascal":
-      return normalized
-        .map((w) => (isAcronym(w) ? w : capitalizeFirst(w)))
-        .join("");
+  let result = "";
+  for (let i = 0; i < n; i++) {
+    const raw = words[i];
+    const keep = preserveAcronyms && isAcronym(raw);
+    const firstCamel = to === "camel" && i === 0;
+    const lowered = keep && !firstCamel ? raw : raw.toLowerCase();
+    const word =
+      titlelike && !firstCamel && !keep ? capitalizeFirst(lowered) : lowered;
+    result += i > 0 ? sep + word : word;
   }
+  return result;
 }
 
 /**
