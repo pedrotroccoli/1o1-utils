@@ -661,3 +661,39 @@ getClient(); // returns same instance
 
 Throws: Error if fn is not a function.
 Arguments from the first call are forwarded to fn; later arguments are ignored. The wrapper preserves `this` from the first invocation. A return value of undefined is still cached — fn will not run again. If fn throws on the first call, the exception propagates and subsequent calls return undefined without retrying. The reference to fn is released after the first call so any state it captures can be garbage-collected.
+
+### pipe
+
+Compose functions left-to-right into a single function. The first function receives the initial arguments; each subsequent function receives the previous function's return value. Aligned with the TC39 pipe operator proposal.
+
+Import: import { pipe } from "1o1-utils/pipe";
+
+Signature:
+function pipe<A extends unknown[], B, C, ..., R>(
+  f1: (...args: A) => B,
+  f2: (b: B) => C,
+  ...
+): (...args: A) => R
+
+Parameters:
+- fns (functions, variadic): Functions to compose, executed in the order provided. Overloads typed up to 10 functions; beyond that, the return type falls back to `unknown`.
+
+Returns: A function that applies every fn in sequence. With zero arguments, returns an identity function.
+
+Example:
+const slug = pipe(
+  (x: string) => x.trim(),
+  (x: string) => x.toLowerCase(),
+  (x: string) => x.replace(/\s+/g, "-"),
+);
+slug("  Hello World  "); // "hello-world"
+
+// First function can take multiple args
+const sum = pipe(
+  (a: number, b: number) => a + b,
+  (n: number) => n * 2,
+);
+sum(2, 3); // 10
+
+Throws: Error if any argument is not a function.
+Execution is synchronous. If a function returns a Promise, the next function receives the Promise (not the awaited value). `pipe()` with no arguments returns an identity function that passes its first argument through unchanged.

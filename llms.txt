@@ -47,3 +47,4 @@
 ## Functions
 
 - [once](https://pedrotroccoli.github.io/1o1-utils/functions/once/): Create a function that runs only once and caches its result
+- [pipe](https://pedrotroccoli.github.io/1o1-utils/functions/pipe/): Compose functions left-to-right into a single function

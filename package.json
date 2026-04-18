@@ -29,7 +29,10 @@
 		"truncate",
 		"retry",
 		"sleep",
-		"once"
+		"once",
+		"pipe",
+		"compose",
+		"flow"
 	],
 	"author": "Pedro Troccoli <contact@pedrotroccoli.com>",
 	"license": "MIT",
@@ -139,6 +142,10 @@
 		"./once": {
 			"import": "./dist/functions/once/index.js",
 			"types": "./dist/functions/once/index.d.ts"
+		},
+		"./pipe": {
+			"import": "./dist/functions/pipe/index.js",
+			"types": "./dist/functions/pipe/index.d.ts"
 		}
 	},
 	"scripts": {
@@ -175,6 +182,7 @@
 		"@types/mocha": "^10.0.10",
 		"c8": "^11.0.0",
 		"chai": "^5.3.1",
+		"es-toolkit": "^1.45.1",
 		"lodash": "^4.18.1",
 		"mocha": "^11.7.1",
 		"radash": "^12.1.1",
