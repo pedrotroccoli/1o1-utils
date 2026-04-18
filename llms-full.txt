@@ -626,3 +626,34 @@ throttledScroll.cancel(); // Cancel pending trailing call
 
 Throws: Error if fn is not a function. Error if ms is not a number, is NaN, or is negative.
 First call executes immediately. Subsequent calls within ms are queued; the last one fires after the interval. .cancel() clears pending calls and resets state.
+
+---
+
+## Functions
+
+### once
+
+Create a version of a function that runs only once. Subsequent calls return the cached result from the first invocation and ignore any new arguments.
+
+Import: import { once } from "1o1-utils/once";
+
+Signature:
+function once<T extends (...args: never[]) => unknown>(fn: T): T
+
+Parameters:
+- fn (T, required): The function to wrap
+
+Returns: T — A wrapped function that executes fn at most once.
+
+Example:
+const init = once(() => ({ id: Math.random() }));
+const a = init();
+const b = init();
+a === b; // true — same cached object
+
+const getClient = once(() => new ApiClient({ token: process.env.TOKEN }));
+getClient(); // creates client
+getClient(); // returns same instance
+
+Throws: Error if fn is not a function.
+Arguments from the first call are forwarded to fn; later arguments are ignored. The wrapper preserves `this` from the first invocation. A return value of undefined is still cached — fn will not run again. If fn throws on the first call, the exception propagates and subsequent calls return undefined without retrying. The reference to fn is released after the first call so any state it captures can be garbage-collected.

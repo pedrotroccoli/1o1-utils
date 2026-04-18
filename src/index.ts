@@ -7,6 +7,7 @@ export { debounce } from "./async/debounce/index.js";
 export { retry } from "./async/retry/index.js";
 export { sleep } from "./async/sleep/index.js";
 export { throttle } from "./async/throttle/index.js";
+export { once } from "./functions/once/index.js";
 export { cloneDeep } from "./objects/clone-deep/index.js";
 export { deepMerge } from "./objects/deep-merge/index.js";
 export { defaults } from "./objects/defaults/index.js";

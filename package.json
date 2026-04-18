@@ -28,7 +28,8 @@
 		"capitalize",
 		"truncate",
 		"retry",
-		"sleep"
+		"sleep",
+		"once"
 	],
 	"author": "Pedro Troccoli <contact@pedrotroccoli.com>",
 	"license": "MIT",
@@ -134,6 +135,10 @@
 		"./truncate": {
 			"import": "./dist/strings/truncate/index.js",
 			"types": "./dist/strings/truncate/index.d.ts"
+		},
+		"./once": {
+			"import": "./dist/functions/once/index.js",
+			"types": "./dist/functions/once/index.d.ts"
 		}
 	},
 	"scripts": {
