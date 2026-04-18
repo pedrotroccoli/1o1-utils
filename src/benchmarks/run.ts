@@ -141,7 +141,7 @@ const SUITE_META: Record<string, { slug: string; description: string }> = {
   transformCase: {
     slug: "transform-case",
     description:
-      "Transforms strings between camelCase, kebab-case, snake_case, and PascalCase. Compared against lodash case functions.",
+      "Transforms strings between camelCase, kebab-case, snake_case, PascalCase, and Title Case, with optional acronym preservation. Compared against lodash case functions.",
   },
   debounce: {
     slug: "debounce",
