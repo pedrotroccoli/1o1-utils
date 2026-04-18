@@ -193,8 +193,15 @@ Every utility **must** include:
 3. **"Also known as"** on the docs page — alternative names for the same concept:
    > **Also known as:** limit number, restrict range, min/max bound
 
-4. **"Prompt suggestion"** on the docs page — a ready-to-copy prompt for AI assistants:
-   > **Prompt suggestion:** `Show me how to use clamp from 1o1-utils to restrict a slider value between min and max`
+4. **"Prompt suggestion"** on the docs page — a ready-to-copy prompt for AI assistants. Use a fenced `text` code block (renders a copy button) and always prefix with the canonical references so the LLM can look up the real API:
+
+   ````markdown
+   ## Prompt suggestion
+
+   ```text
+   I'm using 1o1-utils (npm: https://www.npmjs.com/package/1o1-utils, GitHub: https://github.com/pedrotroccoli/1o1-utils, LLM context: https://pedrotroccoli.github.io/1o1-utils/llms.txt). Show me how to use clamp to restrict a slider value between min and max
+   ```
+   ````
 
 ### Style (enforced by Biome)
 
