@@ -1,7 +1,7 @@
 type AnyFn = (...args: never[]) => unknown;
 
 interface PipeFn {
-  <T>(): (x: T) => T;
+  (): <T>(x: T) => T;
   <A extends unknown[], R>(f1: (...args: A) => R): (...args: A) => R;
   <A extends unknown[], B, R>(
     f1: (...args: A) => B,
