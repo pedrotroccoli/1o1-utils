@@ -462,16 +462,17 @@ Handles Unicode normalization (NFD) to strip accents. Removes leading/trailing h
 
 ### transformCase
 
-Convert a string between common case styles: camelCase, kebab-case, snake_case, and PascalCase.
+Convert a string between common case styles: camelCase, kebab-case, snake_case, PascalCase, and Title Case.
 
 Import: import { transformCase } from "1o1-utils/transform-case";
 
 Signature:
-function transformCase({ str, to }: TransformCaseParams): string
+function transformCase({ str, to, preserveAcronyms }: TransformCaseParams): string
 
 Parameters:
 - str (string, required): The string to convert
-- to ("camel" | "kebab" | "snake" | "pascal", required): Target case style
+- to ("camel" | "kebab" | "snake" | "pascal" | "title", required): Target case style
+- preserveAcronyms (boolean, optional, default false): When true, all-uppercase words (length > 1) such as "HTML" are preserved instead of lowercased. In "camel", the first word is always lowercased regardless.
 
 Returns: string
 
@@ -480,9 +481,12 @@ transformCase({ str: "hello world", to: "camel" });  // => "helloWorld"
 transformCase({ str: "hello world", to: "kebab" });  // => "hello-world"
 transformCase({ str: "hello world", to: "snake" });  // => "hello_world"
 transformCase({ str: "hello world", to: "pascal" }); // => "HelloWorld"
+transformCase({ str: "hello world", to: "title" });  // => "Hello World"
 transformCase({ str: "myVariableName", to: "kebab" }); // => "my-variable-name"
+transformCase({ str: "HTMLParser", to: "title", preserveAcronyms: true }); // => "HTML Parser"
+transformCase({ str: "HTMLParser", to: "camel", preserveAcronyms: true }); // => "htmlParser"
 
-Throws: Error if str is not a string. Error if to is not one of: camel, kebab, snake, pascal.
+Throws: Error if str is not a string. Error if to is not one of: camel, kebab, snake, pascal, title.
 Splits on word boundaries (uppercase transitions, hyphens, underscores, spaces).
 
 ---

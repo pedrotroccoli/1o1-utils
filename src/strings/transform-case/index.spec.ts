@@ -101,6 +101,120 @@ describe("transformCase", () => {
     });
   });
 
+  describe("to title", () => {
+    it("should convert space-separated words to Title Case", () => {
+      expect(transformCase({ str: "hello world", to: "title" })).to.equal(
+        "Hello World",
+      );
+    });
+
+    it("should convert kebab-case to Title Case", () => {
+      expect(transformCase({ str: "some-kebab-case", to: "title" })).to.equal(
+        "Some Kebab Case",
+      );
+    });
+
+    it("should convert camelCase to Title Case", () => {
+      expect(transformCase({ str: "alreadyTitle", to: "title" })).to.equal(
+        "Already Title",
+      );
+    });
+
+    it("should convert snake_case to Title Case", () => {
+      expect(transformCase({ str: "hello_world", to: "title" })).to.equal(
+        "Hello World",
+      );
+    });
+
+    it("should handle acronyms by lowercasing them by default", () => {
+      expect(transformCase({ str: "HTMLParser", to: "title" })).to.equal(
+        "Html Parser",
+      );
+    });
+
+    it("should return an empty string for empty input", () => {
+      expect(transformCase({ str: "", to: "title" })).to.equal("");
+    });
+  });
+
+  describe("preserveAcronyms", () => {
+    it("should preserve acronyms in title case", () => {
+      expect(
+        transformCase({
+          str: "HTMLParser",
+          to: "title",
+          preserveAcronyms: true,
+        }),
+      ).to.equal("HTML Parser");
+    });
+
+    it("should preserve acronyms in kebab-case (non-acronyms lowercased)", () => {
+      expect(
+        transformCase({
+          str: "HTMLParser",
+          to: "kebab",
+          preserveAcronyms: true,
+        }),
+      ).to.equal("HTML-parser");
+    });
+
+    it("should preserve acronyms in snake_case (non-acronyms lowercased)", () => {
+      expect(
+        transformCase({
+          str: "HTMLParser",
+          to: "snake",
+          preserveAcronyms: true,
+        }),
+      ).to.equal("HTML_parser");
+    });
+
+    it("should preserve acronyms in PascalCase", () => {
+      expect(
+        transformCase({
+          str: "HTMLParser",
+          to: "pascal",
+          preserveAcronyms: true,
+        }),
+      ).to.equal("HTMLParser");
+    });
+
+    it("should lowercase leading acronym in camelCase", () => {
+      expect(
+        transformCase({
+          str: "HTMLParser",
+          to: "camel",
+          preserveAcronyms: true,
+        }),
+      ).to.equal("htmlParser");
+    });
+
+    it("should preserve mid-word acronyms in camelCase", () => {
+      expect(
+        transformCase({
+          str: "myXMLParser",
+          to: "camel",
+          preserveAcronyms: true,
+        }),
+      ).to.equal("myXMLParser");
+    });
+
+    it("should preserve mid-word acronyms in title case", () => {
+      expect(
+        transformCase({
+          str: "myXMLParser",
+          to: "title",
+          preserveAcronyms: true,
+        }),
+      ).to.equal("My XML Parser");
+    });
+
+    it("should default to false (current lowercase behavior)", () => {
+      expect(transformCase({ str: "HTMLParser", to: "kebab" })).to.equal(
+        "html-parser",
+      );
+    });
+  });
+
   describe("edge cases", () => {
     it("should return an empty string for empty input", () => {
       expect(transformCase({ str: "", to: "kebab" })).to.equal("");
@@ -136,6 +250,13 @@ describe("transformCase", () => {
       expect(() => transformCase({ str: "hello", to: "invalid" })).to.throw(
         "The 'to' parameter must be one of",
       );
+    });
+
+    it("should list title in the valid styles error message", () => {
+      expect(() =>
+        // @ts-expect-error - we want to test the error case
+        transformCase({ str: "hello", to: "invalid" }),
+      ).to.throw("title");
     });
   });
 });

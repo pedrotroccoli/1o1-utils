@@ -1,8 +1,9 @@
-type CaseStyle = "camel" | "kebab" | "snake" | "pascal";
+type CaseStyle = "camel" | "kebab" | "snake" | "pascal" | "title";
 
 interface TransformCaseParams {
   str: string;
   to: CaseStyle;
+  preserveAcronyms?: boolean;
 }
 
 type TransformCaseResult = string;

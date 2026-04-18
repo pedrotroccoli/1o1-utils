@@ -34,7 +34,7 @@
 
 - [capitalize](https://pedrotroccoli.github.io/1o1-utils/strings/capitalize/): Capitalize the first character of a string
 - [slugify](https://pedrotroccoli.github.io/1o1-utils/strings/slugify/): Convert a string to a URL-friendly slug with accent handling
-- [transformCase](https://pedrotroccoli.github.io/1o1-utils/strings/transform-case/): Convert between camelCase, kebab-case, snake_case, and PascalCase
+- [transformCase](https://pedrotroccoli.github.io/1o1-utils/strings/transform-case/): Convert between camelCase, kebab-case, snake_case, PascalCase, and Title Case with optional acronym preservation
 - [truncate](https://pedrotroccoli.github.io/1o1-utils/strings/truncate/): Truncate a string to a length with a configurable suffix
 
 ## Async
