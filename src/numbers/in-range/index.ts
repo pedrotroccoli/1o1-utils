@@ -20,7 +20,7 @@ import type { InRangeParams, InRangeResult } from "./types.js";
  *
  * @keywords range, between, bounds, numeric check, clamp check
  *
- * @throws Error if `value`, `start`, or `end` is not a finite number
+ * @throws Error if `value`, `start`, or `end` is not a number or is `NaN`
  */
 function inRange({ value, start, end }: InRangeParams): InRangeResult {
   if (typeof value !== "number" || Number.isNaN(value)) {

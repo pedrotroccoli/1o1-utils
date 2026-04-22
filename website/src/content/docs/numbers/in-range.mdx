@@ -54,7 +54,7 @@ inRange({ value: 1.5, start: 1, end: 2 }); // true
 
 ## Edge Cases
 
-- Throws if `value`, `start`, or `end` is not a finite number (non-number type or `NaN`).
+- Throws if any of `value`, `start`, or `end` is not a number or is `NaN`.
 - A zero-width range (`start === end`) always returns `false`.
 - Works with `Infinity` bounds — e.g. `{ value: 1e10, start: 0, end: Infinity }` returns `true`.
 - When `start > end`, the bounds are swapped silently. The inclusive side follows the lower bound.
