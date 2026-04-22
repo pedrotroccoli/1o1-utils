@@ -1,4 +1,4 @@
-import { inRange as lodashInRange } from "lodash";
+import lodashInRange from "lodash/inRange.js";
 import { inRange as radashInRange } from "radash";
 import { Bench } from "tinybench";
 import { inRange } from "./index.js";
