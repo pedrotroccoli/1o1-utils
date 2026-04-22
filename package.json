@@ -32,7 +32,10 @@
 		"once",
 		"pipe",
 		"compose",
-		"flow"
+		"flow",
+		"in-range",
+		"between",
+		"range-check"
 	],
 	"author": "Pedro Troccoli <contact@pedrotroccoli.com>",
 	"license": "MIT",
@@ -102,6 +105,10 @@
 		"./sort-by": {
 			"import": "./dist/arrays/sort-by/index.js",
 			"types": "./dist/arrays/sort-by/index.d.ts"
+		},
+		"./in-range": {
+			"import": "./dist/numbers/in-range/index.js",
+			"types": "./dist/numbers/in-range/index.d.ts"
 		},
 		"./is-empty": {
 			"import": "./dist/objects/is-empty/index.js",
