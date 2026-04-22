@@ -1,0 +1,70 @@
+---
+title: inRange
+description: Check if a number falls within a given range
+---
+
+Checks if a number falls within a given range. Start is inclusive, end is exclusive. If `start` is greater than `end`, the bounds are swapped automatically.
+
+## Import
+
+```ts
+import { inRange } from "1o1-utils";
+```
+
+```ts
+import { inRange } from "1o1-utils/in-range";
+```
+
+## Signature
+
+```ts
+function inRange(params: { value: number; start: number; end: number }): boolean
+```
+
+## Parameters
+
+| Name  | Type     | Required | Description                                 |
+| ----- | -------- | -------- | ------------------------------------------- |
+| value | `number` | Yes      | The number to check                         |
+| start | `number` | Yes      | The start of the range (inclusive)          |
+| end   | `number` | Yes      | The end of the range (exclusive)            |
+
+## Returns
+
+`boolean` — `true` if `value` is within `[start, end)`, otherwise `false`.
+
+## Examples
+
+```ts
+inRange({ value: 3, start: 1, end: 5 });   // true
+inRange({ value: 5, start: 1, end: 5 });   // false — end is exclusive
+inRange({ value: 1, start: 1, end: 5 });   // true  — start is inclusive
+inRange({ value: -1, start: -5, end: 5 }); // true
+```
+
+```ts
+// Bounds are swapped automatically when start > end
+inRange({ value: 3, start: 5, end: 1 }); // true
+```
+
+```ts
+// Floating-point values
+inRange({ value: 1.5, start: 1, end: 2 }); // true
+```
+
+## Edge Cases
+
+- Throws if `value`, `start`, or `end` is not a finite number (non-number type or `NaN`).
+- A zero-width range (`start === end`) always returns `false`.
+- Works with `Infinity` bounds — e.g. `{ value: 1e10, start: 0, end: Infinity }` returns `true`.
+- When `start > end`, the bounds are swapped silently. The inclusive side follows the lower bound.
+
+## Also known as
+
+between, range check, bounds check, within range, number range
+
+## Prompt suggestion
+
+```text
+I'm using 1o1-utils (npm: https://www.npmjs.com/package/1o1-utils, GitHub: https://github.com/pedrotroccoli/1o1-utils, LLM context: https://pedrotroccoli.github.io/1o1-utils/llms.txt). Show me how to use inRange to check if a number is within a bounded range.
+```
