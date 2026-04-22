@@ -12,10 +12,55 @@ const VALID_STYLES = new Set<CaseStyle>([
   "title",
 ]);
 
-const WORD_RE = /[A-Z]+(?=[A-Z][a-z])|[A-Z][a-z0-9]*|[a-z][a-z0-9]*|[0-9]+/g;
-
 function splitWords(str: string): string[] {
-  return str.match(WORD_RE) ?? [];
+  // Single-pass char scan. Emits a word at each case/digit boundary.
+  // No regex — linear, no backtracking (avoids polynomial ReDoS).
+  const words: string[] = [];
+  const len = str.length;
+  let start = -1;
+  let prev = 0; // 0=separator, 1=digit, 2=lower, 3=upper
+
+  for (let i = 0; i < len; i++) {
+    const c = str.charCodeAt(i);
+    const kind =
+      c >= 97 && c <= 122
+        ? 2
+        : c >= 65 && c <= 90
+          ? 3
+          : c >= 48 && c <= 57
+            ? 1
+            : 0;
+
+    if (kind === 0) {
+      if (start !== -1) {
+        words.push(str.substring(start, i));
+        start = -1;
+      }
+      prev = 0;
+      continue;
+    }
+
+    let boundary = false;
+    if (prev === 0) {
+      boundary = true;
+    } else if (prev !== kind) {
+      if (prev === 2 && kind === 3) boundary = true;
+      else if (prev === 1 || kind === 1) boundary = true;
+    } else if (prev === 3 && i + 1 < len) {
+      const nc = str.charCodeAt(i + 1);
+      if (nc >= 97 && nc <= 122) boundary = true;
+    }
+
+    if (boundary && start !== -1) {
+      words.push(str.substring(start, i));
+    }
+    if (boundary) start = i;
+    prev = kind;
+  }
+
+  if (start !== -1) words.push(str.substring(start));
+
+  return words;
 }
 
 function isAcronym(w: string): boolean {
