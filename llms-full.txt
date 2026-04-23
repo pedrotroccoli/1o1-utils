@@ -633,6 +633,37 @@ First call executes immediately. Subsequent calls within ms are queued; the last
 
 ---
 
+### withTimeout
+
+Wrap a promise with a timeout. Rejects with a TimeoutError if the promise does not settle within the given duration. Accepts an optional AbortSignal to cancel externally.
+
+Import: import { withTimeout, TimeoutError } from "1o1-utils/with-timeout";
+
+Signature:
+function withTimeout<T>({ promise, ms, message, signal }: WithTimeoutParams<T>): Promise<T>
+
+Parameters:
+- promise (Promise<T>, required): The promise to race against the timeout
+- ms (number, required): Timeout duration in milliseconds (non-negative)
+- message (string | (() => string), optional): Error message or lazy factory. Default: "Operation timed out after {ms}ms"
+- signal (AbortSignal, optional): Rejects with signal.reason when aborted
+
+Returns: Promise<T> — resolves with the original value, or rejects with TimeoutError on timeout
+
+Example:
+await withTimeout({ promise: fetchData(), ms: 5000 });
+// resolves normally if < 5s, throws TimeoutError otherwise
+
+await withTimeout({ promise: slowApi(), ms: 3000, message: "API too slow" });
+
+const controller = new AbortController();
+await withTimeout({ promise: work(), ms: 10_000, signal: controller.signal });
+controller.abort(); // rejects immediately with signal.reason
+
+Throws: Error if promise is not thenable. Error if ms is not a non-negative number. Error if signal is not an AbortSignal. TimeoutError (name: "TimeoutError") if ms elapses before the promise settles. The forwarded rejection if the promise rejects before the timeout. TimeoutError is exported only from the "1o1-utils/with-timeout" subpath.
+
+---
+
 ## Functions
 
 ### once

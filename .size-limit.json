@@ -116,6 +116,11 @@
     "limit": "2 kB"
   },
   {
+    "name": "with-timeout",
+    "path": "dist/async/with-timeout/index.js",
+    "limit": "1 kB"
+  },
+  {
     "name": "once",
     "path": "dist/functions/once/index.js",
     "limit": "1 kB"

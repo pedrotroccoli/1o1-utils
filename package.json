@@ -32,7 +32,8 @@
 		"once",
 		"pipe",
 		"compose",
-		"flow"
+		"flow",
+		"with-timeout"
 	],
 	"author": "Pedro Troccoli <contact@pedrotroccoli.com>",
 	"license": "MIT",
@@ -138,6 +139,10 @@
 		"./truncate": {
 			"import": "./dist/strings/truncate/index.js",
 			"types": "./dist/strings/truncate/index.d.ts"
+		},
+		"./with-timeout": {
+			"import": "./dist/async/with-timeout/index.js",
+			"types": "./dist/async/with-timeout/index.d.ts"
 		},
 		"./once": {
 			"import": "./dist/functions/once/index.js",

@@ -43,6 +43,7 @@
 - [retry](https://pedrotroccoli.github.io/1o1-utils/async/retry/): Retry async operations with fixed or exponential backoff
 - [sleep](https://pedrotroccoli.github.io/1o1-utils/async/sleep/): Promise-based delay
 - [throttle](https://pedrotroccoli.github.io/1o1-utils/async/throttle/): Create a throttled function with cancel support
+- [withTimeout](https://pedrotroccoli.github.io/1o1-utils/async/with-timeout/): Race a promise against a timeout with AbortSignal support
 
 ## Functions
 
