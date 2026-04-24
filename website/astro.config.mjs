@@ -68,6 +68,10 @@ export default defineConfig({
           autogenerate: { directory: "arrays" },
         },
         {
+          label: "Numbers",
+          autogenerate: { directory: "numbers" },
+        },
+        {
           label: "Objects",
           autogenerate: { directory: "objects" },
         },

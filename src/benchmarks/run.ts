@@ -168,6 +168,11 @@ const SUITE_META: Record<string, { slug: string; description: string }> = {
     description:
       "Wraps a function so it runs at most once; subsequent calls return the cached result. Compared against `lodash.once`.",
   },
+  inRange: {
+    slug: "in-range",
+    description:
+      "Checks if a number falls within a given range (inclusive start, exclusive end). Compared against `lodash.inRange`, `radash.inRange`, and a native equivalent.",
+  },
 };
 
 function getSizes(rows: TaskRow[]): string[] {

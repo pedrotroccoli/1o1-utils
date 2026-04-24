@@ -9,6 +9,7 @@ export { sleep } from "./async/sleep/index.js";
 export { throttle } from "./async/throttle/index.js";
 export { once } from "./functions/once/index.js";
 export { pipe } from "./functions/pipe/index.js";
+export { inRange } from "./numbers/in-range/index.js";
 export { cloneDeep } from "./objects/clone-deep/index.js";
 export { deepMerge } from "./objects/deep-merge/index.js";
 export { defaults } from "./objects/defaults/index.js";

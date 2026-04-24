@@ -74,6 +74,12 @@ import { pick } from "1o1-utils/pick";
 | `pick` | Extract keys from an object | `1o1-utils/pick` |
 | `set` | Set a nested value immutably via dot notation | `1o1-utils/set` |
 
+### Numbers
+
+| Utility | Description | Import |
+| --- | --- | --- |
+| `inRange` | Check if a number is within a range | `1o1-utils/in-range` |
+
 ### Strings
 
 | Utility | Description | Import |
