@@ -68,6 +68,10 @@ export default defineConfig({
           autogenerate: { directory: "arrays" },
         },
         {
+          label: "Numbers",
+          autogenerate: { directory: "numbers" },
+        },
+        {
           label: "Objects",
           autogenerate: { directory: "objects" },
         },
@@ -78,6 +82,10 @@ export default defineConfig({
         {
           label: "Async",
           autogenerate: { directory: "async" },
+        },
+        {
+          label: "Comparisons",
+          autogenerate: { directory: "comparisons" },
         },
         {
           label: "Functions",

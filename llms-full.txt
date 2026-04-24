@@ -664,6 +664,40 @@ Throws: Error if promise is not thenable. Error if ms is not a non-negative numb
 
 ---
 
+## Comparisons
+
+### shallowEqual
+
+Compare two values by their top-level entries using `Object.is`. Returns `true` when both values are strictly the same, or when they are arrays or plain objects with identical own-enumerable entries at the first level. Nested values are compared by reference, not structurally — use `deepEqual` for recursive comparison.
+
+Import: import { shallowEqual } from "1o1-utils/shallow-equal";
+
+Signature:
+function shallowEqual({ a, b }: ShallowEqualParams): boolean
+
+Parameters:
+- a (unknown, required): The first value to compare
+- b (unknown, required): The second value to compare
+
+Returns: boolean — `true` if the values are shallowly equal, `false` otherwise.
+
+Example:
+shallowEqual({ a: { x: 1, y: 2 }, b: { x: 1, y: 2 } });
+// => true
+
+shallowEqual({ a: { x: { n: 1 } }, b: { x: { n: 1 } } });
+// => false (nested refs differ)
+
+shallowEqual({ a: [1, 2, 3], b: [1, 2, 3] });
+// => true
+
+shallowEqual({ a: Number.NaN, b: Number.NaN });
+// => true (Object.is semantics)
+
+Uses Object.is for primitive comparison, so NaN equals NaN and +0 is distinct from -0. Symbol-keyed properties, non-enumerable properties, and prototype differences are ignored. Maps, Sets, Dates, RegExps and other built-ins fall back to reference equality.
+
+---
+
 ## Functions
 
 ### once

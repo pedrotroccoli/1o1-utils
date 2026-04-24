@@ -168,6 +168,16 @@ const SUITE_META: Record<string, { slug: string; description: string }> = {
     description:
       "Wraps a function so it runs at most once; subsequent calls return the cached result. Compared against `lodash.once`.",
   },
+  inRange: {
+    slug: "in-range",
+    description:
+      "Checks if a number falls within a given range (inclusive start, exclusive end). Compared against `lodash.inRange`, `radash.inRange`, and a native equivalent.",
+  },
+  shallowEqual: {
+    slug: "shallow-equal",
+    description:
+      "Compares two values by their top-level entries using `Object.is`. Compared against `lodash.isEqual` (deep) and a native `Object.keys` based implementation.",
+  },
 };
 
 function getSizes(rows: TaskRow[]): string[] {

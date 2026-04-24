@@ -45,6 +45,10 @@
 - [throttle](https://pedrotroccoli.github.io/1o1-utils/async/throttle/): Create a throttled function with cancel support
 - [withTimeout](https://pedrotroccoli.github.io/1o1-utils/async/with-timeout/): Race a promise against a timeout with AbortSignal support
 
+## Comparisons
+
+- [shallowEqual](https://pedrotroccoli.github.io/1o1-utils/comparisons/shallow-equal/): Compare two values by their top-level entries using `Object.is`
+
 ## Functions
 
 - [once](https://pedrotroccoli.github.io/1o1-utils/functions/once/): Create a function that runs only once and caches its result

@@ -129,5 +129,10 @@
     "name": "pipe",
     "path": "dist/functions/pipe/index.js",
     "limit": "1 kB"
+  },
+  {
+    "name": "shallow-equal",
+    "path": "dist/comparisons/shallow-equal/index.js",
+    "limit": "1 kB"
   }
 ]
