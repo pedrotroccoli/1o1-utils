@@ -44,6 +44,10 @@
 - [sleep](https://pedrotroccoli.github.io/1o1-utils/async/sleep/): Promise-based delay
 - [throttle](https://pedrotroccoli.github.io/1o1-utils/async/throttle/): Create a throttled function with cancel support
 
+## Comparisons
+
+- [shallowEqual](https://pedrotroccoli.github.io/1o1-utils/comparisons/shallow-equal/): Compare two values by their top-level entries using `Object.is`
+
 ## Functions
 
 - [once](https://pedrotroccoli.github.io/1o1-utils/functions/once/): Create a function that runs only once and caches its result

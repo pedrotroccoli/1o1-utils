@@ -35,7 +35,8 @@
 		"flow",
 		"in-range",
 		"between",
-		"range-check"
+		"range-check",
+		"shallow-equal"
 	],
 	"author": "Pedro Troccoli <contact@pedrotroccoli.com>",
 	"license": "MIT",
@@ -153,6 +154,10 @@
 		"./pipe": {
 			"import": "./dist/functions/pipe/index.js",
 			"types": "./dist/functions/pipe/index.d.ts"
+		},
+		"./shallow-equal": {
+			"import": "./dist/comparisons/shallow-equal/index.js",
+			"types": "./dist/comparisons/shallow-equal/index.d.ts"
 		}
 	},
 	"scripts": {
