@@ -23,12 +23,19 @@ import type { ShallowEqualParams, ShallowEqualResult } from "./types.js";
  *
  * @keywords shallow equal, shallow compare, shallow equality, props equal, state compare, memo compare
  *
+ * @see React's `shallowEqual` (https://github.com/facebook/react/blob/main/packages/shared/shallowEqual.js)
+ *
  * @remarks
  * Uses `Object.is` for primitive comparison, so `NaN` equals `NaN` and `+0`
  * is distinct from `-0`. Property comparison only runs for plain objects
  * (`Object.prototype` or null prototype) and arrays. Class instances, Maps,
  * Sets, Dates, RegExps and other built-ins fall back to reference equality.
  * Symbol-keyed and non-enumerable properties are ignored.
+ *
+ * For small objects (≤8 own keys), a linear key scan avoids the Set
+ * allocation overhead; larger objects use a `Set` for O(1) membership
+ * lookups. Both paths read only own enumerable keys via `Object.keys`,
+ * so no prototype-chain leakage is possible.
  */
 function shallowEqual({ a, b }: ShallowEqualParams): ShallowEqualResult {
   if (Object.is(a, b)) return true;
@@ -62,10 +69,25 @@ function shallowEqual({ a, b }: ShallowEqualParams): ShallowEqualResult {
   const objA = a as Record<string, unknown>;
   const objB = b as Record<string, unknown>;
   const keysA = Object.keys(objA);
-  const keysBSet = new Set(Object.keys(objB));
-  if (keysA.length !== keysBSet.size) return false;
+  const keysB = Object.keys(objB);
+  const lenA = keysA.length;
+  if (lenA !== keysB.length) return false;
 
-  for (let i = 0; i < keysA.length; i++) {
+  // Small objects: linear scan avoids Set allocation overhead.
+  // Threshold chosen from benchmarks — below ~8 keys, O(n·m) scan beats
+  // the constant cost of building a Set. Both paths read only own
+  // enumerable string keys from Object.keys, so no prototype leak.
+  if (lenA <= 8) {
+    for (let i = 0; i < lenA; i++) {
+      const key = keysA[i];
+      if (keysB.indexOf(key) === -1) return false;
+      if (!Object.is(objA[key], objB[key])) return false;
+    }
+    return true;
+  }
+
+  const keysBSet = new Set(keysB);
+  for (let i = 0; i < lenA; i++) {
     const key = keysA[i];
     if (!keysBSet.has(key)) return false;
     if (!Object.is(objA[key], objB[key])) return false;
