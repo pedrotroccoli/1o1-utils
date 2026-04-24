@@ -1,0 +1,82 @@
+---
+title: withTimeout
+description: Race a promise against a timeout with AbortSignal support
+---
+
+Wraps a promise with a timeout. Rejects with a `TimeoutError` if the promise does not settle within the given duration. Supports an optional `AbortSignal` to cancel externally.
+
+## Import
+
+```ts
+import { withTimeout } from "1o1-utils";
+```
+
+```ts
+import { withTimeout, TimeoutError } from "1o1-utils/with-timeout";
+```
+
+`TimeoutError` is exported only from the `1o1-utils/with-timeout` subpath.
+
+## Signature
+
+```ts
+function withTimeout<T>({ promise, ms, message, signal }: WithTimeoutParams<T>): Promise<T>
+```
+
+## Parameters
+
+| Name    | Type                         | Required | Description                                                                |
+| ------- | ---------------------------- | -------- | -------------------------------------------------------------------------- |
+| promise | `Promise<T>`                 | Yes      | The promise to race against the timeout                                    |
+| ms      | `number`                     | Yes      | Timeout duration in milliseconds (non-negative)                            |
+| message | `string \| (() => string)`   | No       | Error message or lazy factory. Default: `Operation timed out after {ms}ms` |
+| signal  | `AbortSignal`                | No       | Rejects with `signal.reason` when aborted                                  |
+
+## Returns
+
+`Promise<T>` — resolves with the original value or rejects with `TimeoutError` on timeout.
+
+## Examples
+
+```ts
+await withTimeout({ promise: fetchData(), ms: 5000 });
+// resolves normally if < 5s, throws TimeoutError otherwise
+```
+
+```ts
+await withTimeout({
+  promise: slowApi(),
+  ms: 3000,
+  message: "API too slow",
+});
+```
+
+```ts
+const controller = new AbortController();
+const task = withTimeout({
+  promise: work(),
+  ms: 10_000,
+  signal: controller.signal,
+});
+controller.abort(); // rejects with signal.reason
+```
+
+## Edge Cases
+
+- Throws synchronously if `promise` is not thenable.
+- Throws synchronously if `ms` is not a number, is `NaN`, or is negative.
+- Throws synchronously if `signal` is not an `AbortSignal`.
+- If `signal` is already aborted, rejects immediately with `signal.reason`.
+- If the promise rejects before the timeout, the original rejection is forwarded.
+- The `message` factory is invoked lazily — only when the timeout fires.
+- Internal timer and abort listener are cleaned up after settle.
+
+## Also known as
+
+promise timeout, race timeout, abort promise, deadline, time limit
+
+## Prompt suggestion
+
+```text
+I'm using 1o1-utils (npm: https://www.npmjs.com/package/1o1-utils, GitHub: https://github.com/pedrotroccoli/1o1-utils, LLM context: https://pedrotroccoli.github.io/1o1-utils/llms.txt). Show me how to use withTimeout to fail a fetch after 5 seconds.
+```

@@ -7,6 +7,7 @@ export { debounce } from "./async/debounce/index.js";
 export { retry } from "./async/retry/index.js";
 export { sleep } from "./async/sleep/index.js";
 export { throttle } from "./async/throttle/index.js";
+export { withTimeout } from "./async/with-timeout/index.js";
 export { shallowEqual } from "./comparisons/shallow-equal/index.js";
 export { once } from "./functions/once/index.js";
 export { pipe } from "./functions/pipe/index.js";
