@@ -1,0 +1,82 @@
+---
+title: safely
+description: Wrap a function so it returns a [error, result] tuple instead of throwing
+---
+
+Wraps a function so it returns a `[error, result]` tuple instead of throwing. Auto-detects sync and async functions: sync calls return a tuple, async calls return a `Promise` of a tuple. Eliminates verbose `try/catch` blocks and anticipates the [TC39 Safe Assignment Operator](https://github.com/arthurfiorette/proposal-safe-assignment-operator) proposal.
+
+On success the tuple is `[undefined, value]`. On error it is `[error, undefined]`.
+
+## Import
+
+```ts
+import { safely } from "1o1-utils";
+```
+
+```ts
+import { safely } from "1o1-utils/safely";
+```
+
+## Signature
+
+```ts
+function safely<A extends unknown[], T>(
+  fn: (...args: A) => Promise<T>,
+): (...args: A) => Promise<[unknown, T] | [unknown, undefined]>;
+
+function safely<A extends unknown[], T>(
+  fn: (...args: A) => T,
+): (...args: A) => [undefined, T] | [unknown, undefined];
+```
+
+## Parameters
+
+| Name | Type                       | Required | Description                |
+| ---- | -------------------------- | -------- | -------------------------- |
+| fn   | `(...args: A) => T \| Promise<T>` | Yes | The function to wrap |
+
+## Returns
+
+A wrapped function that mirrors the original signature but never throws (sync) or rejects (async). Returns a tuple `[undefined, value]` on success or `[error, undefined]` on failure.
+
+## Examples
+
+```ts
+const [err, data] = safely(JSON.parse)('{"a":1}');
+if (err) console.error(err);
+else console.log(data); // { a: 1 }
+```
+
+```ts
+const [err, user] = await safely(fetchUser)(userId);
+if (err) {
+  console.error("fetch failed:", err);
+  return;
+}
+console.log(user);
+```
+
+```ts
+// reuse the wrapper across calls
+const safeParse = safely(JSON.parse);
+const [err1, a] = safeParse('{"x":1}');
+const [err2, b] = safeParse("{bad");
+```
+
+## Edge Cases
+
+- Throws synchronously if `fn` is not a function.
+- Caught errors are typed as `unknown` — non-`Error` throws (strings, `null`, etc.) are preserved as-is.
+- Detects async by checking the return value for a `then` method (real Promises and custom thenables both work).
+- Multiple arguments are forwarded transparently.
+- The wrapper is reusable: the same wrapped function can be called any number of times.
+
+## Also known as
+
+try catch tuple, go-style errors, safe assignment, error handling, tryit
+
+## Prompt suggestion
+
+```text
+I'm using 1o1-utils (npm: https://www.npmjs.com/package/1o1-utils, GitHub: https://github.com/pedrotroccoli/1o1-utils, LLM context: https://pedrotroccoli.github.io/1o1-utils/llms.txt). Show me how to use safely to wrap a fetch call and handle errors without try/catch.
+```
