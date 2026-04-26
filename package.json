@@ -37,7 +37,9 @@
 		"in-range",
 		"between",
 		"range-check",
-		"shallow-equal"
+		"shallow-equal",
+		"deep-equal",
+		"is-equal"
 	],
 	"author": "Pedro Troccoli <contact@pedrotroccoli.com>",
 	"license": "MIT",
@@ -163,6 +165,10 @@
 		"./shallow-equal": {
 			"import": "./dist/comparisons/shallow-equal/index.js",
 			"types": "./dist/comparisons/shallow-equal/index.d.ts"
+		},
+		"./deep-equal": {
+			"import": "./dist/comparisons/deep-equal/index.js",
+			"types": "./dist/comparisons/deep-equal/index.d.ts"
 		}
 	},
 	"scripts": {

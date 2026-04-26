@@ -666,6 +666,41 @@ Throws: Error if promise is not thenable. Error if ms is not a non-negative numb
 
 ## Comparisons
 
+### deepEqual
+
+Recursively compare two values for structural equality. Handles primitives, plain objects, class instances (same prototype), arrays, `Date`, `RegExp`, `Map`, `Set`, `ArrayBuffer`, and typed arrays. Circular references are tracked with a `WeakMap` pair-cache; on cycle, the pair is assumed equal. Functions, `Error` instances, and other unsupported objects fall back to reference equality.
+
+Import: import { deepEqual } from "1o1-utils/deep-equal";
+
+Signature:
+function deepEqual({ a, b }: DeepEqualParams): boolean
+
+Parameters:
+- a (unknown, required): The first value to compare
+- b (unknown, required): The second value to compare
+
+Returns: boolean — true if the values are deeply equal, false otherwise.
+
+Example:
+deepEqual({ a: { x: { n: 1 } }, b: { x: { n: 1 } } });
+// => true
+
+deepEqual({ a: [1, [2, 3]], b: [1, [2, 3]] });
+// => true
+
+deepEqual({ a: new Date(0), b: new Date(0) });
+// => true
+
+deepEqual({ a: new Map([["x", 1]]), b: new Map([["x", 1]]) });
+// => true
+
+deepEqual({ a: { x: 1 }, b: { x: 2 } });
+// => false
+
+Uses Object.is for primitive comparison, so NaN equals NaN and +0 is distinct from -0. Same-prototype check runs before structural comparison — a plain object never equals a class instance with identical fields. Symbol-keyed and non-enumerable properties are ignored. Map and Set deep comparisons use a greedy O(n²) match for elements not found by reference; the result agrees with lodash for ordinary inputs.
+
+---
+
 ### shallowEqual
 
 Compare two values by their top-level entries using `Object.is`. Returns `true` when both values are strictly the same, or when they are arrays or plain objects with identical own-enumerable entries at the first level. Nested values are compared by reference, not structurally — use `deepEqual` for recursive comparison.
