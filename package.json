@@ -37,7 +37,9 @@
 		"in-range",
 		"between",
 		"range-check",
-		"shallow-equal"
+		"shallow-equal",
+		"is-nil",
+		"nullish"
 	],
 	"author": "Pedro Troccoli <contact@pedrotroccoli.com>",
 	"license": "MIT",
@@ -163,6 +165,10 @@
 		"./shallow-equal": {
 			"import": "./dist/comparisons/shallow-equal/index.js",
 			"types": "./dist/comparisons/shallow-equal/index.d.ts"
+		},
+		"./is-nil": {
+			"import": "./dist/comparisons/is-nil/index.js",
+			"types": "./dist/comparisons/is-nil/index.d.ts"
 		}
 	},
 	"scripts": {

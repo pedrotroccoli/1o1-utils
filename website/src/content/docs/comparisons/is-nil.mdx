@@ -1,0 +1,68 @@
+---
+title: isNil
+description: Check if a value is null or undefined
+---
+
+Strict existence check for `null` or `undefined`. Distinct from `isEmpty`, which also treats empty strings, arrays, objects, Maps, and Sets as empty. `isNil` returns `true` only for the two nullish values.
+
+## Import
+
+```ts
+import { isNil } from "1o1-utils";
+```
+
+```ts
+import { isNil } from "1o1-utils/is-nil";
+```
+
+## Signature
+
+```ts
+function isNil({ value }: IsNilParams): boolean
+```
+
+## Parameters
+
+| Name  | Type      | Required | Description         |
+| ----- | --------- | -------- | ------------------- |
+| value | `unknown` | Yes      | The value to check  |
+
+## Returns
+
+`boolean` — `true` if the value is `null` or `undefined`, `false` otherwise.
+
+## Examples
+
+```ts
+isNil({ value: null });      // => true
+isNil({ value: undefined }); // => true
+isNil({ value: 0 });         // => false
+isNil({ value: "" });        // => false
+isNil({ value: false });     // => false
+isNil({ value: Number.NaN }); // => false
+```
+
+```ts
+// Default a parameter only when truly absent — preserves 0, "", false
+function greet(name?: string | null) {
+  const safe = isNil({ value: name }) ? "stranger" : name;
+  return `Hello, ${safe}`;
+}
+```
+
+## Edge Cases
+
+- Falsy non-nullish values (`0`, `""`, `false`, `NaN`, `0n`) return `false`.
+- Empty arrays, empty plain objects, functions, and symbols are not nil.
+- Equivalent to the loose-equality idiom `value == null`, with strict-equality semantics for clarity.
+- Use [`isEmpty`](/objects/is-empty/) when you also need to treat empty containers as missing.
+
+## Also known as
+
+null check, undefined check, nullish check, exists check, defined check, missing value
+
+## Prompt suggestion
+
+```text
+I'm using 1o1-utils (npm: https://www.npmjs.com/package/1o1-utils, GitHub: https://github.com/pedrotroccoli/1o1-utils, LLM context: https://pedrotroccoli.github.io/1o1-utils/llms.txt). Show me how to use isNil to default a value only when it's null or undefined while preserving other falsy values like 0 and "".
+```

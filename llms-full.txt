@@ -666,6 +666,31 @@ Throws: Error if promise is not thenable. Error if ms is not a non-negative numb
 
 ## Comparisons
 
+### isNil
+
+Check if a value is `null` or `undefined`. Strict existence check — distinct from `isEmpty`, which also treats empty strings, arrays, objects, Maps, and Sets as empty. `isNil` returns `true` only for the two nullish values.
+
+Import: import { isNil } from "1o1-utils/is-nil";
+
+Signature:
+function isNil({ value }: IsNilParams): boolean
+
+Parameters:
+- value (unknown, required): The value to check
+
+Returns: boolean — `true` if the value is `null` or `undefined`, `false` otherwise.
+
+Example:
+isNil({ value: null });      // => true
+isNil({ value: undefined }); // => true
+isNil({ value: 0 });         // => false
+isNil({ value: "" });        // => false
+isNil({ value: false });     // => false
+
+Edge cases: falsy values that are not nullish (`0`, `""`, `false`, `NaN`, `0n`) return `false`. Empty arrays, empty objects, functions, and symbols are not nil. Use `isEmpty` if you need emptiness checks beyond null/undefined.
+
+---
+
 ### shallowEqual
 
 Compare two values by their top-level entries using `Object.is`. Returns `true` when both values are strictly the same, or when they are arrays or plain objects with identical own-enumerable entries at the first level. Nested values are compared by reference, not structurally — use `deepEqual` for recursive comparison.
