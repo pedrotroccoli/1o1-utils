@@ -583,6 +583,35 @@ With exponential backoff, delay is delay * 2^i for attempt i. Throws the last er
 
 ---
 
+### safely
+
+Wrap a function so it returns a [error, result] tuple instead of throwing. Auto-detects sync and async functions: sync calls return a tuple, async calls return a Promise of a tuple. Anticipates the TC39 Safe Assignment Operator proposal.
+
+Import: import { safely } from "1o1-utils/safely";
+
+Signature:
+function safely<A extends unknown[], T>(fn: (...args: A) => Promise<T>): (...args: A) => Promise<[undefined, T] | [unknown, undefined]>
+function safely<A extends unknown[], T>(fn: (...args: A) => T): (...args: A) => [undefined, T] | [unknown, undefined]
+
+Parameters:
+- fn ((...args: A) => T | Promise<T>, required): The function to wrap
+
+Returns: A wrapped function. On success returns [undefined, value]. On error returns [error, undefined]. Async functions return a Promise of the tuple.
+
+Example:
+const [err, data] = safely(JSON.parse)('{"a":1}');
+if (err) console.error(err); else console.log(data);
+
+const [fetchErr, user] = await safely(fetchUser)(userId);
+
+const safeParse = safely(JSON.parse);
+const [e1, a] = safeParse('{"x":1}');
+const [e2, b] = safeParse("{bad");
+
+Throws: Error if fn is not a function. Errors caught from fn are typed as unknown — non-Error throws (strings, null, etc.) are preserved as-is. Detects async by checking the return value for a then method, so real Promises and custom thenables both work.
+
+---
+
 ### sleep
 
 Pause execution for a given number of milliseconds by returning a promise.
@@ -665,6 +694,31 @@ Throws: Error if promise is not thenable. Error if ms is not a non-negative numb
 ---
 
 ## Comparisons
+
+### isNil
+
+Check if a value is `null` or `undefined`. Strict existence check — distinct from `isEmpty`, which also treats empty strings, arrays, objects, Maps, and Sets as empty. `isNil` returns `true` only for the two nullish values.
+
+Import: import { isNil } from "1o1-utils/is-nil";
+
+Signature:
+function isNil({ value }: IsNilParams): boolean
+
+Parameters:
+- value (unknown, required): The value to check
+
+Returns: boolean — `true` if the value is `null` or `undefined`, `false` otherwise.
+
+Example:
+isNil({ value: null });      // => true
+isNil({ value: undefined }); // => true
+isNil({ value: 0 });         // => false
+isNil({ value: "" });        // => false
+isNil({ value: false });     // => false
+
+Edge cases: falsy values that are not nullish (`0`, `""`, `false`, `NaN`, `0n`) return `false`. Empty arrays, empty objects, functions, and symbols are not nil. Use `isEmpty` if you need emptiness checks beyond null/undefined.
+
+---
 
 ### shallowEqual
 
