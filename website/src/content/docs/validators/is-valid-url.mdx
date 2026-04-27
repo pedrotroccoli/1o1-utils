@@ -18,18 +18,19 @@ import { isValidUrl } from "1o1-utils/is-valid-url";
 ## Signature
 
 ```ts
-function isValidUrl({ url }: IsValidUrlParams): boolean
+function isValidUrl({ url, protocols }: IsValidUrlParams): boolean
 ```
 
 ## Parameters
 
-| Name  | Type      | Required | Description           |
-| ----- | --------- | -------- | --------------------- |
-| `url` | `unknown` | Yes      | The value to validate |
+| Name        | Type                            | Required | Description                                                                                                          |
+| ----------- | ------------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------- |
+| `url`       | `unknown`                       | Yes      | The value to validate                                                                                                |
+| `protocols` | `string \| readonly string[]`   | No       | Allowlist of accepted protocols (e.g., `"https"` or `["http", "https"]`). Matched case-insensitively, no trailing `:` |
 
 ## Returns
 
-`boolean` — `true` if the value is a parseable URL, `false` otherwise.
+`boolean` — `true` if the value is a parseable URL whose protocol is accepted, `false` otherwise.
 
 ## Examples
 
@@ -46,9 +47,19 @@ isValidUrl({ url: null });                         // => false
 ```
 
 ```ts
+// Restrict to web protocols
+isValidUrl({ url: "https://example.com", protocols: ["http", "https"] }); // => true
+isValidUrl({ url: "ftp://files.example.com", protocols: ["http", "https"] }); // => false
+
+// Accept a single protocol as a string
+isValidUrl({ url: "https://example.com", protocols: "https" }); // => true
+isValidUrl({ url: "http://example.com", protocols: "https" });  // => false
+```
+
+```ts
 // Validate user input before calling fetch
 function loadFeed(input: string) {
-  if (!isValidUrl({ url: input })) {
+  if (!isValidUrl({ url: input, protocols: ["http", "https"] })) {
     throw new Error("Invalid URL");
   }
   return fetch(input);
@@ -58,10 +69,12 @@ function loadFeed(input: string) {
 ## Edge Cases
 
 - Non-string inputs (`null`, `undefined`, numbers, objects, even `URL` instances) return `false`.
-- Empty and whitespace-only strings return `false` without invoking the parser.
+- Empty strings return `false` without invoking the parser.
 - A scheme is required — `"//example.com"` and `"example.com"` return `false`.
-- Uses `URL.canParse` when available, falling back to `try/catch` around `new URL(input)`.
-- Custom schemes (e.g., `app://`, `chrome-extension://`) are accepted because the `URL` parser accepts them.
+- Uses `URL.canParse` when `protocols` is omitted and available; falls back to `try/catch` around `new URL(input)` otherwise.
+- Custom schemes (e.g., `app://`, `chrome-extension://`) are accepted by default. Pass `protocols` to restrict.
+- `protocols: []` rejects every input — no scheme can match an empty allowlist.
+- Protocol names are normalized to lowercase, so `["HTTPS"]` matches `https://...`.
 
 ## Also known as
 

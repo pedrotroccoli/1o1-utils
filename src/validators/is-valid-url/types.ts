@@ -1,5 +1,6 @@
 interface IsValidUrlParams {
   url: unknown;
+  protocols?: string | readonly string[];
 }
 
 type IsValidUrlResult = boolean;

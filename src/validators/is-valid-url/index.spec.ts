@@ -120,4 +120,73 @@ describe("isValidUrl", () => {
       );
     });
   });
+
+  describe("protocols filter", () => {
+    it("should accept a URL whose protocol is in the allowlist", () => {
+      expect(
+        isValidUrl({
+          url: "https://example.com",
+          protocols: ["http", "https"],
+        }),
+      ).to.equal(true);
+    });
+
+    it("should reject a URL whose protocol is not in the allowlist", () => {
+      expect(
+        isValidUrl({
+          url: "ftp://files.example.com",
+          protocols: ["http", "https"],
+        }),
+      ).to.equal(false);
+    });
+
+    it("should accept a string protocols arg", () => {
+      expect(
+        isValidUrl({ url: "https://example.com", protocols: "https" }),
+      ).to.equal(true);
+      expect(
+        isValidUrl({ url: "http://example.com", protocols: "https" }),
+      ).to.equal(false);
+    });
+
+    it("should normalize protocol names case-insensitively", () => {
+      expect(
+        isValidUrl({ url: "HTTPS://example.com", protocols: ["https"] }),
+      ).to.equal(true);
+      expect(
+        isValidUrl({ url: "https://example.com", protocols: ["HTTPS"] }),
+      ).to.equal(true);
+    });
+
+    it("should reject every input when allowlist is empty", () => {
+      expect(
+        isValidUrl({ url: "https://example.com", protocols: [] }),
+      ).to.equal(false);
+    });
+
+    it("should still reject malformed URLs even when protocols allows them", () => {
+      expect(isValidUrl({ url: "not-a-url", protocols: ["http"] })).to.equal(
+        false,
+      );
+      expect(isValidUrl({ url: "", protocols: ["http"] })).to.equal(false);
+    });
+
+    it("should accept custom schemes via the allowlist", () => {
+      expect(
+        isValidUrl({
+          url: "chrome-extension://abc",
+          protocols: ["chrome-extension"],
+        }),
+      ).to.equal(true);
+    });
+
+    it("should treat an unknown scheme as a non-match", () => {
+      expect(
+        isValidUrl({
+          url: "ftp://example.com",
+          protocols: ["http", "https", "ws", "wss"],
+        }),
+      ).to.equal(false);
+    });
+  });
 });

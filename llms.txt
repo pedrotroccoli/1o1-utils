@@ -56,4 +56,4 @@
 
 ## Validators
 
-- [isValidUrl](https://pedrotroccoli.github.io/1o1-utils/validators/is-valid-url/): Check if a string is a parseable URL using the WHATWG `URL` API
+- [isValidUrl](https://pedrotroccoli.github.io/1o1-utils/validators/is-valid-url/): Check if a string is a parseable URL using the WHATWG `URL` API, with optional protocol allowlist
