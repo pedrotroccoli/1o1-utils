@@ -48,6 +48,7 @@
 
 ## Comparisons
 
+- [isNil](https://pedrotroccoli.github.io/1o1-utils/comparisons/is-nil/): Check if a value is `null` or `undefined`
 - [shallowEqual](https://pedrotroccoli.github.io/1o1-utils/comparisons/shallow-equal/): Compare two values by their top-level entries using `Object.is`
 
 ## Functions
