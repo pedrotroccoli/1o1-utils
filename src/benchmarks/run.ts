@@ -178,6 +178,11 @@ const SUITE_META: Record<string, { slug: string; description: string }> = {
     description:
       "Compares two values by their top-level entries using `Object.is`. Compared against `lodash.isEqual` (deep) and a native `Object.keys` based implementation.",
   },
+  isValidUrl: {
+    slug: "is-valid-url",
+    description:
+      "Validates a string against the WHATWG `URL` parser. Compared against a native `try/catch` `new URL` implementation and a regex-based check.",
+  },
 };
 
 function getSizes(rows: TaskRow[]): string[] {

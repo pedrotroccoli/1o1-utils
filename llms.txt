@@ -55,3 +55,7 @@
 
 - [once](https://pedrotroccoli.github.io/1o1-utils/functions/once/): Create a function that runs only once and caches its result
 - [pipe](https://pedrotroccoli.github.io/1o1-utils/functions/pipe/): Compose functions left-to-right into a single function
+
+## Validators
+
+- [isValidUrl](https://pedrotroccoli.github.io/1o1-utils/validators/is-valid-url/): Check if a string is a parseable URL using the WHATWG `URL` API, with optional protocol allowlist

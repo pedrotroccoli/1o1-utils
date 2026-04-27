@@ -38,6 +38,9 @@
 		"between",
 		"range-check",
 		"shallow-equal",
+		"is-valid-url",
+		"validate-url",
+		"url-validator",
 		"safely",
 		"tryit",
 		"try-catch",
@@ -172,6 +175,10 @@
 		"./shallow-equal": {
 			"import": "./dist/comparisons/shallow-equal/index.js",
 			"types": "./dist/comparisons/shallow-equal/index.d.ts"
+		},
+		"./is-valid-url": {
+			"import": "./dist/validators/is-valid-url/index.js",
+			"types": "./dist/validators/is-valid-url/index.d.ts"
 		},
 		"./is-nil": {
 			"import": "./dist/comparisons/is-nil/index.js",

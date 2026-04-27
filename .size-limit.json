@@ -141,6 +141,11 @@
     "limit": "1 kB"
   },
   {
+    "name": "is-valid-url",
+    "path": "dist/validators/is-valid-url/index.js",
+    "limit": "1 kB"
+  },
+  {
     "name": "is-nil",
     "path": "dist/comparisons/is-nil/index.js",
     "limit": "1 kB"
