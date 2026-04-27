@@ -762,3 +762,30 @@ sum(2, 3); // 10
 
 Throws: Error if any argument is not a function.
 Execution is synchronous. If a function returns a Promise, the next function receives the Promise (not the awaited value). `pipe()` with no arguments returns an identity function that passes its first argument through unchanged. Only the first function receives the caller's `this` context; subsequent stages are called without `this` (differs from lodash/flow and es-toolkit/flow, which forward `this` to every stage).
+
+---
+
+## Validators
+
+### isValidUrl
+
+Check whether a value is a well-formed URL string. Delegates parsing to the WHATWG `URL` API — the same parser used by browsers and Node — so any scheme accepted by `new URL(input)` is valid (including `http`, `https`, `ftp`, `file`, and custom schemes).
+
+Import: import { isValidUrl } from "1o1-utils/is-valid-url";
+
+Signature:
+function isValidUrl({ url }: IsValidUrlParams): boolean
+
+Parameters:
+- url (unknown, required): The value to validate
+
+Returns: boolean — `true` if the value is a parseable URL, `false` otherwise.
+
+Example:
+isValidUrl({ url: "https://example.com" });        // => true
+isValidUrl({ url: "http://localhost:3000" });      // => true
+isValidUrl({ url: "ftp://files.example.com" });    // => true
+isValidUrl({ url: "not-a-url" });                  // => false
+isValidUrl({ url: "" });                           // => false
+
+Non-string inputs (including null, undefined, numbers, and objects) return false. Empty and whitespace-only strings return false without invoking the parser. When available, URL.canParse is used to avoid the cost of throwing on invalid input; otherwise a try/catch around new URL(input) is used as a fallback. Protocol-relative URLs (//example.com) and bare authority strings are not accepted — a scheme is required, matching URL constructor behavior.

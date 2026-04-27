@@ -91,6 +91,10 @@ export default defineConfig({
           label: "Functions",
           autogenerate: { directory: "functions" },
         },
+        {
+          label: "Validators",
+          autogenerate: { directory: "validators" },
+        },
       ],
       lastUpdated: true,
       routeMiddleware: "./src/starlightRouteData.ts",

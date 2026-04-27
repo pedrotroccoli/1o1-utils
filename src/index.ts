@@ -25,3 +25,4 @@ export { capitalize } from "./strings/capitalize/index.js";
 export { slugify } from "./strings/slugify/index.js";
 export { transformCase } from "./strings/transform-case/index.js";
 export { truncate } from "./strings/truncate/index.js";
+export { isValidUrl } from "./validators/is-valid-url/index.js";
