@@ -832,7 +832,7 @@ function isValidUrl({ url, protocols }: IsValidUrlParams): boolean
 
 Parameters:
 - url (unknown, required): The value to validate
-- protocols (string | readonly string[], optional): Allowlist of accepted protocols (e.g., "https" or ["http", "https"]). Matched case-insensitively without the trailing colon.
+- protocols (string | readonly string[], optional): Allowlist of accepted protocols (e.g., "https" or ["http", "https"]). Matched case-insensitively; trailing colon is optional, so "https" and "https:" (e.g. url.protocol from a URL instance) are equivalent.
 
 Returns: boolean — `true` if the value is a parseable URL whose protocol is accepted, `false` otherwise.
 
@@ -847,4 +847,4 @@ isValidUrl({ url: "https://example.com", protocols: ["http", "https"] }); // => 
 isValidUrl({ url: "ftp://example.com",   protocols: ["http", "https"] }); // => false
 isValidUrl({ url: "https://example.com", protocols: "https" });           // => true
 
-Non-string inputs (including null, undefined, numbers, and objects) return false. Empty strings return false without invoking the parser. When protocols is omitted and URL.canParse is available, URL.canParse is used to avoid the cost of throwing on invalid input; otherwise a try/catch around new URL(input) is used. protocols: [] rejects every input — no scheme can match an empty allowlist. Protocol names are normalized to lowercase. Protocol-relative URLs (//example.com) and bare authority strings are not accepted — a scheme is required, matching URL constructor behavior.
+Non-string inputs (including null, undefined, numbers, and objects) return false. Empty strings return false without invoking the parser. When protocols is omitted and URL.canParse is available, URL.canParse is used to avoid the cost of throwing on invalid input; otherwise a try/catch around new URL(input) is used. protocols: [] rejects every input — no scheme can match an empty allowlist. Protocol names are lowercased and any trailing colon is stripped before comparison, so ["HTTPS"], ["https"], and ["https:"] all match https://.... Protocol-relative URLs (//example.com) and bare authority strings are not accepted — a scheme is required, matching URL constructor behavior.

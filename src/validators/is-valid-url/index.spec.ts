@@ -158,6 +158,31 @@ describe("isValidUrl", () => {
       ).to.equal(true);
     });
 
+    it("should accept protocol names with a trailing colon", () => {
+      expect(
+        isValidUrl({ url: "https://example.com", protocols: ["https:"] }),
+      ).to.equal(true);
+      expect(
+        isValidUrl({
+          url: "https://example.com",
+          protocols: ["http:", "https:"],
+        }),
+      ).to.equal(true);
+      expect(
+        isValidUrl({ url: "https://example.com", protocols: "https:" }),
+      ).to.equal(true);
+    });
+
+    it("should accept a URL.protocol value reused from a URL instance", () => {
+      const reference = new URL("https://example.com");
+      expect(
+        isValidUrl({
+          url: "https://other.example.com",
+          protocols: [reference.protocol],
+        }),
+      ).to.equal(true);
+    });
+
     it("should reject every input when allowlist is empty", () => {
       expect(
         isValidUrl({ url: "https://example.com", protocols: [] }),

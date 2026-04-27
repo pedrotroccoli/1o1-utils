@@ -13,7 +13,9 @@ import type { IsValidUrlParams, IsValidUrlResult } from "./types.js";
  * @param params.url - The value to validate
  * @param params.protocols - Optional allowlist of accepted protocols
  *   (e.g. `"https"` or `["http", "https"]`). Names are matched
- *   case-insensitively without the trailing colon.
+ *   case-insensitively. A trailing `:` is accepted but not required, so
+ *   `"https"` and `"https:"` (or `url.protocol` from a `URL` instance)
+ *   are equivalent.
  * @returns `true` if the value is a parseable URL whose protocol is
  *   accepted, `false` otherwise
  *
@@ -44,8 +46,9 @@ import type { IsValidUrlParams, IsValidUrlResult } from "./types.js";
  * used.
  *
  * `protocols: []` rejects every input — no scheme can match an empty
- * allowlist. Protocol names are normalized to lowercase and compared
- * without the trailing colon, so `["HTTPS"]` matches `https://...`.
+ * allowlist. Protocol names are lowercased and any trailing `:` is
+ * stripped before comparison, so `["HTTPS"]`, `["https"]`, and
+ * `["https:"]` all match `https://...`.
  *
  * Protocol-relative URLs (`//example.com`) and bare authority strings
  * are not accepted — a scheme is required, matching `URL` constructor
@@ -73,11 +76,16 @@ function isValidUrl({ url, protocols }: IsValidUrlParams): IsValidUrlResult {
   }
 
   const list = typeof protocols === "string" ? [protocols] : protocols;
-  const scheme = parsed.protocol.slice(0, -1).toLowerCase();
+  const scheme = normalizeScheme(parsed.protocol);
   for (const p of list) {
-    if (typeof p === "string" && p.toLowerCase() === scheme) return true;
+    if (typeof p === "string" && normalizeScheme(p) === scheme) return true;
   }
   return false;
+}
+
+function normalizeScheme(scheme: string): string {
+  const lower = scheme.toLowerCase();
+  return lower.endsWith(":") ? lower.slice(0, -1) : lower;
 }
 
 export { isValidUrl };

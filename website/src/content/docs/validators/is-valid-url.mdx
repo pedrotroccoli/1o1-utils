@@ -26,7 +26,7 @@ function isValidUrl({ url, protocols }: IsValidUrlParams): boolean
 | Name        | Type                            | Required | Description                                                                                                          |
 | ----------- | ------------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------- |
 | `url`       | `unknown`                       | Yes      | The value to validate                                                                                                |
-| `protocols` | `string \| readonly string[]`   | No       | Allowlist of accepted protocols (e.g., `"https"` or `["http", "https"]`). Matched case-insensitively, no trailing `:` |
+| `protocols` | `string \| readonly string[]`   | No       | Allowlist of accepted protocols (e.g., `"https"` or `["http", "https"]`). Matched case-insensitively; trailing `:` is optional, so `"https"` and `"https:"` are equivalent |
 
 ## Returns
 
@@ -74,7 +74,7 @@ function loadFeed(input: string) {
 - Uses `URL.canParse` when `protocols` is omitted and available; falls back to `try/catch` around `new URL(input)` otherwise.
 - Custom schemes (e.g., `app://`, `chrome-extension://`) are accepted by default. Pass `protocols` to restrict.
 - `protocols: []` rejects every input — no scheme can match an empty allowlist.
-- Protocol names are normalized to lowercase, so `["HTTPS"]` matches `https://...`.
+- Protocol names are lowercased and any trailing `:` is stripped, so `["HTTPS"]`, `["https"]`, and `["https:"]` (or `url.protocol` from a `URL` instance) all match `https://...`.
 
 ## Also known as
 
