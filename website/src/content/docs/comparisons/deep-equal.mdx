@@ -1,0 +1,79 @@
+---
+title: deepEqual
+description: Recursively compare two values for structural equality across nested objects, arrays, and built-ins
+---
+
+Recursively compares two values for structural equality. Handles primitives, plain objects, class instances (same prototype), arrays, `Date`, `RegExp`, `Map`, `Set`, `ArrayBuffer`, and typed arrays. Circular references are tracked with a `WeakMap` pair-cache; on cycle, the pair is assumed equal. Functions, `Error` instances, and other unsupported objects fall back to reference equality.
+
+## Import
+
+```ts
+import { deepEqual } from "1o1-utils";
+```
+
+```ts
+import { deepEqual } from "1o1-utils/deep-equal";
+```
+
+## Signature
+
+```ts
+function deepEqual({ a, b }: DeepEqualParams): boolean
+```
+
+## Parameters
+
+| Name | Type      | Required | Description                  |
+| ---- | --------- | -------- | ---------------------------- |
+| a    | `unknown` | Yes      | The first value to compare   |
+| b    | `unknown` | Yes      | The second value to compare  |
+
+## Returns
+
+`boolean` — `true` if the values are deeply equal, `false` otherwise.
+
+## Examples
+
+```ts
+deepEqual({ a: { x: { n: 1 } }, b: { x: { n: 1 } } });
+// => true
+
+deepEqual({ a: [1, [2, 3]], b: [1, [2, 3]] });
+// => true
+
+deepEqual({ a: new Date("2024-01-01"), b: new Date("2024-01-01") });
+// => true
+
+deepEqual({ a: new Map([["x", 1]]), b: new Map([["x", 1]]) });
+// => true
+
+deepEqual({ a: { x: 1 }, b: { x: 2 } });
+// => false
+```
+
+```ts
+// React: skip a render only when the entire props tree is unchanged
+function arePropsEqual(prev, next) {
+  return deepEqual({ a: prev, b: next });
+}
+```
+
+## Edge Cases
+
+- Uses `Object.is`, so `NaN` equals `NaN` and `+0` is distinct from `-0`.
+- Returns `true` for identical references (fast path).
+- Same-prototype check runs first — a plain object never equals a class instance with identical fields.
+- Symbol-keyed and non-enumerable properties are ignored.
+- `Date`, `RegExp`, `ArrayBuffer`, and typed arrays compare structurally; `Error` instances fall back to reference equality.
+- `Map` and `Set` deep comparisons use a greedy O(n²) match for elements not found by reference — fine for typical sizes, slow for very large collections.
+- Circular references are detected with a `WeakMap` pair-cache; on cycle the pair is assumed equal.
+
+## Also known as
+
+deep compare, structural equality, recursive equal, isEqual, value equality
+
+## Prompt suggestion
+
+```text
+I'm using 1o1-utils (npm: https://www.npmjs.com/package/1o1-utils, GitHub: https://github.com/pedrotroccoli/1o1-utils, LLM context: https://pedrotroccoli.github.io/1o1-utils/llms.txt). Show me how to use deepEqual to compare two nested config objects for full structural equality
+```
