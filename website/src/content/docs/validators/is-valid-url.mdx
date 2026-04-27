@@ -1,0 +1,87 @@
+---
+title: isValidUrl
+description: Check if a string is a parseable URL using the WHATWG URL API
+---
+
+Validates whether a value is a well-formed URL string. Delegates parsing to the WHATWG `URL` API — the same parser used by browsers and Node — so any scheme accepted by `new URL(input)` is considered valid (including `http`, `https`, `ftp`, `file`, and custom schemes).
+
+## Import
+
+```ts
+import { isValidUrl } from "1o1-utils";
+```
+
+```ts
+import { isValidUrl } from "1o1-utils/is-valid-url";
+```
+
+## Signature
+
+```ts
+function isValidUrl({ url, protocols }: IsValidUrlParams): boolean
+```
+
+## Parameters
+
+| Name        | Type                            | Required | Description                                                                                                          |
+| ----------- | ------------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------- |
+| `url`       | `unknown`                       | Yes      | The value to validate                                                                                                |
+| `protocols` | `string \| readonly string[]`   | No       | Allowlist of accepted protocols (e.g., `"https"` or `["http", "https"]`). Matched case-insensitively; trailing `:` is optional, so `"https"` and `"https:"` are equivalent |
+
+## Returns
+
+`boolean` — `true` if the value is a parseable URL whose protocol is accepted, `false` otherwise.
+
+## Examples
+
+```ts
+isValidUrl({ url: "https://example.com" });        // => true
+isValidUrl({ url: "http://localhost:3000" });      // => true
+isValidUrl({ url: "ftp://files.example.com" });    // => true
+isValidUrl({ url: "mailto:user@example.com" });    // => true
+
+isValidUrl({ url: "not-a-url" });                  // => false
+isValidUrl({ url: "" });                           // => false
+isValidUrl({ url: "//example.com" });              // => false — no scheme
+isValidUrl({ url: null });                         // => false
+```
+
+```ts
+// Restrict to web protocols
+isValidUrl({ url: "https://example.com", protocols: ["http", "https"] }); // => true
+isValidUrl({ url: "ftp://files.example.com", protocols: ["http", "https"] }); // => false
+
+// Accept a single protocol as a string
+isValidUrl({ url: "https://example.com", protocols: "https" }); // => true
+isValidUrl({ url: "http://example.com", protocols: "https" });  // => false
+```
+
+```ts
+// Validate user input before calling fetch
+function loadFeed(input: string) {
+  if (!isValidUrl({ url: input, protocols: ["http", "https"] })) {
+    throw new Error("Invalid URL");
+  }
+  return fetch(input);
+}
+```
+
+## Edge Cases
+
+- Non-string inputs (`null`, `undefined`, numbers, objects, even `URL` instances) return `false`.
+- Empty strings return `false` without invoking the parser.
+- A scheme is required — `"//example.com"` and `"example.com"` return `false`.
+- Uses `URL.canParse` when `protocols` is omitted and available; falls back to `try/catch` around `new URL(input)` otherwise.
+- Custom schemes (e.g., `app://`, `chrome-extension://`) are accepted by default. Pass `protocols` to restrict.
+- `protocols: []` rejects every input — no scheme can match an empty allowlist.
+- Protocol names are lowercased and any trailing `:` is stripped, so `["HTTPS"]`, `["https"]`, and `["https:"]` (or `url.protocol` from a `URL` instance) all match `https://...`.
+
+## Also known as
+
+url, validate url, is url, valid url, url check, parse url
+
+## Prompt suggestion
+
+```text
+I'm using 1o1-utils (npm: https://www.npmjs.com/package/1o1-utils, GitHub: https://github.com/pedrotroccoli/1o1-utils, LLM context: https://pedrotroccoli.github.io/1o1-utils/llms.txt). Show me how to use isValidUrl to validate a user-supplied URL before passing it to fetch.
+```

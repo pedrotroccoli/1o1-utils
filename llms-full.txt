@@ -583,6 +583,35 @@ With exponential backoff, delay is delay * 2^i for attempt i. Throws the last er
 
 ---
 
+### safely
+
+Wrap a function so it returns a [error, result] tuple instead of throwing. Auto-detects sync and async functions: sync calls return a tuple, async calls return a Promise of a tuple. Anticipates the TC39 Safe Assignment Operator proposal.
+
+Import: import { safely } from "1o1-utils/safely";
+
+Signature:
+function safely<A extends unknown[], T>(fn: (...args: A) => Promise<T>): (...args: A) => Promise<[undefined, T] | [unknown, undefined]>
+function safely<A extends unknown[], T>(fn: (...args: A) => T): (...args: A) => [undefined, T] | [unknown, undefined]
+
+Parameters:
+- fn ((...args: A) => T | Promise<T>, required): The function to wrap
+
+Returns: A wrapped function. On success returns [undefined, value]. On error returns [error, undefined]. Async functions return a Promise of the tuple.
+
+Example:
+const [err, data] = safely(JSON.parse)('{"a":1}');
+if (err) console.error(err); else console.log(data);
+
+const [fetchErr, user] = await safely(fetchUser)(userId);
+
+const safeParse = safely(JSON.parse);
+const [e1, a] = safeParse('{"x":1}');
+const [e2, b] = safeParse("{bad");
+
+Throws: Error if fn is not a function. Errors caught from fn are typed as unknown — non-Error throws (strings, null, etc.) are preserved as-is. Detects async by checking the return value for a then method, so real Promises and custom thenables both work.
+
+---
+
 ### sleep
 
 Pause execution for a given number of milliseconds by returning a promise.
@@ -701,6 +730,31 @@ Uses Object.is for primitive comparison, so NaN equals NaN and +0 is distinct fr
 
 ---
 
+### isNil
+
+Check if a value is `null` or `undefined`. Strict existence check — distinct from `isEmpty`, which also treats empty strings, arrays, objects, Maps, and Sets as empty. `isNil` returns `true` only for the two nullish values.
+
+Import: import { isNil } from "1o1-utils/is-nil";
+
+Signature:
+function isNil({ value }: IsNilParams): boolean
+
+Parameters:
+- value (unknown, required): The value to check
+
+Returns: boolean — `true` if the value is `null` or `undefined`, `false` otherwise.
+
+Example:
+isNil({ value: null });      // => true
+isNil({ value: undefined }); // => true
+isNil({ value: 0 });         // => false
+isNil({ value: "" });        // => false
+isNil({ value: false });     // => false
+
+Edge cases: falsy values that are not nullish (`0`, `""`, `false`, `NaN`, `0n`) return `false`. Empty arrays, empty objects, functions, and symbols are not nil. Use `isEmpty` if you need emptiness checks beyond null/undefined.
+
+---
+
 ### shallowEqual
 
 Compare two values by their top-level entries using `Object.is`. Returns `true` when both values are strictly the same, or when they are arrays or plain objects with identical own-enumerable entries at the first level. Nested values are compared by reference, not structurally — use `deepEqual` for recursive comparison.
@@ -797,3 +851,35 @@ sum(2, 3); // 10
 
 Throws: Error if any argument is not a function.
 Execution is synchronous. If a function returns a Promise, the next function receives the Promise (not the awaited value). `pipe()` with no arguments returns an identity function that passes its first argument through unchanged. Only the first function receives the caller's `this` context; subsequent stages are called without `this` (differs from lodash/flow and es-toolkit/flow, which forward `this` to every stage).
+
+---
+
+## Validators
+
+### isValidUrl
+
+Check whether a value is a well-formed URL string. Delegates parsing to the WHATWG `URL` API — the same parser used by browsers and Node — so any scheme accepted by `new URL(input)` is valid by default (including `http`, `https`, `ftp`, `file`, and custom schemes). Pass `protocols` to restrict the accepted scheme set.
+
+Import: import { isValidUrl } from "1o1-utils/is-valid-url";
+
+Signature:
+function isValidUrl({ url, protocols }: IsValidUrlParams): boolean
+
+Parameters:
+- url (unknown, required): The value to validate
+- protocols (string | readonly string[], optional): Allowlist of accepted protocols (e.g., "https" or ["http", "https"]). Matched case-insensitively; trailing colon is optional, so "https" and "https:" (e.g. url.protocol from a URL instance) are equivalent.
+
+Returns: boolean — `true` if the value is a parseable URL whose protocol is accepted, `false` otherwise.
+
+Example:
+isValidUrl({ url: "https://example.com" });        // => true
+isValidUrl({ url: "http://localhost:3000" });      // => true
+isValidUrl({ url: "ftp://files.example.com" });    // => true
+isValidUrl({ url: "not-a-url" });                  // => false
+isValidUrl({ url: "" });                           // => false
+
+isValidUrl({ url: "https://example.com", protocols: ["http", "https"] }); // => true
+isValidUrl({ url: "ftp://example.com",   protocols: ["http", "https"] }); // => false
+isValidUrl({ url: "https://example.com", protocols: "https" });           // => true
+
+Non-string inputs (including null, undefined, numbers, and objects) return false. Empty strings return false without invoking the parser. When protocols is omitted and URL.canParse is available, URL.canParse is used to avoid the cost of throwing on invalid input; otherwise a try/catch around new URL(input) is used. protocols: [] rejects every input — no scheme can match an empty allowlist. Protocol names are lowercased and any trailing colon is stripped before comparison, so ["HTTPS"], ["https"], and ["https:"] all match https://.... Protocol-relative URLs (//example.com) and bare authority strings are not accepted — a scheme is required, matching URL constructor behavior.

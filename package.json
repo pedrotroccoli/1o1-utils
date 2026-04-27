@@ -39,7 +39,15 @@
 		"range-check",
 		"shallow-equal",
 		"deep-equal",
-		"is-equal"
+		"is-equal",
+		"is-valid-url",
+		"validate-url",
+		"url-validator",
+		"safely",
+		"tryit",
+		"try-catch",
+		"is-nil",
+		"nullish"
 	],
 	"author": "Pedro Troccoli <contact@pedrotroccoli.com>",
 	"license": "MIT",
@@ -126,6 +134,10 @@
 			"import": "./dist/async/retry/index.js",
 			"types": "./dist/async/retry/index.d.ts"
 		},
+		"./safely": {
+			"import": "./dist/async/safely/index.js",
+			"types": "./dist/async/safely/index.d.ts"
+		},
 		"./capitalize": {
 			"import": "./dist/strings/capitalize/index.js",
 			"types": "./dist/strings/capitalize/index.d.ts"
@@ -169,6 +181,14 @@
 		"./deep-equal": {
 			"import": "./dist/comparisons/deep-equal/index.js",
 			"types": "./dist/comparisons/deep-equal/index.d.ts"
+		},
+		"./is-valid-url": {
+			"import": "./dist/validators/is-valid-url/index.js",
+			"types": "./dist/validators/is-valid-url/index.d.ts"
+		},
+		"./is-nil": {
+			"import": "./dist/comparisons/is-nil/index.js",
+			"types": "./dist/comparisons/is-nil/index.d.ts"
 		}
 	},
 	"scripts": {

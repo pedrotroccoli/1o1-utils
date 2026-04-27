@@ -41,6 +41,7 @@
 
 - [debounce](https://pedrotroccoli.github.io/1o1-utils/async/debounce/): Create a debounced function with cancel support
 - [retry](https://pedrotroccoli.github.io/1o1-utils/async/retry/): Retry async operations with fixed or exponential backoff
+- [safely](https://pedrotroccoli.github.io/1o1-utils/async/safely/): Wrap a function so it returns a [error, result] tuple instead of throwing
 - [sleep](https://pedrotroccoli.github.io/1o1-utils/async/sleep/): Promise-based delay
 - [throttle](https://pedrotroccoli.github.io/1o1-utils/async/throttle/): Create a throttled function with cancel support
 - [withTimeout](https://pedrotroccoli.github.io/1o1-utils/async/with-timeout/): Race a promise against a timeout with AbortSignal support
@@ -48,9 +49,14 @@
 ## Comparisons
 
 - [deepEqual](https://pedrotroccoli.github.io/1o1-utils/comparisons/deep-equal/): Recursively compare two values for structural equality across nested objects, arrays, and built-ins
+- [isNil](https://pedrotroccoli.github.io/1o1-utils/comparisons/is-nil/): Check if a value is `null` or `undefined`
 - [shallowEqual](https://pedrotroccoli.github.io/1o1-utils/comparisons/shallow-equal/): Compare two values by their top-level entries using `Object.is`
 
 ## Functions
 
 - [once](https://pedrotroccoli.github.io/1o1-utils/functions/once/): Create a function that runs only once and caches its result
 - [pipe](https://pedrotroccoli.github.io/1o1-utils/functions/pipe/): Compose functions left-to-right into a single function
+
+## Validators
+
+- [isValidUrl](https://pedrotroccoli.github.io/1o1-utils/validators/is-valid-url/): Check if a string is a parseable URL using the WHATWG `URL` API, with optional protocol allowlist
