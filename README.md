@@ -95,6 +95,7 @@ import { pick } from "1o1-utils/pick";
 | --- | --- | --- |
 | `debounce` | Debounce function calls | `1o1-utils/debounce` |
 | `retry` | Retry failed async operations | `1o1-utils/retry` |
+| `safely` | Wrap a function to return `[error, result]` instead of throwing | `1o1-utils/safely` |
 | `sleep` | Promise-based delay | `1o1-utils/sleep` |
 | `throttle` | Throttle function calls | `1o1-utils/throttle` |
 
