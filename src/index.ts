@@ -5,6 +5,7 @@ export { sortBy } from "./arrays/sort-by/index.js";
 export { unique } from "./arrays/unique/index.js";
 export { debounce } from "./async/debounce/index.js";
 export { retry } from "./async/retry/index.js";
+export { safely } from "./async/safely/index.js";
 export { sleep } from "./async/sleep/index.js";
 export { throttle } from "./async/throttle/index.js";
 export { withTimeout } from "./async/with-timeout/index.js";

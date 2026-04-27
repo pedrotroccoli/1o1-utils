@@ -38,6 +38,9 @@
 		"between",
 		"range-check",
 		"shallow-equal",
+		"safely",
+		"tryit",
+		"try-catch",
 		"is-nil",
 		"nullish"
 	],
@@ -125,6 +128,10 @@
 		"./retry": {
 			"import": "./dist/async/retry/index.js",
 			"types": "./dist/async/retry/index.d.ts"
+		},
+		"./safely": {
+			"import": "./dist/async/safely/index.js",
+			"types": "./dist/async/safely/index.d.ts"
 		},
 		"./capitalize": {
 			"import": "./dist/strings/capitalize/index.js",
