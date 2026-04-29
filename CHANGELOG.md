@@ -1,5 +1,11 @@
 # 1o1-utils
 
+## 1.7.1
+
+### Patch Changes
+
+- Republish of 1.7.0 with the full set of advertised subpath exports. The published 1.7.0 tarball was built from a stale tree and shipped without `deep-equal`, `is-nil`, `is-valid-url`, and `safely`. 1.7.0 has been deprecated on npm; upgrade to 1.7.1 to access all utilities listed in the 1.7.0 changelog.
+
 ## 1.7.0
 
 ### Minor Changes
