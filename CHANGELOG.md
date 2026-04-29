@@ -1,5 +1,17 @@
 # 1o1-utils
 
+## 1.7.0
+
+### Minor Changes
+
+- bcf23fb: Add `deepEqual` utility under the `comparisons` category. `deepEqual({ a, b })` recursively compares two values for structural equality across nested plain objects, class instances (same prototype), arrays, `Date`, `RegExp`, `Map`, `Set`, `ArrayBuffer`, and typed arrays. Circular references are tracked via a `WeakMap` pair-cache. Pairs naturally with the previously shipped `shallowEqual`.
+- 776b767: Add `isNil` utility under `comparisons`. `isNil({ value })` returns `true` only when the value is `null` or `undefined`, making it the strict existence check that complements `isEmpty`. Useful for defaulting parameters without clobbering falsy-but-valid values like `0`, `""`, or `false`.
+- 3a44724: Add `isValidUrl` utility and new `validators` category. `isValidUrl({ url, protocols? })` checks whether a value is a parseable URL string by delegating to the WHATWG `URL` API (using `URL.canParse` when available). Optional `protocols` accepts a string or array of allowed schemes (e.g., `["http", "https"]`) — names are matched case-insensitively without the trailing colon. Returns `false` for non-string, empty inputs, strings without a scheme, and URLs whose protocol is not in the allowlist when one is provided. Useful for validating user-supplied URLs before passing them to `fetch`, anchors, or storage.
+- efe8f69: Add `pipe` utility for left-to-right function composition. `pipe(...fns)` returns a function that applies each `fn` in sequence — the first receives the initial arguments, each next receives the previous return value. Aligned with the TC39 pipe operator proposal. Empty `pipe()` returns an identity function.
+- edd6bd1: Add `safely` utility to wrap a function so it returns a `[error, result]` tuple instead of throwing. Auto-detects sync and async functions: sync calls return a tuple, async calls return a `Promise` of a tuple. Eliminates verbose try/catch and anticipates the TC39 Safe Assignment Operator proposal. Closes #87.
+- b851690: Add `shallowEqual` utility and new `comparisons` category. `shallowEqual({ a, b })` compares two values by their top-level entries using `Object.is`, returning `true` for identical primitives, same references, or arrays/plain objects with matching first-level entries. Ideal for memoization, preventing unnecessary re-renders, and state comparison.
+- 4f847c5: Add `withTimeout` utility to race a promise against a timeout. Rejects with a `TimeoutError` if the promise does not settle within the given duration. Supports a lazy error message factory and an optional `AbortSignal` for external cancellation. `TimeoutError` is exported from the `1o1-utils/with-timeout` subpath for `instanceof` checks.
+
 ## 1.6.0
 
 ### Minor Changes
