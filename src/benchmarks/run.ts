@@ -183,6 +183,16 @@ const SUITE_META: Record<string, { slug: string; description: string }> = {
     description:
       "Validates a string against the WHATWG `URL` parser. Compared against a native `try/catch` `new URL` implementation and a regex-based check.",
   },
+  zip: {
+    slug: "zip",
+    description:
+      "Combines arrays by index into tuples, with `fill` (default) or `truncate` strategy for uneven lengths. Compared against `lodash.zip`, `radash.zip`, and a native `for` loop hardcoded for the fixed shape.",
+  },
+  unzip: {
+    slug: "unzip",
+    description:
+      "Splits an array of grouped tuples back into separate arrays — the inverse of `zip`. Compared against `lodash.unzip` and a native `for` loop hardcoded for the fixed shape.",
+  },
 };
 
 function getSizes(rows: TaskRow[]): string[] {
