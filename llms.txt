@@ -14,6 +14,7 @@
 
 - [arrayToHash](https://pedrotroccoli.github.io/1o1-utils/arrays/array-to-hash/): Convert an array of objects into a hash map keyed by a property
 - [chunk](https://pedrotroccoli.github.io/1o1-utils/arrays/chunk/): Split an array into groups of a given size
+- [diff](https://pedrotroccoli.github.io/1o1-utils/arrays/diff/): Return elements in the first array not present in the second, with optional iteratee for object identity
 - [groupBy](https://pedrotroccoli.github.io/1o1-utils/arrays/group-by/): Group array elements by a property value
 - [sortBy](https://pedrotroccoli.github.io/1o1-utils/arrays/sort-by/): Sort an array of objects by a property with dot notation support
 - [unique](https://pedrotroccoli.github.io/1o1-utils/arrays/unique/): Remove duplicate elements from an array by value or key
