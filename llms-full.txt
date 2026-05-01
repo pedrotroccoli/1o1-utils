@@ -182,6 +182,55 @@ Without key, uses Set for primitive deduplication. With key, keeps the first occ
 
 ---
 
+### zip
+
+Combine arrays by index into tuples. The inverse of unzip.
+
+Import: import { zip } from "1o1-utils/zip";
+
+Signature:
+function zip<T>({ arrays, strategy }: ZipParams<T>): T[][]
+
+Parameters:
+- arrays (T[][], required): The arrays to combine
+- strategy ("fill" | "truncate", optional): How to handle uneven lengths. Default "fill" pads shorter arrays with undefined; "truncate" cuts to the shortest array.
+
+Returns: T[][]
+
+Example:
+zip({ arrays: [["a", "b", "c"], [1, 2, 3]] });
+// => [["a", 1], ["b", 2], ["c", 3]]
+
+zip({ arrays: [["a", "b", "c"], [1, 2]], strategy: "truncate" });
+// => [["a", 1], ["b", 2]]
+
+Throws: Error if arrays is not an array. Error if any element of arrays is not an array. Error if strategy is not "fill" or "truncate".
+
+---
+
+### unzip
+
+Split an array of grouped tuples back into separate arrays. The inverse of zip.
+
+Import: import { unzip } from "1o1-utils/unzip";
+
+Signature:
+function unzip<T>({ array, strategy }: UnzipParams<T>): T[][]
+
+Parameters:
+- array (T[][], required): The array of tuples to ungroup
+- strategy ("fill" | "truncate", optional): How to handle uneven inner lengths. Default "fill" pads shorter tuples with undefined; "truncate" cuts to the shortest tuple.
+
+Returns: T[][]
+
+Example:
+unzip({ array: [["a", 1], ["b", 2], ["c", 3]] });
+// => [["a", "b", "c"], [1, 2, 3]]
+
+Throws: Error if array is not an array. Error if any element of array is not an array. Error if strategy is not "fill" or "truncate".
+
+---
+
 ## Objects
 
 ### cloneDeep

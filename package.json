@@ -50,7 +50,10 @@
 		"nullish",
 		"clamp",
 		"restrict",
-		"bound"
+		"bound",
+		"zip",
+		"unzip",
+		"transpose"
 	],
 	"author": "Pedro Troccoli <contact@pedrotroccoli.com>",
 	"license": "MIT",
@@ -200,6 +203,14 @@
 		"./clamp": {
 			"import": "./dist/numbers/clamp/index.js",
 			"types": "./dist/numbers/clamp/index.d.ts"
+		},
+		"./zip": {
+			"import": "./dist/arrays/zip/index.js",
+			"types": "./dist/arrays/zip/index.d.ts"
+		},
+		"./unzip": {
+			"import": "./dist/arrays/unzip/index.js",
+			"types": "./dist/arrays/unzip/index.d.ts"
 		}
 	},
 	"scripts": {

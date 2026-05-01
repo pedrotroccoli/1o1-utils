@@ -4,6 +4,8 @@ export { diff } from "./arrays/diff/index.js";
 export { groupBy } from "./arrays/group-by/index.js";
 export { sortBy } from "./arrays/sort-by/index.js";
 export { unique } from "./arrays/unique/index.js";
+export { unzip } from "./arrays/unzip/index.js";
+export { zip } from "./arrays/zip/index.js";
 export { debounce } from "./async/debounce/index.js";
 export { retry } from "./async/retry/index.js";
 export { safely } from "./async/safely/index.js";

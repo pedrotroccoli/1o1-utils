@@ -1,0 +1,69 @@
+---
+title: unzip
+description: Split an array of tuples back into separate arrays
+---
+
+Splits an array of grouped tuples back into separate arrays. The inverse of [zip](./zip.mdx).
+
+## Import
+
+```ts
+import { unzip } from "1o1-utils";
+```
+
+```ts
+import { unzip } from "1o1-utils/unzip";
+```
+
+## Signature
+
+```ts
+function unzip<T>({ array, strategy }: UnzipParams<T>): T[][]
+```
+
+## Parameters
+
+| Name     | Type                       | Required | Description                                                                                                                |
+| -------- | -------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------- |
+| array    | `T[][]`                    | Yes      | The array of tuples to ungroup                                                                                             |
+| strategy | `"fill" \| "truncate"`     | No       | How to handle uneven inner lengths. `"fill"` (default) pads shorter tuples with `undefined`; `"truncate"` cuts to shortest. |
+
+## Returns
+
+`T[][]` — An array of arrays grouped by tuple position.
+
+## Examples
+
+```ts
+unzip({ array: [["a", 1], ["b", 2], ["c", 3]] });
+// => [["a", "b", "c"], [1, 2, 3]]
+
+unzip({ array: [["a", 1], ["b"]] });
+// => [["a", "b"], [1, undefined]]
+
+unzip({
+  array: [
+    ["a", 1, true],
+    ["b", 2],
+  ],
+  strategy: "truncate",
+});
+// => [["a", "b"], [1, 2]]
+```
+
+## Edge Cases
+
+- Throws if `array` is not an array.
+- Throws if any element of `array` is not an array.
+- Throws if `strategy` is not `"fill"` or `"truncate"`.
+- Returns `[]` when `array` is empty.
+
+## Also known as
+
+unzip, transpose, ungroup, split tuples
+
+## Prompt suggestion
+
+```text
+I'm using 1o1-utils (npm: https://www.npmjs.com/package/1o1-utils, GitHub: https://github.com/pedrotroccoli/1o1-utils, LLM context: https://pedrotroccoli.github.io/1o1-utils/llms.txt). Show me how to use unzip to split an array of [key, value] tuples into two arrays
+```
