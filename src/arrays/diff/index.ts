@@ -30,6 +30,7 @@ import type { DiffParams, DiffResult } from "./types.js";
  *
  * @throws Error if `array` is not an array
  * @throws Error if `values` is not an array
+ * @throws Propagates any error thrown by `iteratee`
  */
 function diff<T>({ array, values, iteratee }: DiffParams<T>): DiffResult<T> {
   if (!Array.isArray(array)) {
@@ -44,13 +45,14 @@ function diff<T>({ array, values, iteratee }: DiffParams<T>): DiffResult<T> {
   const valuesLen = values.length;
   const result: T[] = [];
 
-  if (iteratee === undefined) {
-    if (valuesLen === 0) {
-      for (let i = 0; i < arrayLen; i++) {
-        result.push(array[i]);
-      }
-      return result;
+  if (valuesLen === 0) {
+    for (let i = 0; i < arrayLen; i++) {
+      result.push(array[i]);
     }
+    return result;
+  }
+
+  if (iteratee === undefined) {
     const excluded = new Set(values);
     for (let i = 0; i < arrayLen; i++) {
       const item = array[i];
