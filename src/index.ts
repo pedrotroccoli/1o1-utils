@@ -3,6 +3,7 @@ export { chunk } from "./arrays/chunk/index.js";
 export { diff } from "./arrays/diff/index.js";
 export { groupBy } from "./arrays/group-by/index.js";
 export { sortBy } from "./arrays/sort-by/index.js";
+export { times } from "./arrays/times/index.js";
 export { unique } from "./arrays/unique/index.js";
 export { unzip } from "./arrays/unzip/index.js";
 export { zip } from "./arrays/zip/index.js";

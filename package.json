@@ -53,7 +53,10 @@
 		"bound",
 		"zip",
 		"unzip",
-		"transpose"
+		"transpose",
+		"times",
+		"repeat",
+		"range"
 	],
 	"author": "Pedro Troccoli <contact@pedrotroccoli.com>",
 	"license": "MIT",
@@ -211,6 +214,10 @@
 		"./unzip": {
 			"import": "./dist/arrays/unzip/index.js",
 			"types": "./dist/arrays/unzip/index.d.ts"
+		},
+		"./times": {
+			"import": "./dist/arrays/times/index.js",
+			"types": "./dist/arrays/times/index.d.ts"
 		}
 	},
 	"scripts": {
