@@ -1,0 +1,71 @@
+---
+title: mapValues
+description: Transform object values via an iteratee function
+---
+
+Creates a new object with the same keys as `obj`, but with each value replaced by `iteratee(value, key, obj)`. Only own enumerable string keys are visited. Useful for projecting an object through a pure transformation while preserving its shape.
+
+## Import
+
+```ts
+import { mapValues } from "1o1-utils";
+```
+
+```ts
+import { mapValues } from "1o1-utils/map-values";
+```
+
+## Signature
+
+```ts
+function mapValues<T extends Record<string, unknown>, R>({
+  obj,
+  iteratee,
+}: MapValuesParams<T, R>): Record<keyof T, R>
+```
+
+## Parameters
+
+| Name       | Type                                  | Required | Description                                    |
+| ---------- | ------------------------------------- | -------- | ---------------------------------------------- |
+| `obj`      | `Record<string, unknown>`             | Yes      | The source object                              |
+| `iteratee` | `(value, key, obj) => R`              | Yes      | Function returning the new value for each pair |
+
+## Returns
+
+`Record<keyof T, R>` — A new object with the same keys and transformed values (input is not mutated).
+
+## Examples
+
+```ts
+mapValues({
+  obj: { a: 1, b: 2 },
+  iteratee: (value) => value * 10,
+});
+// => { a: 10, b: 20 }
+```
+
+```ts
+mapValues({
+  obj: { ana: { age: 30 }, bob: { age: 25 } },
+  iteratee: (user) => user.age,
+});
+// => { ana: 30, bob: 25 }
+```
+
+## Edge Cases
+
+- Throws if `obj` is not a plain object.
+- Throws if `iteratee` is not a function.
+- Inherited properties are ignored — only own enumerable keys are visited.
+- Output type can differ from input value type (full generic support).
+
+## Also known as
+
+map values, transform values, value mapper, project values
+
+## Prompt suggestion
+
+```text
+I'm using 1o1-utils (npm: https://www.npmjs.com/package/1o1-utils, GitHub: https://github.com/pedrotroccoli/1o1-utils, LLM context: https://pedrotroccoli.github.io/1o1-utils/llms.txt). Show me how to use mapValues to extract a single field from each value of a record
+```

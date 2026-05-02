@@ -54,6 +54,12 @@
 		"zip",
 		"unzip",
 		"transpose",
+		"times",
+		"repeat",
+		"range",
+		"sequence",
+		"map-keys",
+		"map-values",
 		"escape-regexp",
 		"escape-regex",
 		"regex-escape"
@@ -139,6 +145,14 @@
 			"import": "./dist/objects/is-empty/index.js",
 			"types": "./dist/objects/is-empty/index.d.ts"
 		},
+		"./map-keys": {
+			"import": "./dist/objects/map-keys/index.js",
+			"types": "./dist/objects/map-keys/index.d.ts"
+		},
+		"./map-values": {
+			"import": "./dist/objects/map-values/index.js",
+			"types": "./dist/objects/map-values/index.d.ts"
+		},
 		"./sleep": {
 			"import": "./dist/async/sleep/index.js",
 			"types": "./dist/async/sleep/index.d.ts"
@@ -191,6 +205,10 @@
 			"import": "./dist/functions/pipe/index.js",
 			"types": "./dist/functions/pipe/index.d.ts"
 		},
+		"./range": {
+			"import": "./dist/arrays/range/index.js",
+			"types": "./dist/arrays/range/index.d.ts"
+		},
 		"./shallow-equal": {
 			"import": "./dist/comparisons/shallow-equal/index.js",
 			"types": "./dist/comparisons/shallow-equal/index.d.ts"
@@ -218,6 +236,10 @@
 		"./unzip": {
 			"import": "./dist/arrays/unzip/index.js",
 			"types": "./dist/arrays/unzip/index.d.ts"
+		},
+		"./times": {
+			"import": "./dist/arrays/times/index.js",
+			"types": "./dist/arrays/times/index.d.ts"
 		}
 	},
 	"scripts": {

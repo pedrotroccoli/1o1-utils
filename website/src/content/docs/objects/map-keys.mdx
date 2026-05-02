@@ -1,0 +1,73 @@
+---
+title: mapKeys
+description: Transform object keys via an iteratee function
+---
+
+Creates a new object with the same values as `obj`, but with each key replaced by `String(iteratee(value, key, obj))`. Only own enumerable string keys are visited. Prototype-pollution keys (`__proto__`, `constructor`, `prototype`) returned by the iteratee are silently skipped. When two keys collide, the last write wins.
+
+## Import
+
+```ts
+import { mapKeys } from "1o1-utils";
+```
+
+```ts
+import { mapKeys } from "1o1-utils/map-keys";
+```
+
+## Signature
+
+```ts
+function mapKeys<T extends Record<string, unknown>>({
+  obj,
+  iteratee,
+}: MapKeysParams<T>): Record<string, T[keyof T]>
+```
+
+## Parameters
+
+| Name       | Type                                                       | Required | Description                                  |
+| ---------- | ---------------------------------------------------------- | -------- | -------------------------------------------- |
+| `obj`      | `Record<string, unknown>`                                  | Yes      | The source object                            |
+| `iteratee` | `(value, key, obj) => string \| number \| symbol`          | Yes      | Function returning the new key for each pair |
+
+## Returns
+
+`Record<string, T[keyof T]>` — A new object with transformed keys (input is not mutated).
+
+## Examples
+
+```ts
+mapKeys({
+  obj: { a: 1, b: 2 },
+  iteratee: (_value, key) => key.toUpperCase(),
+});
+// => { A: 1, B: 2 }
+```
+
+```ts
+mapKeys({
+  obj: { firstName: "Ana", lastName: "Silva" },
+  iteratee: (_value, key) => key.replace(/[A-Z]/g, (c) => `_${c.toLowerCase()}`),
+});
+// => { first_name: "Ana", last_name: "Silva" }
+```
+
+## Edge Cases
+
+- Throws if `obj` is not a plain object.
+- Throws if `iteratee` is not a function.
+- Iteratee return value is coerced via `String(...)`.
+- Key collisions resolve last-write-wins.
+- Prototype-pollution keys (`__proto__`, `constructor`, `prototype`) are skipped.
+- Inherited properties are ignored — only own enumerable keys are visited.
+
+## Also known as
+
+map keys, transform keys, rename keys, key mapper
+
+## Prompt suggestion
+
+```text
+I'm using 1o1-utils (npm: https://www.npmjs.com/package/1o1-utils, GitHub: https://github.com/pedrotroccoli/1o1-utils, LLM context: https://pedrotroccoli.github.io/1o1-utils/llms.txt). Show me how to use mapKeys to convert a camelCase object's keys to snake_case
+```
