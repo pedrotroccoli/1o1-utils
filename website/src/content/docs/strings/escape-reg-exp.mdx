@@ -1,0 +1,59 @@
+---
+title: escapeRegExp
+description: Escape regex metacharacters so a string can be safely interpolated into a RegExp
+---
+
+Escapes the 12 ECMAScript regex metacharacters (`. * + ? ^ $ { } ( ) | [ ] \`) so the string can be safely interpolated into a `RegExp`. Prevents regex injection when user input is used in a pattern.
+
+## Import
+
+```ts
+import { escapeRegExp } from "1o1-utils";
+```
+
+```ts
+import { escapeRegExp } from "1o1-utils/escape-reg-exp";
+```
+
+## Signature
+
+```ts
+function escapeRegExp({ str }: EscapeRegExpParams): string
+```
+
+## Parameters
+
+| Name | Type     | Required | Description           |
+| ---- | -------- | -------- | --------------------- |
+| str  | `string` | Yes      | The string to escape  |
+
+## Returns
+
+`string`
+
+## Examples
+
+```ts
+escapeRegExp({ str: "[hello](world)" });
+// => "\\[hello\\]\\(world\\)"
+
+const re = new RegExp(escapeRegExp({ str: userInput }), "i");
+re.test(text);
+```
+
+## Edge Cases
+
+- Throws if `str` is not a string.
+- Returns `""` for empty string.
+- Strings with no special characters are returned unchanged.
+- Unicode characters are preserved.
+
+## Also known as
+
+escape regex, regex injection, escape pattern, safe regex
+
+## Prompt suggestion
+
+```text
+I'm using 1o1-utils (npm: https://www.npmjs.com/package/1o1-utils, GitHub: https://github.com/pedrotroccoli/1o1-utils, LLM context: https://pedrotroccoli.github.io/1o1-utils/llms.txt). Show me how to use escapeRegExp to safely build a RegExp from user input
+```
