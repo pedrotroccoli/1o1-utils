@@ -72,6 +72,15 @@ describe("randomInt", () => {
     }
   });
 
+  it("should handle the fast/wide path boundary at range = 2^32 + 1", () => {
+    for (let i = 0; i < 50; i++) {
+      const v = randomInt({ min: 0, max: 2 ** 32 });
+      expect(Number.isInteger(v)).to.equal(true);
+      expect(v).to.be.at.least(0);
+      expect(v).to.be.at.most(2 ** 32);
+    }
+  });
+
   it("should handle the maximum supported range up to MAX_SAFE_INTEGER", () => {
     for (let i = 0; i < 20; i++) {
       const v = randomInt({ min: 0, max: Number.MAX_SAFE_INTEGER });
@@ -105,13 +114,13 @@ describe("randomInt", () => {
 
   it("should throw if min is NaN", () => {
     expect(() => randomInt({ min: Number.NaN, max: 10 })).to.throw(
-      "The 'min' parameter must be a number",
+      "The 'min' parameter must not be NaN",
     );
   });
 
   it("should throw if max is NaN", () => {
     expect(() => randomInt({ min: 0, max: Number.NaN })).to.throw(
-      "The 'max' parameter must be a number",
+      "The 'max' parameter must not be NaN",
     );
   });
 

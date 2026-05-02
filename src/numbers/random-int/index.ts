@@ -27,11 +27,17 @@ const TWO_POW_53_BIG = BigInt(TWO_POW_53);
  * @throws Error if the range `max - min + 1` exceeds `2^53`
  */
 function randomInt({ min, max }: RandomIntParams): RandomIntResult {
-  if (typeof min !== "number" || Number.isNaN(min)) {
+  if (typeof min !== "number") {
     throw new Error("The 'min' parameter must be a number");
   }
-  if (typeof max !== "number" || Number.isNaN(max)) {
+  if (typeof max !== "number") {
     throw new Error("The 'max' parameter must be a number");
+  }
+  if (Number.isNaN(min)) {
+    throw new Error("The 'min' parameter must not be NaN");
+  }
+  if (Number.isNaN(max)) {
+    throw new Error("The 'max' parameter must not be NaN");
   }
   if (!Number.isInteger(min)) {
     throw new Error("The 'min' parameter must be an integer");
