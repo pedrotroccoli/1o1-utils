@@ -16,6 +16,11 @@
     "limit": "1 kB"
   },
   {
+    "name": "diff",
+    "path": "dist/arrays/diff/index.js",
+    "limit": "1 kB"
+  },
+  {
     "name": "group-by",
     "path": "dist/arrays/group-by/index.js",
     "limit": "1 kB"

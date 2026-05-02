@@ -64,6 +64,38 @@ Returns [] for an empty array.
 
 ---
 
+### diff
+
+Return a new array containing elements from the first array that are not present in the second. Pass an `iteratee` function to derive an identity value when comparing objects.
+
+Import: import { diff } from "1o1-utils/diff";
+
+Signature:
+function diff<T>({ array, values, iteratee }: DiffParams<T>): T[]
+
+Parameters:
+- array (T[], required): The source array to filter
+- values (T[], required): The values to exclude from the source array
+- iteratee ((item: T) => unknown, optional): Function returning the identity value used to compare items
+
+Returns: T[] — A new array containing elements from `array` not present in `values`.
+
+Example:
+diff({ array: [1, 2, 3, 4], values: [2, 4] });
+// => [1, 3]
+
+diff({
+  array: [{ id: 1 }, { id: 2 }, { id: 3 }],
+  values: [{ id: 2 }],
+  iteratee: (item) => item.id,
+});
+// => [{ id: 1 }, { id: 3 }]
+
+Throws: Error if array is not an array. Error if values is not an array. Errors thrown by `iteratee` propagate to the caller.
+Items are compared with SameValueZero (Set semantics): `NaN` equals `NaN` and `+0` equals `-0`. Without iteratee, uses Set for O(n+m) primitive lookup. With iteratee, builds a Set of mapped values from `values` and filters `array`. Order of `array` is preserved. Duplicates in `array` that are not in `values` are kept (matches lodash difference behavior). Inputs are not mutated.
+
+---
+
 ### groupBy
 
 Group array elements into an object keyed by the value of a specified property.

@@ -78,6 +78,10 @@
 			"import": "./dist/arrays/chunk/index.js",
 			"types": "./dist/arrays/chunk/index.d.ts"
 		},
+		"./diff": {
+			"import": "./dist/arrays/diff/index.js",
+			"types": "./dist/arrays/diff/index.d.ts"
+		},
 		"./group-by": {
 			"import": "./dist/arrays/group-by/index.js",
 			"types": "./dist/arrays/group-by/index.d.ts"
