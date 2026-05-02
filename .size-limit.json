@@ -86,6 +86,11 @@
     "limit": "1 kB"
   },
   {
+    "name": "escape-reg-exp",
+    "path": "dist/strings/escape-reg-exp/index.js",
+    "limit": "1 kB"
+  },
+  {
     "name": "slugify",
     "path": "dist/strings/slugify/index.js",
     "limit": "1 kB"

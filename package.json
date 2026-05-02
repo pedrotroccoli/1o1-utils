@@ -53,7 +53,10 @@
 		"bound",
 		"zip",
 		"unzip",
-		"transpose"
+		"transpose",
+		"escape-regexp",
+		"escape-regex",
+		"regex-escape"
 	],
 	"author": "Pedro Troccoli <contact@pedrotroccoli.com>",
 	"license": "MIT",
@@ -151,6 +154,10 @@
 		"./capitalize": {
 			"import": "./dist/strings/capitalize/index.js",
 			"types": "./dist/strings/capitalize/index.d.ts"
+		},
+		"./escape-reg-exp": {
+			"import": "./dist/strings/escape-reg-exp/index.js",
+			"types": "./dist/strings/escape-reg-exp/index.d.ts"
 		},
 		"./debounce": {
 			"import": "./dist/async/debounce/index.js",
