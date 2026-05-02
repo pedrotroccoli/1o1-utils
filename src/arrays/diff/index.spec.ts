@@ -86,6 +86,37 @@ describe("diff", () => {
     expect(values).to.deep.equal([2]);
   });
 
+  it("should treat NaN as equal to NaN (SameValueZero) without iteratee", () => {
+    const result = diff({
+      array: [Number.NaN, 1, 2, Number.NaN, 3],
+      values: [Number.NaN],
+    });
+
+    expect(result).to.deep.equal([1, 2, 3]);
+  });
+
+  it("should treat NaN as equal to NaN when iteratee returns NaN", () => {
+    const result = diff({
+      array: [{ x: Number.NaN }, { x: 1 }, { x: 2 }],
+      values: [{ x: Number.NaN }],
+      iteratee: (item) => item.x,
+    });
+
+    expect(result).to.deep.equal([{ x: 1 }, { x: 2 }]);
+  });
+
+  it("should propagate errors thrown by iteratee", () => {
+    expect(() =>
+      diff({
+        array: [1, 2, 3],
+        values: [1],
+        iteratee: () => {
+          throw new Error("boom");
+        },
+      }),
+    ).to.throw("boom");
+  });
+
   it("should throw an error if array is not an array", () => {
     expect(() =>
       // @ts-expect-error - we want to test the error case
