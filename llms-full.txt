@@ -91,8 +91,8 @@ diff({
 });
 // => [{ id: 1 }, { id: 3 }]
 
-Throws: Error if array is not an array. Error if values is not an array.
-Without iteratee, uses Set for O(n+m) primitive lookup. With iteratee, builds a Set of mapped values from `values` and filters `array`. Order of `array` is preserved. Duplicates in `array` that are not in `values` are kept (matches lodash difference behavior). Inputs are not mutated.
+Throws: Error if array is not an array. Error if values is not an array. Errors thrown by `iteratee` propagate to the caller.
+Items are compared with SameValueZero (Set semantics): `NaN` equals `NaN` and `+0` equals `-0`. Without iteratee, uses Set for O(n+m) primitive lookup. With iteratee, builds a Set of mapped values from `values` and filters `array`. Order of `array` is preserved. Duplicates in `array` that are not in `values` are kept (matches lodash difference behavior). Inputs are not mutated.
 
 ---
 

@@ -51,8 +51,9 @@ diff({
 
 - Throws if `array` is not an array.
 - Throws if `values` is not an array.
-- Without `iteratee`, uses `Set` for O(n+m) primitive lookup.
-- With `iteratee`, the function is called for every element of both arrays.
+- Without `iteratee`, items are compared with SameValueZero (`Set` semantics) — `NaN` equals `NaN`, `+0` equals `-0`.
+- With `iteratee`, mapped values are compared with the same SameValueZero semantics; the function is called for every element of both arrays.
+- Errors thrown by `iteratee` propagate to the caller.
 - Order of `array` is preserved.
 - Duplicates in `array` that are not in `values` are kept.
 - Inputs are not mutated.
