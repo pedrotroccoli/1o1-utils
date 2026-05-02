@@ -143,9 +143,9 @@ describe("randomInt", () => {
   });
 
   it("should throw if max is Infinity", () => {
-    expect(() =>
-      randomInt({ min: 0, max: Number.POSITIVE_INFINITY }),
-    ).to.throw("The 'max' parameter must be an integer");
+    expect(() => randomInt({ min: 0, max: Number.POSITIVE_INFINITY })).to.throw(
+      "The 'max' parameter must be an integer",
+    );
   });
 
   it("should throw if range exceeds 2^53", () => {
