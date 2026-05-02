@@ -174,5 +174,10 @@
     "name": "unzip",
     "path": "dist/arrays/unzip/index.js",
     "limit": "1 kB"
+  },
+  {
+    "name": "range",
+    "path": "dist/arrays/range/index.js",
+    "limit": "1 kB"
   }
 ]

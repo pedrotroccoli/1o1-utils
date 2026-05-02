@@ -1,0 +1,73 @@
+---
+title: range
+description: Generate an array of numbers in a given range
+---
+
+Generates an array of numbers from `start` (inclusive) to `end` (exclusive), incrementing by `step`. If `step` is omitted, it defaults to `1` when `start <= end` and `-1` when `start > end`.
+
+## Import
+
+```ts
+import { range } from "1o1-utils";
+```
+
+```ts
+import { range } from "1o1-utils/range";
+```
+
+## Signature
+
+```ts
+function range({ start, end, step }: RangeParams): number[]
+```
+
+## Parameters
+
+| Name  | Type     | Required | Description                                                                |
+| ----- | -------- | -------- | -------------------------------------------------------------------------- |
+| start | `number` | No       | The starting value of the sequence (default `0`)                           |
+| end   | `number` | Yes      | The end value of the sequence (exclusive)                                  |
+| step  | `number` | No       | The increment between values (default `1`, or `-1` when `start > end`)     |
+
+## Returns
+
+`number[]` — An array of numbers from `start` to `end` stepping by `step`.
+
+## Examples
+
+```ts
+range({ end: 5 });
+// => [0, 1, 2, 3, 4]
+
+range({ start: 1, end: 5 });
+// => [1, 2, 3, 4]
+
+range({ start: 0, end: 10, step: 2 });
+// => [0, 2, 4, 6, 8]
+
+range({ start: 5, end: 0, step: -1 });
+// => [5, 4, 3, 2, 1]
+
+range({ start: 5, end: 0 });
+// => [5, 4, 3, 2, 1]
+```
+
+## Edge Cases
+
+- Throws if `start`, `end`, or `step` is not a number or is `NaN`.
+- Throws if `step` is `0`.
+- `end` is exclusive — it is never included in the output.
+- When `start === end`, returns an empty array.
+- When `step` is omitted and `start > end`, the step defaults to `-1`.
+- When the sign of `step` does not move from `start` toward `end` (e.g. `start: 0, end: 5, step: -1`), an empty array is returned.
+- Non-integer `step` values are supported (e.g. `step: 0.25`).
+
+## Also known as
+
+range, sequence, list, numbers, interval, arange
+
+## Prompt suggestion
+
+```text
+I'm using 1o1-utils (npm: https://www.npmjs.com/package/1o1-utils, GitHub: https://github.com/pedrotroccoli/1o1-utils, LLM context: https://pedrotroccoli.github.io/1o1-utils/llms.txt). Show me how to use range to generate a sequence of numbers with a custom step.
+```
