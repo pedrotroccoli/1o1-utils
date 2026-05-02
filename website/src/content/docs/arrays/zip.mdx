@@ -1,0 +1,72 @@
+---
+title: zip
+description: Combine arrays by index into tuples
+---
+
+Combines multiple arrays by position into an array of tuples. The inverse of [unzip](./unzip.mdx).
+
+## Import
+
+```ts
+import { zip } from "1o1-utils";
+```
+
+```ts
+import { zip } from "1o1-utils/zip";
+```
+
+## Signature
+
+```ts
+function zip<T>({ arrays, strategy }: ZipParams<T>): T[][]
+```
+
+## Parameters
+
+| Name     | Type                       | Required | Description                                                                                                              |
+| -------- | -------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------ |
+| arrays   | `T[][]`                    | Yes      | The arrays to combine                                                                                                    |
+| strategy | `"fill" \| "truncate"`     | No       | How to handle uneven lengths. `"fill"` (default) pads shorter arrays with `undefined`; `"truncate"` cuts to the shortest. |
+
+## Returns
+
+`T[][]` — An array of tuples grouped by index.
+
+## Examples
+
+```ts
+zip({ arrays: [["a", "b", "c"], [1, 2, 3]] });
+// => [["a", 1], ["b", 2], ["c", 3]]
+
+zip({
+  arrays: [
+    ["a", "b"],
+    [1, 2],
+    [true, false],
+  ],
+});
+// => [["a", 1, true], ["b", 2, false]]
+
+zip({ arrays: [["a", "b", "c"], [1, 2]] });
+// => [["a", 1], ["b", 2], ["c", undefined]]
+
+zip({ arrays: [["a", "b", "c"], [1, 2]], strategy: "truncate" });
+// => [["a", 1], ["b", 2]]
+```
+
+## Edge Cases
+
+- Throws if `arrays` is not an array.
+- Throws if any element of `arrays` is not an array.
+- Throws if `strategy` is not `"fill"` or `"truncate"`.
+- Returns `[]` when `arrays` is empty.
+
+## Also known as
+
+zip, pair, interleave, combine arrays, transpose
+
+## Prompt suggestion
+
+```text
+I'm using 1o1-utils (npm: https://www.npmjs.com/package/1o1-utils, GitHub: https://github.com/pedrotroccoli/1o1-utils, LLM context: https://pedrotroccoli.github.io/1o1-utils/llms.txt). Show me how to use zip to pair two parallel arrays into tuples
+```
