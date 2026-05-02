@@ -64,38 +64,82 @@ describe("range", () => {
     expect(() =>
       // @ts-expect-error - we want to test the error case
       range({ start: "0", end: 5 }),
-    ).to.throw("The 'start' parameter must be a number");
+    ).to.throw("The 'start' parameter must be a finite number");
   });
 
   it("should throw an error if end is not a number", () => {
     expect(() =>
       // @ts-expect-error - we want to test the error case
       range({ end: "5" }),
-    ).to.throw("The 'end' parameter must be a number");
+    ).to.throw("The 'end' parameter must be a finite number");
   });
 
   it("should throw an error if step is not a number", () => {
     expect(() =>
       // @ts-expect-error - we want to test the error case
       range({ start: 0, end: 5, step: "1" }),
-    ).to.throw("The 'step' parameter must be a number");
+    ).to.throw("The 'step' parameter must be a finite number");
   });
 
   it("should throw an error if start is NaN", () => {
     expect(() => range({ start: Number.NaN, end: 5 })).to.throw(
-      "The 'start' parameter must be a number",
+      "The 'start' parameter must be a finite number",
     );
   });
 
   it("should throw an error if end is NaN", () => {
     expect(() => range({ end: Number.NaN })).to.throw(
-      "The 'end' parameter must be a number",
+      "The 'end' parameter must be a finite number",
     );
   });
 
   it("should throw an error if step is NaN", () => {
     expect(() => range({ start: 0, end: 5, step: Number.NaN })).to.throw(
-      "The 'step' parameter must be a number",
+      "The 'step' parameter must be a finite number",
     );
+  });
+
+  it("should throw an error if start is Infinity", () => {
+    expect(() => range({ start: Number.POSITIVE_INFINITY, end: 5 })).to.throw(
+      "The 'start' parameter must be a finite number",
+    );
+  });
+
+  it("should throw an error if start is -Infinity", () => {
+    expect(() => range({ start: Number.NEGATIVE_INFINITY, end: 5 })).to.throw(
+      "The 'start' parameter must be a finite number",
+    );
+  });
+
+  it("should throw an error if end is Infinity", () => {
+    expect(() => range({ end: Number.POSITIVE_INFINITY })).to.throw(
+      "The 'end' parameter must be a finite number",
+    );
+  });
+
+  it("should throw an error if end is -Infinity", () => {
+    expect(() => range({ end: Number.NEGATIVE_INFINITY })).to.throw(
+      "The 'end' parameter must be a finite number",
+    );
+  });
+
+  it("should throw an error if step is Infinity", () => {
+    expect(() =>
+      range({ start: 0, end: 5, step: Number.POSITIVE_INFINITY }),
+    ).to.throw("The 'step' parameter must be a finite number");
+  });
+
+  it("should throw an error if step is -Infinity", () => {
+    expect(() =>
+      range({ start: 0, end: 5, step: Number.NEGATIVE_INFINITY }),
+    ).to.throw("The 'step' parameter must be a finite number");
+  });
+
+  it("should handle floating-point step without overshooting end", () => {
+    const result = range({ start: 0, end: 0.3, step: 0.1 });
+    expect(result.length).to.equal(3);
+    expect(result[0]).to.equal(0);
+    expect(result[1]).to.be.closeTo(0.1, 1e-9);
+    expect(result[2]).to.be.closeTo(0.2, 1e-9);
   });
 });

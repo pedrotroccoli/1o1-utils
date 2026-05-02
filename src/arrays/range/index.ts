@@ -25,18 +25,18 @@ import type { RangeParams, RangeResult } from "./types.js";
  *
  * @keywords range, sequence, list, numbers, interval, arange
  *
- * @throws Error if `start`, `end`, or `step` is not a number or is `NaN`
+ * @throws Error if `start`, `end`, or `step` is not a finite number
  * @throws Error if `step` is `0`
  */
 function range({ start = 0, end, step }: RangeParams): RangeResult {
-  if (typeof start !== "number" || Number.isNaN(start)) {
-    throw new Error("The 'start' parameter must be a number");
+  if (!Number.isFinite(start)) {
+    throw new Error("The 'start' parameter must be a finite number");
   }
-  if (typeof end !== "number" || Number.isNaN(end)) {
-    throw new Error("The 'end' parameter must be a number");
+  if (!Number.isFinite(end)) {
+    throw new Error("The 'end' parameter must be a finite number");
   }
-  if (step !== undefined && (typeof step !== "number" || Number.isNaN(step))) {
-    throw new Error("The 'step' parameter must be a number");
+  if (step !== undefined && !Number.isFinite(step)) {
+    throw new Error("The 'step' parameter must be a finite number");
   }
   if (step === 0) {
     throw new Error("The 'step' parameter cannot be 0");

@@ -54,7 +54,7 @@ range({ start: 5, end: 0 });
 
 ## Edge Cases
 
-- Throws if `start`, `end`, or `step` is not a number or is `NaN`.
+- Throws if `start`, `end`, or `step` is not a finite number (rejects `NaN`, `Infinity`, `-Infinity`).
 - Throws if `step` is `0`.
 - `end` is exclusive — it is never included in the output.
 - When `start === end`, returns an empty array.
