@@ -1,0 +1,76 @@
+---
+title: times
+description: Invoke a function N times and collect the results
+---
+
+Invokes `fn` `count` times and returns an array of the results. The function receives the current index (0-based) on each call.
+
+## Import
+
+```ts
+import { times } from "1o1-utils";
+```
+
+```ts
+import { times } from "1o1-utils/times";
+```
+
+## Signature
+
+```ts
+function times<T>(params: { count: number; fn: (index: number) => T }): T[]
+```
+
+## Parameters
+
+| Name  | Type                       | Required | Description                                          |
+| ----- | -------------------------- | -------- | ---------------------------------------------------- |
+| count | `number`                   | Yes      | The number of times to invoke `fn` (non-negative integer) |
+| fn    | `(index: number) => T`     | Yes      | The function to invoke; receives the current index   |
+
+## Returns
+
+`T[]` — An array of length `count` containing the results of each invocation.
+
+## Examples
+
+```ts
+times({ count: 3, fn: (i) => i * 2 });
+// => [0, 2, 4]
+```
+
+```ts
+// Generate a list of objects
+times({ count: 3, fn: (i) => ({ id: i, name: `item-${i}` }) });
+// => [{ id: 0, name: "item-0" }, { id: 1, name: "item-1" }, { id: 2, name: "item-2" }]
+```
+
+```ts
+// Random values
+times({ count: 5, fn: () => Math.random() });
+// => [0.42, 0.91, 0.13, 0.77, 0.05]
+```
+
+```ts
+// Zero count returns an empty array
+times({ count: 0, fn: (i) => i });
+// => []
+```
+
+## Edge Cases
+
+- Throws if `count` is not a number or is `NaN`.
+- Throws if `count` is not an integer (including `Infinity`).
+- Throws if `count` is negative.
+- Throws if `fn` is not a function.
+- `count: 0` returns `[]` and does not invoke `fn`.
+
+## Also known as
+
+repeat, range, fill, generate
+
+## Prompt suggestion
+
+```text
+I'm using 1o1-utils (npm: https://www.npmjs.com/package/1o1-utils, GitHub: https://github.com/pedrotroccoli/1o1-utils, LLM context: https://pedrotroccoli.github.io/1o1-utils/llms.txt). Show me how to use times to generate an array of N items by invoking a factory function.
+```

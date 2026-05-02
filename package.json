@@ -54,6 +54,9 @@
 		"zip",
 		"unzip",
 		"transpose",
+		"times",
+		"repeat",
+		"range",
 		"map-keys",
 		"map-values"
 	],
@@ -221,6 +224,10 @@
 		"./unzip": {
 			"import": "./dist/arrays/unzip/index.js",
 			"types": "./dist/arrays/unzip/index.d.ts"
+		},
+		"./times": {
+			"import": "./dist/arrays/times/index.js",
+			"types": "./dist/arrays/times/index.d.ts"
 		}
 	},
 	"scripts": {

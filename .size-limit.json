@@ -184,5 +184,10 @@
     "name": "unzip",
     "path": "dist/arrays/unzip/index.js",
     "limit": "1 kB"
+  },
+  {
+    "name": "times",
+    "path": "dist/arrays/times/index.js",
+    "limit": "1 kB"
   }
 ]
