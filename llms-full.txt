@@ -231,6 +231,88 @@ Throws: Error if array is not an array. Error if any element of array is not an 
 
 ---
 
+## Numbers
+
+### clamp
+
+Restrict a number to an inclusive range. Returns `min` if `value` is below the range, `max` if above, otherwise `value`. If `min > max`, the bounds are swapped automatically.
+
+Import: import { clamp } from "1o1-utils/clamp";
+
+Signature:
+function clamp({ value, min, max }: ClampParams): number
+
+Parameters:
+- value (number, required): The number to clamp
+- min (number, required): The lower bound (inclusive)
+- max (number, required): The upper bound (inclusive)
+
+Returns: number — The clamped number within `[min, max]`.
+
+Example:
+clamp({ value: 15, min: 0, max: 10 }); // 10
+clamp({ value: -5, min: 0, max: 10 }); // 0
+clamp({ value: 5, min: 0, max: 10 });  // 5
+clamp({ value: 5, min: 10, max: 0 });  // 5 (bounds swapped)
+
+Throws: Error if any of `value`, `min`, or `max` is not a number or is `NaN`. Works with `Infinity` bounds and floating-point values. A zero-width range (`min === max`) always returns that bound.
+
+---
+
+### inRange
+
+Check if a number falls within a range. Start is inclusive, end is exclusive. If `start > end`, the bounds are swapped automatically.
+
+Import: import { inRange } from "1o1-utils/in-range";
+
+Signature:
+function inRange({ value, start, end }: InRangeParams): boolean
+
+Parameters:
+- value (number, required): The number to check
+- start (number, required): The start of the range (inclusive)
+- end (number, required): The end of the range (exclusive)
+
+Returns: boolean — `true` if `value` is within `[start, end)`, otherwise `false`.
+
+Example:
+inRange({ value: 3, start: 1, end: 5 }); // true
+inRange({ value: 5, start: 1, end: 5 }); // false — end is exclusive
+inRange({ value: 1, start: 1, end: 5 }); // true  — start is inclusive
+inRange({ value: 3, start: 5, end: 1 }); // true  (bounds swapped)
+
+Throws: Error if any of `value`, `start`, or `end` is not a number or is `NaN`. A zero-width range (`start === end`) always returns `false`. Works with `Infinity` bounds.
+
+---
+
+### randomInt
+
+Generate a cryptographically-secure random integer in the inclusive range `[min, max]`. Uses `crypto.getRandomValues` with rejection sampling — no modulo bias and no `Math.random`. If `min > max`, the bounds are swapped automatically.
+
+Import: import { randomInt } from "1o1-utils/random-int";
+
+Signature:
+function randomInt({ min, max }: RandomIntParams): number
+
+Parameters:
+- min (number, required): The lower bound (inclusive, must be a safe integer)
+- max (number, required): The upper bound (inclusive, must be a safe integer)
+
+Returns: number — A random integer in `[min, max]`.
+
+Example:
+randomInt({ min: 1, max: 10 });  // 7
+randomInt({ min: 0, max: 100 }); // 42
+randomInt({ min: 0, max: 1 });   // 0 or 1
+randomInt({ min: -5, max: 5 });  // -3
+randomInt({ min: 10, max: 1 });  // still in [1, 10] (bounds swapped)
+
+Throws: Error if `min` or `max` is not a number, is `NaN`, or is not an integer (`Infinity` and floats are rejected). Error if the range `max - min + 1` exceeds `2^53`.
+
+Backed by `crypto.getRandomValues`, suitable for tokens, IDs, and any context where unpredictability matters. Roughly 30× slower than `Math.random`-based alternatives (~1M ops/s vs ~30M ops/s) — the trade-off is bias-free, cryptographically-secure output. The `min === max` short-circuit avoids the crypto call.
+
+---
+
 ## Objects
 
 ### cloneDeep

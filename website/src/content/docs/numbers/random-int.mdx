@@ -1,0 +1,86 @@
+---
+title: randomInt
+description: Generate a cryptographically-secure random integer in a range
+---
+
+Generates a cryptographically-secure random integer in the inclusive range `[min, max]`. Uses `crypto.getRandomValues` with rejection sampling — no modulo bias and no `Math.random`. If `min` is greater than `max`, the bounds are swapped automatically.
+
+## Import
+
+```ts
+import { randomInt } from "1o1-utils";
+```
+
+```ts
+import { randomInt } from "1o1-utils/random-int";
+```
+
+## Signature
+
+```ts
+function randomInt(params: { min: number; max: number }): number
+```
+
+## Parameters
+
+| Name | Type     | Required | Description                                  |
+| ---- | -------- | -------- | -------------------------------------------- |
+| min  | `number` | Yes      | The lower bound (inclusive, safe integer)    |
+| max  | `number` | Yes      | The upper bound (inclusive, safe integer)    |
+
+## Returns
+
+`number` — A random integer in `[min, max]`.
+
+## Examples
+
+```ts
+randomInt({ min: 1, max: 10 });  // 7
+randomInt({ min: 0, max: 100 }); // 42
+randomInt({ min: 0, max: 1 });   // 0 or 1
+```
+
+```ts
+// Negative ranges and ranges spanning zero
+randomInt({ min: -10, max: -1 }); // -4
+randomInt({ min: -5, max: 5 });   //  2
+```
+
+```ts
+// Bounds are swapped automatically when min > max
+randomInt({ min: 10, max: 1 }); // still in [1, 10]
+```
+
+## Edge Cases
+
+- Throws if any of `min` or `max` is not a number, is `NaN`, or is not an integer (`Infinity` and floats are rejected).
+- Throws if the range `max - min + 1` exceeds `2^53`.
+- A zero-width range (`min === max`) always returns that bound.
+- Bounds are swapped silently when `min > max`.
+
+## Security
+
+Backed by `crypto.getRandomValues`, not `Math.random`. Suitable for tokens, IDs, and any context where unpredictability matters. Rejection sampling avoids the modulo bias that simple `Math.floor(Math.random() * range)` introduces.
+
+## Performance
+
+Cryptographically-secure randomness has a cost: a `crypto.getRandomValues` syscall per sample. Expect roughly **~1M ops/s** versus **~30M ops/s** for `Math.random`-based alternatives — about 30× slower. The trade-off is bias-free, cryptographically-secure output. For non-security uses where raw speed matters more than unpredictability, prefer `Math.floor(Math.random() * (max - min + 1)) + min`.
+
+| Scenario          | `randomInt` | `lodash.random` | `Math.random`-based |
+| ----------------- | ----------- | --------------- | ------------------- |
+| small (1–10)      | 987K ops/s  | 30.6M ops/s     | 31.1M ops/s         |
+| medium (0–1M)     | 1.0M ops/s  | 28.3M ops/s     | 29.8M ops/s         |
+| wide (0..2^40)    | 973K ops/s  | 31.1M ops/s     | 31.5M ops/s         |
+| at-bound (5..5)   | 18.0M ops/s | 21.2M ops/s     | 31.9M ops/s         |
+
+Numbers from `tinybench` on Node 20+. The `at-bound` row reflects the `min === max` short-circuit (no crypto call).
+
+## Also known as
+
+random, secure random, integer
+
+## Prompt suggestion
+
+```text
+I'm using 1o1-utils (npm: https://www.npmjs.com/package/1o1-utils, GitHub: https://github.com/pedrotroccoli/1o1-utils, LLM context: https://pedrotroccoli.github.io/1o1-utils/llms.txt). Show me how to use randomInt to generate a secure 6-digit verification code.
+```

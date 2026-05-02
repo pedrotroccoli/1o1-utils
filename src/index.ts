@@ -19,6 +19,7 @@ export { once } from "./functions/once/index.js";
 export { pipe } from "./functions/pipe/index.js";
 export { clamp } from "./numbers/clamp/index.js";
 export { inRange } from "./numbers/in-range/index.js";
+export { randomInt } from "./numbers/random-int/index.js";
 export { cloneDeep } from "./objects/clone-deep/index.js";
 export { deepMerge } from "./objects/deep-merge/index.js";
 export { defaults } from "./objects/defaults/index.js";

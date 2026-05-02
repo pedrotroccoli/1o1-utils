@@ -211,6 +211,10 @@
 		"./unzip": {
 			"import": "./dist/arrays/unzip/index.js",
 			"types": "./dist/arrays/unzip/index.d.ts"
+		},
+		"./random-int": {
+			"import": "./dist/numbers/random-int/index.js",
+			"types": "./dist/numbers/random-int/index.d.ts"
 		}
 	},
 	"scripts": {

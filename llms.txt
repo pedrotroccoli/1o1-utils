@@ -21,6 +21,12 @@
 - [unzip](https://pedrotroccoli.github.io/1o1-utils/arrays/unzip/): Split an array of grouped tuples back into separate arrays
 - [zip](https://pedrotroccoli.github.io/1o1-utils/arrays/zip/): Combine arrays by index into tuples, with fill or truncate strategy
 
+## Numbers
+
+- [clamp](https://pedrotroccoli.github.io/1o1-utils/numbers/clamp/): Restrict a number to an inclusive range, with automatic bound swap when `min > max`
+- [inRange](https://pedrotroccoli.github.io/1o1-utils/numbers/in-range/): Check if a number falls within `[start, end)` (start inclusive, end exclusive)
+- [randomInt](https://pedrotroccoli.github.io/1o1-utils/numbers/random-int/): Generate a cryptographically-secure random integer in an inclusive range using `crypto.getRandomValues` and rejection sampling
+
 ## Objects
 
 - [cloneDeep](https://pedrotroccoli.github.io/1o1-utils/objects/clone-deep/): Deep clone any value — handles objects, arrays, Date, RegExp, Map, Set, typed arrays, and circular references
