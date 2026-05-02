@@ -57,6 +57,7 @@
 		"times",
 		"repeat",
 		"range",
+		"sequence",
 		"map-keys",
 		"map-values"
 	],
@@ -196,6 +197,10 @@
 		"./pipe": {
 			"import": "./dist/functions/pipe/index.js",
 			"types": "./dist/functions/pipe/index.d.ts"
+		},
+		"./range": {
+			"import": "./dist/arrays/range/index.js",
+			"types": "./dist/arrays/range/index.d.ts"
 		},
 		"./shallow-equal": {
 			"import": "./dist/comparisons/shallow-equal/index.js",
