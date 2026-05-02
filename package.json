@@ -53,7 +53,9 @@
 		"bound",
 		"zip",
 		"unzip",
-		"transpose"
+		"transpose",
+		"map-keys",
+		"map-values"
 	],
 	"author": "Pedro Troccoli <contact@pedrotroccoli.com>",
 	"license": "MIT",
@@ -135,6 +137,14 @@
 		"./is-empty": {
 			"import": "./dist/objects/is-empty/index.js",
 			"types": "./dist/objects/is-empty/index.d.ts"
+		},
+		"./map-keys": {
+			"import": "./dist/objects/map-keys/index.js",
+			"types": "./dist/objects/map-keys/index.d.ts"
+		},
+		"./map-values": {
+			"import": "./dist/objects/map-values/index.js",
+			"types": "./dist/objects/map-values/index.d.ts"
 		},
 		"./sleep": {
 			"import": "./dist/async/sleep/index.js",

@@ -70,6 +70,8 @@ import { pick } from "1o1-utils/pick";
 | `deepMerge` | Recursively merge objects | `1o1-utils/deep-merge` |
 | `get` | Read a nested value via dot notation | `1o1-utils/get` |
 | `isEmpty` | Check if a value is empty | `1o1-utils/is-empty` |
+| `mapKeys` | Transform object keys via an iteratee | `1o1-utils/map-keys` |
+| `mapValues` | Transform object values via an iteratee | `1o1-utils/map-values` |
 | `omit` | Remove keys from an object | `1o1-utils/omit` |
 | `pick` | Extract keys from an object | `1o1-utils/pick` |
 | `set` | Set a nested value immutably via dot notation | `1o1-utils/set` |
