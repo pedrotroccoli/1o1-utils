@@ -66,6 +66,16 @@
     "limit": "1 kB"
   },
   {
+    "name": "map-keys",
+    "path": "dist/objects/map-keys/index.js",
+    "limit": "1 kB"
+  },
+  {
+    "name": "map-values",
+    "path": "dist/objects/map-values/index.js",
+    "limit": "1 kB"
+  },
+  {
     "name": "omit",
     "path": "dist/objects/omit/index.js",
     "limit": "2 kB"
@@ -83,6 +93,11 @@
   {
     "name": "capitalize",
     "path": "dist/strings/capitalize/index.js",
+    "limit": "1 kB"
+  },
+  {
+    "name": "escape-reg-exp",
+    "path": "dist/strings/escape-reg-exp/index.js",
     "limit": "1 kB"
   },
   {
@@ -173,6 +188,16 @@
   {
     "name": "unzip",
     "path": "dist/arrays/unzip/index.js",
+    "limit": "1 kB"
+  },
+  {
+    "name": "range",
+    "path": "dist/arrays/range/index.js",
+    "limit": "1 kB"
+  },
+  {
+    "name": "times",
+    "path": "dist/arrays/times/index.js",
     "limit": "1 kB"
   },
   {

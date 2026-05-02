@@ -155,6 +155,35 @@ Supports both numeric and string comparisons.
 
 ---
 
+### times
+
+Invoke a function N times with the current index (0-based) and return an array of the results.
+
+Import: import { times } from "1o1-utils/times";
+
+Signature:
+function times<T>({ count, fn }: TimesParams<T>): T[]
+
+Parameters:
+- count (number, required): How many times to invoke fn (non-negative integer)
+- fn ((index: number) => T, required): Function called with the current index on each iteration
+
+Returns: T[]
+
+Example:
+times({ count: 3, fn: (i) => i * 2 });
+// => [0, 2, 4]
+
+times({ count: 5, fn: () => Math.random() });
+// => [0.42, 0.91, 0.13, 0.77, 0.05]
+
+times({ count: 0, fn: (i) => i });
+// => []
+
+Throws: Error if count is not a number or is NaN. Error if count is not an integer (Infinity rejected). Error if count is negative. Error if fn is not a function.
+
+---
+
 ### unique
 
 Return a new array with duplicate elements removed. For objects, specify a key to determine uniqueness.
@@ -596,6 +625,29 @@ capitalize({ str: "hELLO" });                     // => "Hello"
 
 Throws: Error if str is not a string.
 Returns "" for empty string.
+
+---
+
+### escapeRegExp
+
+Escape regex metacharacters in a string so it can be safely interpolated into a `RegExp`. Prevents regex injection when user input is used in a pattern.
+
+Import: import { escapeRegExp } from "1o1-utils/escape-reg-exp";
+
+Signature:
+function escapeRegExp({ str }: EscapeRegExpParams): string
+
+Parameters:
+- str (string, required): The string to escape
+
+Returns: string
+
+Example:
+escapeRegExp({ str: "[hello](world)" }); // => "\\[hello\\]\\(world\\)"
+new RegExp(escapeRegExp({ str: userInput }), "i");
+
+Throws: Error if str is not a string.
+Escapes the 12 ECMAScript regex specials: . * + ? ^ $ { } ( ) | [ ] \
 
 ---
 
