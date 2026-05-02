@@ -66,6 +66,16 @@
     "limit": "1 kB"
   },
   {
+    "name": "map-keys",
+    "path": "dist/objects/map-keys/index.js",
+    "limit": "1 kB"
+  },
+  {
+    "name": "map-values",
+    "path": "dist/objects/map-values/index.js",
+    "limit": "1 kB"
+  },
+  {
     "name": "omit",
     "path": "dist/objects/omit/index.js",
     "limit": "2 kB"

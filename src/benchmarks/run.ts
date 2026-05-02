@@ -193,6 +193,16 @@ const SUITE_META: Record<string, { slug: string; description: string }> = {
     description:
       "Splits an array of grouped tuples back into separate arrays — the inverse of `zip`. Compared against `lodash.unzip` and a native `for` loop hardcoded for the fixed shape.",
   },
+  mapKeys: {
+    slug: "map-keys",
+    description:
+      "Transforms an object's keys via an iteratee function. Compared against `lodash.mapKeys` and a native `Object.fromEntries(Object.entries().map())` approach.",
+  },
+  mapValues: {
+    slug: "map-values",
+    description:
+      "Transforms an object's values via an iteratee function. Compared against `lodash.mapValues` and a native `Object.fromEntries(Object.entries().map())` approach.",
+  },
 };
 
 function getSizes(rows: TaskRow[]): string[] {
