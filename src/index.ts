@@ -26,6 +26,8 @@ export { defaults } from "./objects/defaults/index.js";
 export { defaultsDeep } from "./objects/defaults-deep/index.js";
 export { get } from "./objects/get/index.js";
 export { isEmpty } from "./objects/is-empty/index.js";
+export { mapKeys } from "./objects/map-keys/index.js";
+export { mapValues } from "./objects/map-values/index.js";
 export { omit } from "./objects/omit/index.js";
 export { pick } from "./objects/pick/index.js";
 export { set } from "./objects/set/index.js";
