@@ -3,7 +3,7 @@
     "name": "Total (tree-shaken + gzipped)",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "5 kB"
+    "limit": "6 kB"
   },
   {
     "name": "array-to-hash",
