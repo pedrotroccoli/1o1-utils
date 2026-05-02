@@ -10,6 +10,10 @@ for (let i = 0; i < 50; i++) {
 }
 
 const double = (value: unknown) => (value as number) * 2;
+const doubleEntry = ([k, v]: [string, unknown]): [string, number] => [
+  k,
+  (v as number) * 2,
+];
 
 const bench = new Bench({ name: "mapValues", time: 1000 });
 
@@ -18,12 +22,10 @@ bench
     mapValues({ obj: small, iteratee: double });
   })
   .add("lodash (small)", () => {
-    lodashMapValues(small, (value) => (value as number) * 2);
+    lodashMapValues(small, double);
   })
   .add("native (small)", () => {
-    Object.fromEntries(
-      Object.entries(small).map(([k, v]) => [k, (v as number) * 2]),
-    );
+    Object.fromEntries(Object.entries(small).map(doubleEntry));
   });
 
 bench
@@ -31,12 +33,10 @@ bench
     mapValues({ obj: wide, iteratee: double });
   })
   .add("lodash (wide)", () => {
-    lodashMapValues(wide, (value) => (value as number) * 2);
+    lodashMapValues(wide, double);
   })
   .add("native (wide)", () => {
-    Object.fromEntries(
-      Object.entries(wide).map(([k, v]) => [k, (v as number) * 2]),
-    );
+    Object.fromEntries(Object.entries(wide).map(doubleEntry));
   });
 
 export { bench };

@@ -8,12 +8,12 @@ Transforms an object's keys via an iteratee function. Compared against `lodash.m
 
 | Size | 1o1-utils | lodash | native | Fastest |
 | ------ | ------ | ------ | ------ | ------ |
-| small | 250ns · 4.0M ops/s | 250ns · 4.0M ops/s | 334ns · 3.0M ops/s | lodash · on par vs lodash |
-| wide | 7.1µs · 140.4K ops/s | 6.3µs · 159.0K ops/s | 11.3µs · 88.2K ops/s | lodash · on par vs lodash |
+| small | 250ns · 4.0M ops/s | 209ns · 4.8M ops/s | 333ns · 3.0M ops/s | lodash · on par vs lodash |
+| wide | 6.6µs · 151.9K ops/s | 5.6µs · 177.8K ops/s | 10.6µs · 94.5K ops/s | lodash · on par vs lodash |
 
 ```mermaid
 xychart-beta horizontal
   title "mapKeys — ops/s at wide items"
   x-axis ["lodash", "1o1-utils", "native"]
-  bar [158957, 140351, 88238]
+  bar [177778, 151906, 94482]
 ```

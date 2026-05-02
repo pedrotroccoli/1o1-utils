@@ -39,6 +39,16 @@ describe("mapKeys", () => {
     expect(result).to.deep.equal({ "1": 1, "2": 2 });
   });
 
+  it("should coerce symbol iteratee return via String()", () => {
+    const result = mapKeys({
+      obj: { a: 1 },
+      iteratee: () => Symbol("desc"),
+    });
+
+    expect(Object.keys(result)).to.deep.equal(["Symbol(desc)"]);
+    expect(result["Symbol(desc)"]).to.equal(1);
+  });
+
   it("should let last write win on key collisions", () => {
     const result = mapKeys({
       obj: { a: 1, b: 2, c: 3 },
@@ -84,19 +94,17 @@ describe("mapKeys", () => {
   });
 
   it("should ignore inherited properties", () => {
-    const proto = { inherited: "nope" };
+    const proto = { inherited: "from-proto" };
     const obj = Object.create(proto) as Record<string, unknown>;
     obj.own = "yes";
 
-    // isPlainObject rejects objects with non-Object constructor
-    // so use a plain object literal that has its prototype mutated indirectly:
-    const ok = { own: "yes" };
     const result = mapKeys({
-      obj: ok,
+      obj,
       iteratee: (_v, k) => k.toUpperCase(),
     });
 
     expect(result).to.deep.equal({ OWN: "yes" });
+    expect(result).to.not.have.property("INHERITED");
   });
 
   it("should throw if obj is not a plain object", () => {

@@ -10,6 +10,10 @@ for (let i = 0; i < 50; i++) {
 }
 
 const upper = (_value: unknown, key: string) => key.toUpperCase();
+const upperEntry = ([k, v]: [string, unknown]): [string, unknown] => [
+  k.toUpperCase(),
+  v,
+];
 
 const bench = new Bench({ name: "mapKeys", time: 1000 });
 
@@ -18,12 +22,10 @@ bench
     mapKeys({ obj: small, iteratee: upper });
   })
   .add("lodash (small)", () => {
-    lodashMapKeys(small, (_value, key) => key.toUpperCase());
+    lodashMapKeys(small, upper);
   })
   .add("native (small)", () => {
-    Object.fromEntries(
-      Object.entries(small).map(([k, v]) => [k.toUpperCase(), v]),
-    );
+    Object.fromEntries(Object.entries(small).map(upperEntry));
   });
 
 bench
@@ -31,12 +33,10 @@ bench
     mapKeys({ obj: wide, iteratee: upper });
   })
   .add("lodash (wide)", () => {
-    lodashMapKeys(wide, (_value, key) => key.toUpperCase());
+    lodashMapKeys(wide, upper);
   })
   .add("native (wide)", () => {
-    Object.fromEntries(
-      Object.entries(wide).map(([k, v]) => [k.toUpperCase(), v]),
-    );
+    Object.fromEntries(Object.entries(wide).map(upperEntry));
   });
 
 export { bench };
