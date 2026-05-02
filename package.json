@@ -47,7 +47,10 @@
 		"tryit",
 		"try-catch",
 		"is-nil",
-		"nullish"
+		"nullish",
+		"clamp",
+		"restrict",
+		"bound"
 	],
 	"author": "Pedro Troccoli <contact@pedrotroccoli.com>",
 	"license": "MIT",
@@ -193,6 +196,10 @@
 		"./is-nil": {
 			"import": "./dist/comparisons/is-nil/index.js",
 			"types": "./dist/comparisons/is-nil/index.d.ts"
+		},
+		"./clamp": {
+			"import": "./dist/numbers/clamp/index.js",
+			"types": "./dist/numbers/clamp/index.d.ts"
 		}
 	},
 	"scripts": {

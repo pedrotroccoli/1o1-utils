@@ -1,0 +1,70 @@
+---
+title: clamp
+description: Clamp a number to a given range
+---
+
+Clamps a number to a given range. Returns `min` if `value` is below the range, `max` if above, otherwise `value`. If `min` is greater than `max`, the bounds are swapped automatically.
+
+## Import
+
+```ts
+import { clamp } from "1o1-utils";
+```
+
+```ts
+import { clamp } from "1o1-utils/clamp";
+```
+
+## Signature
+
+```ts
+function clamp(params: { value: number; min: number; max: number }): number
+```
+
+## Parameters
+
+| Name  | Type     | Required | Description                          |
+| ----- | -------- | -------- | ------------------------------------ |
+| value | `number` | Yes      | The number to clamp                  |
+| min   | `number` | Yes      | The lower bound (inclusive)          |
+| max   | `number` | Yes      | The upper bound (inclusive)          |
+
+## Returns
+
+`number` — The clamped number within `[min, max]`.
+
+## Examples
+
+```ts
+clamp({ value: 15, min: 0, max: 10 }); // 10
+clamp({ value: -5, min: 0, max: 10 }); // 0
+clamp({ value: 5, min: 0, max: 10 });  // 5
+```
+
+```ts
+// Bounds are swapped automatically when min > max
+clamp({ value: 5, min: 10, max: 0 }); // 5
+```
+
+```ts
+// Floating-point values
+clamp({ value: 1.5, min: 1, max: 2 }); // 1.5
+clamp({ value: 2.5, min: 1, max: 2 }); // 2
+```
+
+## Edge Cases
+
+- Throws if any of `value`, `min`, or `max` is not a number or is `NaN`.
+- A zero-width range (`min === max`) always returns that bound.
+- Works with `Infinity` bounds — e.g. `{ value: 1e10, min: 0, max: Infinity }` returns `1e10`.
+- When `min > max`, the bounds are swapped silently.
+
+## Also known as
+
+restrict, bound, constrain, limit, range cap
+
+## Prompt suggestion
+
+```text
+I'm using 1o1-utils (npm: https://www.npmjs.com/package/1o1-utils, GitHub: https://github.com/pedrotroccoli/1o1-utils, LLM context: https://pedrotroccoli.github.io/1o1-utils/llms.txt). Show me how to use clamp to restrict a slider value between min and max.
+```

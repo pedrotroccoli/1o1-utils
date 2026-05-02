@@ -159,5 +159,10 @@
     "name": "is-nil",
     "path": "dist/comparisons/is-nil/index.js",
     "limit": "1 kB"
+  },
+  {
+    "name": "clamp",
+    "path": "dist/numbers/clamp/index.js",
+    "limit": "1 kB"
   }
 ]
