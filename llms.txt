@@ -18,6 +18,7 @@
 - [groupBy](https://pedrotroccoli.github.io/1o1-utils/arrays/group-by/): Group array elements by a property value
 - [range](https://pedrotroccoli.github.io/1o1-utils/arrays/range/): Generate an array of numbers in a given range with optional start and step
 - [sortBy](https://pedrotroccoli.github.io/1o1-utils/arrays/sort-by/): Sort an array of objects by a property with dot notation support
+- [times](https://pedrotroccoli.github.io/1o1-utils/arrays/times/): Invoke a function N times with the current index and collect the results
 - [unique](https://pedrotroccoli.github.io/1o1-utils/arrays/unique/): Remove duplicate elements from an array by value or key
 - [unzip](https://pedrotroccoli.github.io/1o1-utils/arrays/unzip/): Split an array of grouped tuples back into separate arrays
 - [zip](https://pedrotroccoli.github.io/1o1-utils/arrays/zip/): Combine arrays by index into tuples, with fill or truncate strategy
@@ -30,6 +31,8 @@
 - [defaultsDeep](https://pedrotroccoli.github.io/1o1-utils/objects/defaults-deep/): Recursively fill `undefined` properties with defaults from another object
 - [get](https://pedrotroccoli.github.io/1o1-utils/objects/get/): Read a nested value from an object via dot notation with a default fallback
 - [isEmpty](https://pedrotroccoli.github.io/1o1-utils/objects/is-empty/): Check if a value is empty (strings, arrays, objects, Maps, Sets)
+- [mapKeys](https://pedrotroccoli.github.io/1o1-utils/objects/map-keys/): Transform an object's keys via an iteratee function
+- [mapValues](https://pedrotroccoli.github.io/1o1-utils/objects/map-values/): Transform an object's values via an iteratee function
 - [omit](https://pedrotroccoli.github.io/1o1-utils/objects/omit/): Create an object with specified keys removed (supports dot notation)
 - [pick](https://pedrotroccoli.github.io/1o1-utils/objects/pick/): Create an object with only the specified keys (supports dot notation)
 - [set](https://pedrotroccoli.github.io/1o1-utils/objects/set/): Set a nested value via dot notation without mutating the input
