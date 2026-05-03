@@ -37,6 +37,7 @@ export { pick } from "./objects/pick/index.js";
 export { set } from "./objects/set/index.js";
 export { capitalize } from "./strings/capitalize/index.js";
 export { escapeRegExp } from "./strings/escape-reg-exp/index.js";
+export { normalizeEmail } from "./strings/normalize-email/index.js";
 export { slugify } from "./strings/slugify/index.js";
 export { transformCase } from "./strings/transform-case/index.js";
 export { truncate } from "./strings/truncate/index.js";
