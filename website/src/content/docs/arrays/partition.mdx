@@ -3,7 +3,13 @@ title: partition
 description: Split an array into two groups based on a predicate
 ---
 
+import Playground from "../../../components/Playground.tsx";
+
 Splits an array into two groups based on a predicate. The first group contains items for which the predicate returns truthy; the second contains the rest. Order is preserved within each group. Supports a type-guard predicate (`(item) => item is U`) to narrow the resulting tuple to `[U[], Exclude<T, U>[]]`.
+
+## Try it
+
+<Playground client:only="react" utilityId="partition" />
 
 ## Import
 

@@ -3,7 +3,13 @@ title: waitForCondition
 description: Poll a sync or async predicate until truthy, rejecting on timeout
 ---
 
+import Playground from "../../../components/Playground.tsx";
+
 Polls a `condition` function at a given `interval` until it returns truthy or the `timeout` elapses. Supports synchronous and asynchronous predicates, an optional `AbortSignal`, and a custom timeout `message`. Rejects with `TimeoutError` (the same class exported by [`withTimeout`](/async/with-timeout)) on timeout, so a single `instanceof` check covers both utilities.
+
+## Try it
+
+<Playground client:only="react" utilityId="wait-for-condition" />
 
 ## Import
 

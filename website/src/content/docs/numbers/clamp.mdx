@@ -3,7 +3,13 @@ title: clamp
 description: Clamp a number to a given range
 ---
 
+import Playground from "../../../components/Playground.tsx";
+
 Clamps a number to a given range. Returns `min` if `value` is below the range, `max` if above, otherwise `value`. If `min` is greater than `max`, the bounds are swapped automatically.
+
+## Try it
+
+<Playground client:only="react" utilityId="clamp" />
 
 ## Import
 

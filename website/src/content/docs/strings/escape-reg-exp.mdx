@@ -3,7 +3,13 @@ title: escapeRegExp
 description: Escape regex metacharacters so a string can be safely interpolated into a RegExp
 ---
 
+import Playground from "../../../components/Playground.tsx";
+
 Escapes the 12 ECMAScript regex metacharacters (`. * + ? ^ $ { } ( ) | [ ] \`) so the string can be safely interpolated into a `RegExp`. Prevents regex injection when user input is used in a pattern.
+
+## Try it
+
+<Playground client:only="react" utilityId="escape-reg-exp" />
 
 ## Import
 

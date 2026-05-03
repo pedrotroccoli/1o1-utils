@@ -3,7 +3,13 @@ title: defaultsDeep
 description: Recursively fill undefined properties with defaults from another object
 ---
 
+import Playground from "../../../components/Playground.tsx";
+
 Recursively assigns default values from `source` to `target`. For each property, if the target's value is `undefined` (or missing), the source's value is used. When both sides have plain objects at the same key, they are merged recursively. Existing `null`, `0`, `""`, `false`, and array values in the target are preserved.
+
+## Try it
+
+<Playground client:only="react" utilityId="defaults-deep" />
 
 ## Import
 

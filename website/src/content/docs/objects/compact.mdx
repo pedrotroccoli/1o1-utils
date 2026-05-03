@@ -3,7 +3,13 @@ title: compact
 description: Remove falsy values from an object
 ---
 
+import Playground from "../../../components/Playground.tsx";
+
 Creates a new object with all falsy values removed. Pass `keep` to preserve specific falsy values that should survive.
+
+## Try it
+
+<Playground client:only="react" utilityId="compact" />
 
 Falsy values are `false`, `0`, `-0`, `0n`, `""`, `null`, `undefined`, and `NaN`. Matches in `keep` use `Object.is`, so `0` vs `-0` and `NaN` are handled exactly.
 

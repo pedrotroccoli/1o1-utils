@@ -3,7 +3,13 @@ title: replace
 description: Replace element(s) in an array by predicate, with optional updater function
 ---
 
+import Playground from "../../../components/Playground.tsx";
+
 Replaces element(s) in an array by predicate. Returns a new array — the input is never mutated. By default, only the first matching item is replaced; pass `all: true` to replace every match. `value` accepts either a static replacement or an updater function `(item, index) => newItem` that derives the new value from the matched item.
+
+## Try it
+
+<Playground client:only="react" utilityId="replace" />
 
 ## Import
 

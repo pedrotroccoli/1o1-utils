@@ -3,7 +3,13 @@ title: timeFormatToSeconds
 description: Parse a MM:SS or H:MM:SS time string into seconds
 ---
 
+import Playground from "../../../components/Playground.tsx";
+
 Parses a time-format string (`MM:SS` or `[H]H:MM:SS`) into a total number of seconds. Inverse of `secondsToTimeFormat`. Hours are not capped; minutes and seconds must be in `0..59`.
+
+## Try it
+
+<Playground client:only="react" utilityId="time-format-to-seconds" />
 
 ## Import
 

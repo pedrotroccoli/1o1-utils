@@ -3,7 +3,13 @@ title: isValidPhone
 description: Check if a string is a well-formed E.164 international phone number
 ---
 
+import Playground from "../../../components/Playground.tsx";
+
 Validates whether a string is a well-formed E.164 international phone number. Requires a leading `+`, a non-zero country code, and 1–15 total digits. Common readability separators — spaces, hyphens, parentheses, and dots — are stripped before validation; any other character causes rejection.
+
+## Try it
+
+<Playground client:only="react" utilityId="is-valid-phone" />
 
 ## Import
 

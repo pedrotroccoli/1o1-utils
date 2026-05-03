@@ -3,7 +3,13 @@ title: cloneDeep
 description: Create a deep clone of a value
 ---
 
+import Playground from "../../../components/Playground.tsx";
+
 Creates a deep clone of any value. Handles plain objects, arrays, `Date`, `RegExp`, `Map`, `Set`, typed arrays, `ArrayBuffer`, `Error`, and circular references. Functions are copied by reference.
+
+## Try it
+
+<Playground client:only="react" utilityId="clone-deep" />
 
 Native `structuredClone` is a close alternative but throws on functions, class instances, and DOM nodes. `cloneDeep` covers those gaps and is 2–4× faster than `lodash.cloneDeep`.
 
