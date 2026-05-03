@@ -1,4 +1,5 @@
 import lodashOmitBy from "lodash/omitBy.js";
+import { shake as radashShake } from "radash";
 import { Bench } from "tinybench";
 import { omitBy } from "./index.js";
 
@@ -23,6 +24,9 @@ bench
   })
   .add("lodash", () => {
     lodashOmitBy(sampleObj, isNull);
+  })
+  .add("radash (shake)", () => {
+    radashShake(sampleObj, isNull);
   });
 
 export { bench };
