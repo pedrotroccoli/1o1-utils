@@ -68,7 +68,9 @@
     "regex-escape",
     "partition",
     "split",
-    "bifurcate"
+    "bifurcate",
+    "normalize-email",
+    "email"
   ],
   "author": "Pedro Troccoli <contact@pedrotroccoli.com>",
   "license": "MIT",
@@ -258,6 +260,10 @@
     "./partition": {
       "import": "./dist/arrays/partition/index.js",
       "types": "./dist/arrays/partition/index.d.ts"
+    },
+    "./normalize-email": {
+      "import": "./dist/strings/normalize-email/index.js",
+      "types": "./dist/strings/normalize-email/index.d.ts"
     }
   },
   "scripts": {
