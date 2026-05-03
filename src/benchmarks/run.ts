@@ -193,6 +193,11 @@ const SUITE_META: Record<string, { slug: string; description: string }> = {
     description:
       "Normalizes an email: trim, lowercase, and optionally strip plus-addressing (`user+tag@x.com` → `user@x.com`). Compared against a native `trim().toLowerCase()` baseline and a regex-based plus-stripper.",
   },
+  deburr: {
+    slug: "deburr",
+    description:
+      "Strips diacritics (accents) from a string via Unicode NFD normalization. Compared against a native inline `normalize('NFD').replace(...)` baseline.",
+  },
   zip: {
     slug: "zip",
     description:
