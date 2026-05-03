@@ -62,7 +62,10 @@
     "map-values",
     "escape-regexp",
     "escape-regex",
-    "regex-escape"
+    "regex-escape",
+    "shuffle",
+    "fisher-yates",
+    "randomize"
   ],
   "author": "Pedro Troccoli <contact@pedrotroccoli.com>",
   "license": "MIT",
@@ -244,6 +247,10 @@
     "./random-int": {
       "import": "./dist/numbers/random-int/index.js",
       "types": "./dist/numbers/random-int/index.d.ts"
+    },
+    "./shuffle": {
+      "import": "./dist/arrays/shuffle/index.js",
+      "types": "./dist/arrays/shuffle/index.d.ts"
     }
   },
   "scripts": {

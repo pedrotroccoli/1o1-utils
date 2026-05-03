@@ -204,5 +204,10 @@
     "name": "random-int",
     "path": "dist/numbers/random-int/index.js",
     "limit": "1 kB"
+  },
+  {
+    "name": "shuffle",
+    "path": "dist/arrays/shuffle/index.js",
+    "limit": "1 kB"
   }
 ]

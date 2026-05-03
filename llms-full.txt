@@ -125,6 +125,33 @@ Groups are keyed by String(value[key]).
 
 ---
 
+### shuffle
+
+Randomly reorder an array using the Fisher-Yates algorithm. Returns a new array; the input is not mutated.
+
+Import: import { shuffle } from "1o1-utils/shuffle";
+
+Signature:
+function shuffle<T>({ array, random }: ShuffleParams<T>): T[]
+
+Parameters:
+- array (T[], required): The array to shuffle
+- random (() => number, optional): Random source returning a number in [0, 1). Defaults to Math.random. Inject for deterministic tests or seeded randomness.
+
+Returns: T[] — A new array with the elements in random order.
+
+Example:
+shuffle({ array: [1, 2, 3, 4, 5] });
+// => [3, 1, 5, 2, 4] (random)
+
+shuffle({ array: [1, 2, 3, 4, 5], random: () => 0 });
+// => [5, 1, 2, 3, 4] (deterministic)
+
+Throws: Error if array is not an array.
+Uses unbiased Fisher-Yates: copies the input, then iterates from end to start swapping each index with a random earlier-or-equal index.
+
+---
+
 ### sortBy
 
 Return a new array sorted by a specified property. Supports ascending/descending and dot notation for nested properties.
