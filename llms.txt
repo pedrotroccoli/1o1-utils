@@ -67,6 +67,7 @@
 
 ## Browser
 
+- [bindKey](https://pedrotroccoli.github.io/1o1-utils/browser/bind-key/): Bind keyboard shortcuts to a handler — supports modifiers, key sequences, input filtering, and returns an unbind function
 - [copyToClipboard](https://pedrotroccoli.github.io/1o1-utils/browser/copy-to-clipboard/): Copy text to the system clipboard using the Clipboard API with `document.execCommand` fallback
 
 ## Comparisons
