@@ -94,7 +94,12 @@
     "clean-object",
     "replace",
     "swap",
-    "update-array"
+    "update-array",
+    "bind-key",
+    "bindkey",
+    "hotkey",
+    "keyboard-shortcut",
+    "keymap"
   ],
   "author": "Pedro Troccoli <contact@pedrotroccoli.com>",
   "license": "MIT",
@@ -320,6 +325,10 @@
     "./replace": {
       "import": "./dist/arrays/replace/index.js",
       "types": "./dist/arrays/replace/index.d.ts"
+    },
+    "./bind-key": {
+      "import": "./dist/browser/bind-key/index.js",
+      "types": "./dist/browser/bind-key/index.d.ts"
     }
   },
   "scripts": {
@@ -361,16 +370,20 @@
   "devDependencies": {
     "@biomejs/biome": "^2.4.10",
     "@changesets/cli": "^2.30.0",
+    "@happy-dom/global-registrator": "^20.9.0",
     "@size-limit/file": "^12.0.1",
     "@size-limit/preset-small-lib": "^12.0.1",
     "@types/chai": "^5.2.2",
     "@types/lodash": "^4.17.24",
     "@types/mocha": "^10.0.10",
+    "@types/mousetrap": "^1.6.15",
     "c8": "^11.0.0",
     "chai": "^6.2.2",
     "es-toolkit": "^1.45.1",
+    "happy-dom": "^20.9.0",
     "lodash": "^4.18.1",
     "mocha": "^11.7.5",
+    "mousetrap": "^1.6.5",
     "radash": "^12.1.1",
     "size-limit": "^12.0.1",
     "tinybench": "^6.0.0",
