@@ -16,9 +16,20 @@ for (const { name, data: getData } of getDatasets()) {
     .add(`lodash partition (${name})`, () => {
       lodashPartition(data, isAdmin);
     })
+    // Naive two-filter calls the predicate twice per item — included as the
+    // realistic baseline a typical user would write, not a fair single-call
+    // comparison.
     .add(`native two-filter (${name})`, () => {
       const matches = data.filter(isAdmin);
       const rest = data.filter((u) => !isAdmin(u));
+      return [matches, rest];
+    })
+    // Cached two-filter calls the predicate once per item, then partitions
+    // by membership — fair single-call comparison.
+    .add(`native two-filter cached (${name})`, () => {
+      const flags = data.map(isAdmin);
+      const matches = data.filter((_, i) => flags[i]);
+      const rest = data.filter((_, i) => !flags[i]);
       return [matches, rest];
     })
     .add(`native single-pass (${name})`, () => {

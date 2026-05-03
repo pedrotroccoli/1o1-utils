@@ -13,6 +13,10 @@ import type {
  * Supports a type-guard predicate (`(item) => item is U`) to narrow the
  * resulting tuple to `[U[], Exclude<T, U>[]]`.
  *
+ * Iterates every index, including holes in sparse arrays (the predicate is
+ * invoked with `undefined`). This differs from `Array.prototype.filter`,
+ * which skips holes.
+ *
  * @param params - The parameters object
  * @param params.array - The array to partition
  * @param params.predicate - Function called with `(item, index)` returning a boolean

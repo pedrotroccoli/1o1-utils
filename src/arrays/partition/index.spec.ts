@@ -95,15 +95,16 @@ describe("partition", () => {
     expect(input).to.deep.equal(snapshot);
   });
 
-  it("should treat truthy non-boolean predicate returns as matches", () => {
+  it("should treat truthy non-boolean predicate returns as matches and falsy as rest", () => {
+    const items: unknown[] = [0, 1, "", "x", null, undefined, Number.NaN, {}];
     expect(
       partition({
-        array: [0, 1, 2, 0, 3],
-        predicate: (n) => n as unknown as boolean,
+        array: items,
+        predicate: (v) => v as boolean,
       }),
     ).to.deep.equal([
-      [1, 2, 3],
-      [0, 0],
+      [1, "x", {}],
+      [0, "", null, undefined, Number.NaN],
     ]);
   });
 
@@ -115,18 +116,18 @@ describe("partition", () => {
       { kind: "b", b: "x" },
       { kind: "a", a: 2 },
     ];
-    const [as, bs] = partition({
+    const [aItems, bItems] = partition({
       array: items,
       predicate: (x): x is A => x.kind === "a",
     });
-    expect(as).to.deep.equal([
+    expect(aItems).to.deep.equal([
       { kind: "a", a: 1 },
       { kind: "a", a: 2 },
     ]);
-    expect(bs).to.deep.equal([{ kind: "b", b: "x" }]);
+    expect(bItems).to.deep.equal([{ kind: "b", b: "x" }]);
     // Type-level: confirm narrowing compiles.
-    const firstA: A | undefined = as[0];
-    const firstB: B | undefined = bs[0];
+    const firstA: A | undefined = aItems[0];
+    const firstB: B | undefined = bItems[0];
     expect(firstA?.kind).to.equal("a");
     expect(firstB?.kind).to.equal("b");
   });

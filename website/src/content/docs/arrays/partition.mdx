@@ -79,7 +79,8 @@ const [admins, users] = partition({
 - Returns `[[], []]` for an empty input array.
 - Order is preserved within each group.
 - Does not mutate the input array.
-- The predicate receives `(item, index)`, mirroring `Array.prototype.filter`.
+- The predicate receives `(item, index)`, matching the signature of `Array.prototype.filter`.
+- Iterates every index, including holes in sparse arrays — the predicate is invoked with `undefined` for empty slots. This differs from `Array.prototype.filter`, which skips holes.
 - Throws if `array` is not an array.
 - Throws if `predicate` is not a function.
 
