@@ -152,6 +152,35 @@ Throws: Error if array is not an array. Error if predicate is not a function.
 
 ---
 
+### replace
+
+Replace element(s) in an array by predicate. Returns a new array; the input is never mutated. Replaces only the first match by default; pass `all: true` to replace every match. `value` accepts a static value or an updater function `(item, index) => newItem`.
+
+Import: import { replace } from "1o1-utils/replace";
+
+Signature:
+function replace<T>({ array, predicate, value, all }: { array: T[]; predicate: (item: T, index: number) => boolean; value: T | ((item: T, index: number) => T); all?: boolean }): T[];
+
+Parameters:
+- array (T[], required): The source array
+- predicate ((item: T, index: number) => boolean, required): Function called for every element until a match (or for all elements when `all` is true)
+- value (T | (item: T, index: number) => T, required): Replacement value, or updater fn that derives the new value from the matched item
+- all (boolean, optional): When true, replace every match. Defaults to false (first match only).
+
+Returns: T[] — A new array with matched item(s) replaced.
+
+Example:
+const users = [{ id: 1, name: "Ana" }, { id: 2, name: "Bob" }];
+replace({ array: users, predicate: (u) => u.id === 2, value: { id: 2, name: "Bobby" } });
+// => [{ id: 1, name: "Ana" }, { id: 2, name: "Bobby" }]
+
+replace({ array: [1, 2, 3, 2], predicate: (n) => n === 2, value: (n) => n * 10, all: true });
+// => [1, 20, 3, 20]
+
+Throws: Error if array is not an array. Error if predicate is not a function. Error if value is undefined.
+
+---
+
 ### shuffle
 
 Randomly reorder an array using the Fisher-Yates algorithm. Returns a new array; the input is not mutated.
@@ -419,6 +448,33 @@ cloned.a.b.push(3);
 original.a.b; // [1, 2] — unaffected
 
 Primitives are returned as-is. Functions are copied by reference. Map values are deep cloned but keys are kept by reference. Circular references are detected via a WeakMap. Uses an iterative, stack-based algorithm to avoid stack overflow on deeply nested structures. Custom class prototype chains are not preserved.
+
+---
+
+### compact
+
+Remove all falsy values (`false`, `0`, `-0`, `0n`, `""`, `null`, `undefined`, `NaN`) from an object. Pass `keep` to preserve specific falsy values; matching uses `Object.is`, so `0` vs `-0` and `NaN` are handled exactly.
+
+Import: import { compact } from "1o1-utils/compact";
+
+Signature:
+function compact<T extends Record<string, unknown>>({ obj, keep }: CompactParams<T>): Partial<T>
+
+Parameters:
+- obj (T, required): The source object
+- keep (unknown[], optional): Falsy values to preserve
+
+Returns: Partial<T> — A new object without falsy entries (except those listed in `keep`).
+
+Example:
+compact({ obj: { a: 1, b: null, c: "", d: 0, e: false, f: "ok" } });
+// => { a: 1, f: "ok" }
+
+compact({ obj: { a: 0, b: null, c: "" }, keep: [0] });
+// => { a: 0 }
+
+Throws: Error if obj is not an object. Error if obj is an array (use `.filter(Boolean)` for arrays). Error if keep is not an array.
+Skips unsafe keys (`__proto__`, `constructor`, `prototype`) to prevent prototype pollution. Symbol-keyed properties are ignored. Truthy values in `keep` are no-ops. Does not mutate the input.
 
 ---
 

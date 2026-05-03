@@ -18,6 +18,7 @@
 - [groupBy](https://pedrotroccoli.github.io/1o1-utils/arrays/group-by/): Group array elements by a property value
 - [partition](https://pedrotroccoli.github.io/1o1-utils/arrays/partition/): Split an array into two groups based on a predicate
 - [range](https://pedrotroccoli.github.io/1o1-utils/arrays/range/): Generate an array of numbers in a given range with optional start and step
+- [replace](https://pedrotroccoli.github.io/1o1-utils/arrays/replace/): Replace element(s) in an array by predicate, with optional updater function
 - [shuffle](https://pedrotroccoli.github.io/1o1-utils/arrays/shuffle/): Randomly reorder an array using Fisher-Yates, with an optional injectable random source
 - [sortBy](https://pedrotroccoli.github.io/1o1-utils/arrays/sort-by/): Sort an array of objects by a property with dot notation support
 - [times](https://pedrotroccoli.github.io/1o1-utils/arrays/times/): Invoke a function N times with the current index and collect the results
@@ -34,6 +35,7 @@
 ## Objects
 
 - [cloneDeep](https://pedrotroccoli.github.io/1o1-utils/objects/clone-deep/): Deep clone any value — handles objects, arrays, Date, RegExp, Map, Set, typed arrays, and circular references
+- [compact](https://pedrotroccoli.github.io/1o1-utils/objects/compact/): Remove falsy values from an object, with an optional `keep` list to preserve specific falsy values
 - [deepMerge](https://pedrotroccoli.github.io/1o1-utils/objects/deep-merge/): Recursively merge two objects without mutation
 - [defaults](https://pedrotroccoli.github.io/1o1-utils/objects/defaults/): Fill `undefined` properties with defaults from another object
 - [defaultsDeep](https://pedrotroccoli.github.io/1o1-utils/objects/defaults-deep/): Recursively fill `undefined` properties with defaults from another object

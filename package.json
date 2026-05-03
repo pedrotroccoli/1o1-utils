@@ -88,7 +88,13 @@
     "ttl-cache",
     "copy-to-clipboard",
     "clipboard",
-    "copy"
+    "copy",
+    "compact",
+    "remove-falsy",
+    "clean-object",
+    "replace",
+    "swap",
+    "update-array"
   ],
   "author": "Pedro Troccoli <contact@pedrotroccoli.com>",
   "license": "MIT",
@@ -130,6 +136,10 @@
     "./clone-deep": {
       "import": "./dist/objects/clone-deep/index.js",
       "types": "./dist/objects/clone-deep/index.d.ts"
+    },
+    "./compact": {
+      "import": "./dist/objects/compact/index.js",
+      "types": "./dist/objects/compact/index.d.ts"
     },
     "./deep-merge": {
       "import": "./dist/objects/deep-merge/index.js",
@@ -223,6 +233,10 @@
       "import": "./dist/async/with-timeout/index.js",
       "types": "./dist/async/with-timeout/index.d.ts"
     },
+    "./wait-for-condition": {
+      "import": "./dist/async/wait-for-condition/index.js",
+      "types": "./dist/async/wait-for-condition/index.d.ts"
+    },
     "./once": {
       "import": "./dist/functions/once/index.js",
       "types": "./dist/functions/once/index.d.ts"
@@ -302,6 +316,10 @@
     "./copy-to-clipboard": {
       "import": "./dist/browser/copy-to-clipboard/index.js",
       "types": "./dist/browser/copy-to-clipboard/index.d.ts"
+    },
+    "./replace": {
+      "import": "./dist/arrays/replace/index.js",
+      "types": "./dist/arrays/replace/index.d.ts"
     }
   },
   "scripts": {
