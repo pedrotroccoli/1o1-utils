@@ -126,9 +126,9 @@ describe("isValidPhone", () => {
 
   describe("country-scoped validation", () => {
     it("should accept a Brazilian mobile (13 digits)", () => {
-      expect(
-        isValidPhone({ phone: "+5511999999999", country: "BR" }),
-      ).to.equal(true);
+      expect(isValidPhone({ phone: "+5511999999999", country: "BR" })).to.equal(
+        true,
+      );
     });
 
     it("should accept a Brazilian landline (12 digits)", () => {
