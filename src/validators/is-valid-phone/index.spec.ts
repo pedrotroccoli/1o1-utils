@@ -123,4 +123,91 @@ describe("isValidPhone", () => {
       expect(isValidPhone({ phone: ["+15551234567"] })).to.equal(false);
     });
   });
+
+  describe("country-scoped validation", () => {
+    it("should accept a Brazilian mobile (13 digits)", () => {
+      expect(
+        isValidPhone({ phone: "+5511999999999", country: "BR" }),
+      ).to.equal(true);
+    });
+
+    it("should accept a Brazilian landline (12 digits)", () => {
+      expect(isValidPhone({ phone: "+551133334444", country: "BR" })).to.equal(
+        true,
+      );
+    });
+
+    it("should accept a Brazilian number with separators", () => {
+      expect(
+        isValidPhone({ phone: "+55 (11) 99999-9999", country: "BR" }),
+      ).to.equal(true);
+    });
+
+    it("should reject a US number when country is BR", () => {
+      expect(isValidPhone({ phone: "+15551234567", country: "BR" })).to.equal(
+        false,
+      );
+    });
+
+    it("should reject a too-short BR number", () => {
+      expect(isValidPhone({ phone: "+5511999", country: "BR" })).to.equal(
+        false,
+      );
+    });
+
+    it("should reject a too-long BR number", () => {
+      expect(
+        isValidPhone({ phone: "+551199999999999", country: "BR" }),
+      ).to.equal(false);
+    });
+
+    it("should accept a US number when country is US", () => {
+      expect(isValidPhone({ phone: "+15551234567", country: "US" })).to.equal(
+        true,
+      );
+    });
+
+    it("should accept a Canadian number when country is CA (shared +1)", () => {
+      expect(isValidPhone({ phone: "+14165551234", country: "CA" })).to.equal(
+        true,
+      );
+    });
+
+    it("should accept a UK number when country is GB", () => {
+      expect(isValidPhone({ phone: "+442079460958", country: "GB" })).to.equal(
+        true,
+      );
+    });
+
+    it("should accept a multi-digit dial code (PT, +351)", () => {
+      expect(isValidPhone({ phone: "+351912345678", country: "PT" })).to.equal(
+        true,
+      );
+    });
+
+    it("should reject when dial code does not match country", () => {
+      expect(isValidPhone({ phone: "+33912345678", country: "PT" })).to.equal(
+        false,
+      );
+    });
+
+    it("should reject when country is not in the supported set", () => {
+      expect(
+        isValidPhone({
+          phone: "+5511999999999",
+          country: "ZZ" as never,
+        }),
+      ).to.equal(false);
+    });
+
+    it("should still apply structural E.164 checks under country", () => {
+      expect(isValidPhone({ phone: "abc", country: "US" })).to.equal(false);
+    });
+
+    it("should reject a generic-valid number that fails country length", () => {
+      expect(isValidPhone({ phone: "+1234567", country: "US" })).to.equal(
+        false,
+      );
+    });
+  });
 });

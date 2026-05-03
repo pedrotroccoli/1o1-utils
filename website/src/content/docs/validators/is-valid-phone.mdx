@@ -18,14 +18,15 @@ import { isValidPhone } from "1o1-utils/is-valid-phone";
 ## Signature
 
 ```ts
-function isValidPhone({ phone }: IsValidPhoneParams): boolean
+function isValidPhone({ phone, country }: IsValidPhoneParams): boolean
 ```
 
 ## Parameters
 
-| Name    | Type      | Required | Description           |
-| ------- | --------- | -------- | --------------------- |
-| `phone` | `unknown` | Yes      | The value to validate |
+| Name      | Type          | Required | Description                                                                                                                                                       |
+| --------- | ------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `phone`   | `unknown`     | Yes      | The value to validate                                                                                                                                             |
+| `country` | `CountryCode` | No       | ISO 3166-1 alpha-2 country code. When set, enforces the dialing prefix and total digit length for that country. ~50 popular countries supported. Default: omitted |
 
 ## Returns
 
@@ -47,6 +48,21 @@ isValidPhone({ phone: null });                    // => false
 ```
 
 ```ts
+// Country-scoped validation
+isValidPhone({ phone: "+5511999999999", country: "BR" });   // => true
+isValidPhone({ phone: "+551133334444", country: "BR" });    // => true (BR landline)
+isValidPhone({ phone: "+15551234567", country: "BR" });     // => false (US dial code)
+isValidPhone({ phone: "+5511999", country: "BR" });         // => false (too short for BR)
+isValidPhone({ phone: "+15551234567", country: "US" });     // => true
+```
+
+## Supported countries
+
+AE, AR, AT, AU, BE, BR, CA, CH, CL, CN, CO, DE, DK, EC, EG, ES, FI, FR, GB, HK, ID, IE, IL, IN, IT, JP, KE, KR, MX, MY, NG, NL, NO, NZ, PE, PH, PL, PT, RU, SA, SE, SG, TH, TR, US, UY, VE, VN, ZA.
+
+Passing a `country` outside this set returns `false`.
+
+```ts
 // Validate user input before sending
 function notify(input: string) {
   if (!isValidPhone({ phone: input })) {
@@ -65,7 +81,8 @@ function notify(input: string) {
 - Country code cannot start with `0` (E.164 rule).
 - Total digit count must be 1–15 after separators are stripped; 16+ digits return `false`.
 - Allowed separators: space, hyphen, parentheses, dot. Any other character (`/`, `_`, letters, etc.) causes rejection.
-- Validation is structural — it does not check whether the country code, area code, or subscriber number actually exist. For carrier-grade validation, use a library backed by phone metadata.
+- Country validation checks the dialing prefix and total digit count only — it does not distinguish mobile vs fixed-line, nor verify area codes.
+- Validation is structural — it does not check whether the country code, area code, or subscriber number actually exist. For carrier-grade validation, use a library backed by phone metadata (e.g. `libphonenumber-js`).
 
 ## Also known as
 
