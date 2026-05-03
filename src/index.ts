@@ -23,6 +23,8 @@ export { copyToClipboard } from "./browser/copy-to-clipboard/index.js";
 export { deepEqual } from "./comparisons/deep-equal/index.js";
 export { isNil } from "./comparisons/is-nil/index.js";
 export { shallowEqual } from "./comparisons/shallow-equal/index.js";
+export { secondsToTimeFormat } from "./formatters/seconds-to-time-format/index.js";
+export { timeFormatToSeconds } from "./formatters/time-format-to-seconds/index.js";
 export { memo } from "./functions/memo/index.js";
 export { once } from "./functions/once/index.js";
 export { pipe } from "./functions/pipe/index.js";

@@ -99,7 +99,15 @@
     "bindkey",
     "hotkey",
     "keyboard-shortcut",
-    "keymap"
+    "keymap",
+    "seconds-to-time-format",
+    "time-format-to-seconds",
+    "format-seconds",
+    "parse-time",
+    "hh-mm-ss",
+    "mm-ss",
+    "duration",
+    "clock-format"
   ],
   "author": "Pedro Troccoli <contact@pedrotroccoli.com>",
   "license": "MIT",
@@ -329,6 +337,14 @@
     "./bind-key": {
       "import": "./dist/browser/bind-key/index.js",
       "types": "./dist/browser/bind-key/index.d.ts"
+    },
+    "./seconds-to-time-format": {
+      "import": "./dist/formatters/seconds-to-time-format/index.js",
+      "types": "./dist/formatters/seconds-to-time-format/index.d.ts"
+    },
+    "./time-format-to-seconds": {
+      "import": "./dist/formatters/time-format-to-seconds/index.js",
+      "types": "./dist/formatters/time-format-to-seconds/index.d.ts"
     }
   },
   "scripts": {

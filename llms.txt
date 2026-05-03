@@ -76,6 +76,11 @@
 - [isNil](https://pedrotroccoli.github.io/1o1-utils/comparisons/is-nil/): Check if a value is `null` or `undefined`
 - [shallowEqual](https://pedrotroccoli.github.io/1o1-utils/comparisons/shallow-equal/): Compare two values by their top-level entries using `Object.is`
 
+## Formatters
+
+- [secondsToTimeFormat](https://pedrotroccoli.github.io/1o1-utils/formatters/seconds-to-time-format/): Convert a number of seconds to a zero-padded `MM:SS` or `H:MM:SS` time string with optional hour padding
+- [timeFormatToSeconds](https://pedrotroccoli.github.io/1o1-utils/formatters/time-format-to-seconds/): Parse a `MM:SS` or `[H]H:MM:SS` time string into a total number of seconds
+
 ## Functions
 
 - [once](https://pedrotroccoli.github.io/1o1-utils/functions/once/): Create a function that runs only once and caches its result

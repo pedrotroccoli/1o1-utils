@@ -1200,6 +1200,58 @@ Uses Object.is for primitive comparison, so NaN equals NaN and +0 is distinct fr
 
 ---
 
+## Formatters
+
+### secondsToTimeFormat
+
+Convert a non-negative number of seconds into a zero-padded time-format string. Uses `MM:SS` when under one hour and `H:MM:SS` (or `HH:MM:SS` with `padHours: true`) otherwise. Hours are not capped at 24.
+
+Import: import { secondsToTimeFormat } from "1o1-utils/seconds-to-time-format";
+
+Signature:
+function secondsToTimeFormat({ seconds, padHours }: SecondsToTimeFormatParams): string
+
+Parameters:
+- seconds (number, required): Total seconds to format. Must be a finite, non-negative number. Floored if not an integer.
+- padHours (boolean, optional, default false): Zero-pad the hours to two digits when present.
+
+Returns: string
+
+Example:
+secondsToTimeFormat({ seconds: 90 });                    // "01:30"
+secondsToTimeFormat({ seconds: 3661 });                  // "1:01:01"
+secondsToTimeFormat({ seconds: 3661, padHours: true });  // "01:01:01"
+secondsToTimeFormat({ seconds: 0 });                     // "00:00"
+secondsToTimeFormat({ seconds: 90000 });                 // "25:00:00"
+
+Throws: Error if seconds is not a finite number, is NaN, or is negative.
+
+---
+
+### timeFormatToSeconds
+
+Parse a time-format string (`MM:SS` or `[H]H:MM:SS`) into a total number of seconds. Inverse of `secondsToTimeFormat`. Hours are not capped; minutes and seconds must be in `0..59`.
+
+Import: import { timeFormatToSeconds } from "1o1-utils/time-format-to-seconds";
+
+Signature:
+function timeFormatToSeconds({ time }: TimeFormatToSecondsParams): number
+
+Parameters:
+- time (string, required): Time string in `MM:SS` or `H:MM:SS` / `HH:MM:SS` form. Each segment must be one or more digits.
+
+Returns: number
+
+Example:
+timeFormatToSeconds({ time: "01:30" });    // 90
+timeFormatToSeconds({ time: "1:01:01" });  // 3661
+timeFormatToSeconds({ time: "01:01:01" }); // 3661
+timeFormatToSeconds({ time: "100:00:00" });// 360000
+
+Throws: Error if time is not a string, is malformed, has minutes >= 60 in `MM:SS` form, or has minutes/seconds >= 60 in `HH:MM:SS` form.
+
+---
+
 ## Functions
 
 ### once

@@ -1,0 +1,70 @@
+---
+title: secondsToTimeFormat
+description: Format seconds as a zero-padded MM:SS or H:MM:SS time string
+---
+
+Converts a non-negative number of seconds into a zero-padded time-format string. Uses `MM:SS` when under one hour and `H:MM:SS` (or `HH:MM:SS` with `padHours: true`) otherwise. Hours are not capped at 24, and non-integer seconds are floored.
+
+## Import
+
+```ts
+import { secondsToTimeFormat } from "1o1-utils";
+```
+
+```ts
+import { secondsToTimeFormat } from "1o1-utils/seconds-to-time-format";
+```
+
+## Signature
+
+```ts
+function secondsToTimeFormat(params: { seconds: number; padHours?: boolean }): string
+```
+
+## Parameters
+
+| Name     | Type      | Required | Description                                                       |
+| -------- | --------- | -------- | ----------------------------------------------------------------- |
+| seconds  | `number`  | Yes      | Total seconds to format (non-negative; floored if not integer)    |
+| padHours | `boolean` | No       | Zero-pad hours to two digits when present (default `false`)       |
+
+## Returns
+
+`string` — The formatted time string.
+
+## Examples
+
+```ts
+secondsToTimeFormat({ seconds: 90 });   // "01:30"
+secondsToTimeFormat({ seconds: 3661 }); // "1:01:01"
+secondsToTimeFormat({ seconds: 0 });    // "00:00"
+```
+
+```ts
+// Zero-pad hours
+secondsToTimeFormat({ seconds: 3661, padHours: true }); // "01:01:01"
+secondsToTimeFormat({ seconds: 3600, padHours: true }); // "01:00:00"
+```
+
+```ts
+// Hours are not capped at 24
+secondsToTimeFormat({ seconds: 90000 });  // "25:00:00"
+secondsToTimeFormat({ seconds: 360000 }); // "100:00:00"
+```
+
+## Edge Cases
+
+- Throws if `seconds` is not a finite number, is `NaN`, or is negative.
+- Non-integer `seconds` are floored: `{ seconds: 90.9 }` → `"01:30"`.
+- `padHours` has no effect when output is in `MM:SS` form (no hour segment).
+- Hours can grow arbitrarily large (e.g. `100:00:00`).
+
+## Also known as
+
+format seconds, hh:mm:ss, mm:ss, time format, duration string, clock format
+
+## Prompt suggestion
+
+```text
+I'm using 1o1-utils (npm: https://www.npmjs.com/package/1o1-utils, GitHub: https://github.com/pedrotroccoli/1o1-utils, LLM context: https://pedrotroccoli.github.io/1o1-utils/llms.txt). Show me how to use secondsToTimeFormat to display a video player's elapsed time.
+```

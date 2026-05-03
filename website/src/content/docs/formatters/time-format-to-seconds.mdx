@@ -1,0 +1,71 @@
+---
+title: timeFormatToSeconds
+description: Parse a MM:SS or H:MM:SS time string into seconds
+---
+
+Parses a time-format string (`MM:SS` or `[H]H:MM:SS`) into a total number of seconds. Inverse of `secondsToTimeFormat`. Hours are not capped; minutes and seconds must be in `0..59`.
+
+## Import
+
+```ts
+import { timeFormatToSeconds } from "1o1-utils";
+```
+
+```ts
+import { timeFormatToSeconds } from "1o1-utils/time-format-to-seconds";
+```
+
+## Signature
+
+```ts
+function timeFormatToSeconds(params: { time: string }): number
+```
+
+## Parameters
+
+| Name | Type     | Required | Description                                                  |
+| ---- | -------- | -------- | ------------------------------------------------------------ |
+| time | `string` | Yes      | Time string in `MM:SS` or `H:MM:SS` / `HH:MM:SS` form        |
+
+## Returns
+
+`number` — The total number of seconds.
+
+## Examples
+
+```ts
+timeFormatToSeconds({ time: "01:30" });    // 90
+timeFormatToSeconds({ time: "1:01:01" });  // 3661
+timeFormatToSeconds({ time: "01:01:01" }); // 3661
+```
+
+```ts
+// Hours can be arbitrarily large
+timeFormatToSeconds({ time: "100:00:00" }); // 360000
+```
+
+```ts
+// Round-trip with secondsToTimeFormat
+import { secondsToTimeFormat } from "1o1-utils";
+
+const formatted = secondsToTimeFormat({ seconds: 7325 }); // "2:02:05"
+timeFormatToSeconds({ time: formatted });                 // 7325
+```
+
+## Edge Cases
+
+- Throws if `time` is not a string or is empty.
+- Throws if `time` does not match `/^\d+(:\d+){1,2}$/` — e.g. `"1:2:3:4"`, `"1:abc"`, `" 01:30"` are rejected.
+- In `MM:SS` form, throws when minutes >= 60 (use `HH:MM:SS` instead).
+- In `HH:MM:SS` form, throws when minutes or seconds >= 60.
+- Padded and unpadded segments are both accepted: `"1:2:3"` → `3723`.
+
+## Also known as
+
+parse time, hh:mm:ss to seconds, mm:ss to seconds, duration parse, time to seconds
+
+## Prompt suggestion
+
+```text
+I'm using 1o1-utils (npm: https://www.npmjs.com/package/1o1-utils, GitHub: https://github.com/pedrotroccoli/1o1-utils, LLM context: https://pedrotroccoli.github.io/1o1-utils/llms.txt). Show me how to use timeFormatToSeconds to convert a user-entered HH:MM:SS string into seconds.
+```

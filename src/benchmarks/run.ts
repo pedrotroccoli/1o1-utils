@@ -238,6 +238,16 @@ const SUITE_META: Record<string, { slug: string; description: string }> = {
     description:
       "Replaces element(s) in an array by predicate, returning a new array. Compared against a native `map` ternary and a native single-pass `for` loop. Both first-match (default) and `all: true` modes are benchmarked.",
   },
+  secondsToTimeFormat: {
+    slug: "seconds-to-time-format",
+    description:
+      "Formats a number of seconds as a zero-padded `MM:SS` or `H:MM:SS` time string, with an optional `padHours` flag. Compared against a native inline implementation (no validation).",
+  },
+  timeFormatToSeconds: {
+    slug: "time-format-to-seconds",
+    description:
+      "Parses a `MM:SS` or `[H]H:MM:SS` time string into total seconds. Compared against a native inline `split` + `parseInt` baseline that skips validation and range checks.",
+  },
 };
 
 function getSizes(rows: TaskRow[]): string[] {
