@@ -43,8 +43,8 @@ type CountryCode =
   | "SG"
   | "TH"
   | "TR"
-  | "UY"
   | "US"
+  | "UY"
   | "VE"
   | "VN"
   | "ZA";

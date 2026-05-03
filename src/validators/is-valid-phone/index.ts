@@ -117,8 +117,11 @@ const COUNTRIES: Record<CountryCode, readonly [string, ...number[]]> = {
  *
  * Country validation checks the dialing prefix and total digit count only
  * — it does not distinguish mobile vs fixed-line, nor verify area codes.
- * For carrier-grade validation, use a library backed by phone metadata
- * (e.g. libphonenumber-js).
+ * Countries that share a dialing prefix cannot be distinguished: a
+ * `country: "CA"` check accepts US numbers and vice-versa (NANP, +1);
+ * `country: "RU"` accepts numbers from any other +7 country (e.g.
+ * Kazakhstan). For carrier-grade validation, use a library backed by
+ * phone metadata (e.g. libphonenumber-js).
  */
 function isValidPhone({
   phone,
