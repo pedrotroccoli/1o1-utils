@@ -6,31 +6,35 @@ type GlobalLike = typeof globalThis & {
   isSecureContext?: boolean;
   navigator?: unknown;
   document?: unknown;
+  getSelection?: unknown;
 };
 
 const g = globalThis as GlobalLike;
 
-const originals: {
-  isSecureContext: PropertyDescriptor | undefined;
-  navigator: PropertyDescriptor | undefined;
-  document: PropertyDescriptor | undefined;
-} = {
+type GlobalKey = "isSecureContext" | "navigator" | "document" | "getSelection";
+
+const originals: Record<GlobalKey, PropertyDescriptor | undefined> = {
   isSecureContext: undefined,
   navigator: undefined,
   document: undefined,
+  getSelection: undefined,
 };
 
+const KEYS: readonly GlobalKey[] = [
+  "isSecureContext",
+  "navigator",
+  "document",
+  "getSelection",
+];
+
 function snapshot() {
-  originals.isSecureContext = Object.getOwnPropertyDescriptor(
-    g,
-    "isSecureContext",
-  );
-  originals.navigator = Object.getOwnPropertyDescriptor(g, "navigator");
-  originals.document = Object.getOwnPropertyDescriptor(g, "document");
+  for (const key of KEYS) {
+    originals[key] = Object.getOwnPropertyDescriptor(g, key);
+  }
 }
 
 function restore() {
-  for (const key of ["isSecureContext", "navigator", "document"] as const) {
+  for (const key of KEYS) {
     const desc = originals[key];
     if (desc) {
       Object.defineProperty(g, key, desc);
@@ -40,10 +44,7 @@ function restore() {
   }
 }
 
-function setGlobal(
-  key: "isSecureContext" | "navigator" | "document",
-  value: unknown,
-) {
+function setGlobal(key: GlobalKey, value: unknown) {
   Object.defineProperty(g, key, {
     value,
     configurable: true,
@@ -51,7 +52,7 @@ function setGlobal(
   });
 }
 
-function clearGlobal(key: "isSecureContext" | "navigator" | "document") {
+function clearGlobal(key: GlobalKey) {
   delete (g as Record<string, unknown>)[key];
 }
 
@@ -122,6 +123,7 @@ describe("copyToClipboard", () => {
       const appended: unknown[] = [];
       const removed: unknown[] = [];
       const execCalls: string[] = [];
+      const ranges: Array<{ selectedNode: unknown }> = [];
       const elements: Array<{ tag: string; node: Record<string, unknown> }> =
         [];
       const body = {
@@ -135,10 +137,15 @@ describe("copyToClipboard", () => {
           const node: Record<string, unknown> = {
             tag,
             value: "",
+            contentEditable: "",
             style: {} as Record<string, string>,
             attrs: {} as Record<string, string>,
             setAttribute(name: string, val: string) {
               (this.attrs as Record<string, string>)[name] = val;
+            },
+            setSelectionRange(start: number, end: number) {
+              (this as Record<string, unknown>).selectionStart = start;
+              (this as Record<string, unknown>).selectionEnd = end;
             },
             select() {
               (this as Record<string, unknown>).selected = true;
@@ -150,12 +157,40 @@ describe("copyToClipboard", () => {
           elements.push({ tag, node });
           return node;
         },
+        createRange() {
+          const range = {
+            selectedNode: undefined as unknown,
+            selectNodeContents(node: unknown) {
+              this.selectedNode = node;
+            },
+          };
+          ranges.push(range);
+          return range;
+        },
         execCommand(cmd: string) {
           execCalls.push(cmd);
           return execResult;
         },
       };
-      return { doc, appended, removed, execCalls, elements };
+      const selection = {
+        cleared: 0,
+        added: [] as unknown[],
+        removeAllRanges() {
+          this.cleared++;
+        },
+        addRange(range: unknown) {
+          this.added.push(range);
+        },
+      };
+      return {
+        doc,
+        appended,
+        removed,
+        execCalls,
+        elements,
+        ranges,
+        selection,
+      };
     }
 
     it("should copy via textarea + execCommand when secure context is false", async () => {
@@ -163,6 +198,7 @@ describe("copyToClipboard", () => {
       setGlobal("isSecureContext", false);
       clearGlobal("navigator");
       setGlobal("document", fake.doc);
+      setGlobal("getSelection", () => fake.selection);
 
       await copyToClipboard({ text: "Fallback" });
 
@@ -175,13 +211,44 @@ describe("copyToClipboard", () => {
       expect(fake.removed[0]).to.equal(fake.elements[0].node);
     });
 
+    it("should set contentEditable and use Range/Selection for iOS Safari support", async () => {
+      const fake = makeFakeDoc(true);
+      setGlobal("isSecureContext", false);
+      clearGlobal("navigator");
+      setGlobal("document", fake.doc);
+      setGlobal("getSelection", () => fake.selection);
+
+      await copyToClipboard({ text: "iOS" });
+
+      expect(fake.elements[0].node.contentEditable).to.equal("true");
+      expect(fake.ranges).to.have.lengthOf(1);
+      expect(fake.ranges[0].selectedNode).to.equal(fake.elements[0].node);
+      expect(fake.selection.cleared).to.equal(1);
+      expect(fake.selection.added).to.deep.equal([fake.ranges[0]]);
+      expect(fake.elements[0].node.selectionStart).to.equal(0);
+      expect(fake.elements[0].node.selectionEnd).to.equal(3);
+    });
+
     it("should copy via fallback when navigator.clipboard is unavailable", async () => {
       const fake = makeFakeDoc(true);
       setGlobal("isSecureContext", true);
       setGlobal("navigator", {});
       setGlobal("document", fake.doc);
+      setGlobal("getSelection", () => fake.selection);
 
       await copyToClipboard({ text: "x" });
+
+      expect(fake.execCalls).to.deep.equal(["copy"]);
+    });
+
+    it("should not throw when getSelection is unavailable", async () => {
+      const fake = makeFakeDoc(true);
+      setGlobal("isSecureContext", false);
+      clearGlobal("navigator");
+      setGlobal("document", fake.doc);
+      clearGlobal("getSelection");
+
+      await copyToClipboard({ text: "no-selection" });
 
       expect(fake.execCalls).to.deep.equal(["copy"]);
     });
@@ -191,6 +258,7 @@ describe("copyToClipboard", () => {
       setGlobal("isSecureContext", false);
       clearGlobal("navigator");
       setGlobal("document", fake.doc);
+      setGlobal("getSelection", () => fake.selection);
 
       let caught: Error | undefined;
       try {

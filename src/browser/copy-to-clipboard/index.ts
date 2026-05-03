@@ -28,10 +28,11 @@ import type { CopyToClipboardParams, CopyToClipboardResult } from "./types.js";
  * @remarks
  * The Clipboard API is only used when `globalThis.isSecureContext` is `true`
  * (HTTPS or `localhost`). On insecure pages and older browsers the function
- * inserts a hidden, off-screen `<textarea>`, selects its content, runs the
- * deprecated `execCommand("copy")`, and removes the node afterwards. The
- * fallback requires a `document` and must be invoked from within a user
- * gesture handler (click, keydown, etc.).
+ * inserts a hidden, off-screen `<textarea>`, selects its content via a Range
+ * + Selection (required by iOS Safari, which ignores `select()` on readonly
+ * textareas), runs the deprecated `execCommand("copy")`, and removes the
+ * node afterwards. The fallback requires a `document` and must be invoked
+ * from within a user gesture handler (click, keydown, etc.).
  */
 async function copyToClipboard({
   text,
@@ -44,6 +45,7 @@ async function copyToClipboard({
     isSecureContext?: boolean;
     navigator?: { clipboard?: { writeText?: (data: string) => Promise<void> } };
     document?: Document;
+    getSelection?: () => Selection | null;
   };
 
   if (g.isSecureContext === true && g.navigator?.clipboard?.writeText) {
@@ -60,6 +62,7 @@ async function copyToClipboard({
   textarea.value = text;
   textarea.setAttribute("readonly", "");
   textarea.setAttribute("aria-hidden", "true");
+  textarea.contentEditable = "true";
   textarea.style.position = "fixed";
   textarea.style.top = "0";
   textarea.style.left = "-9999px";
@@ -67,6 +70,12 @@ async function copyToClipboard({
   doc.body.appendChild(textarea);
 
   try {
+    const range = doc.createRange();
+    range.selectNodeContents(textarea);
+    const selection = g.getSelection?.();
+    selection?.removeAllRanges();
+    selection?.addRange(range);
+    textarea.setSelectionRange(0, text.length);
     textarea.select();
     const ok = doc.execCommand("copy");
     if (!ok) {
