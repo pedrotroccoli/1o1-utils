@@ -188,6 +188,26 @@ const SUITE_META: Record<string, { slug: string; description: string }> = {
     description:
       "Validates a string against the WHATWG `URL` parser. Compared against a native `try/catch` `new URL` implementation and a regex-based check.",
   },
+  isValidEmail: {
+    slug: "is-valid-email",
+    description:
+      "Validates a string against the HTML5 living-standard email pattern with RFC 5321 length limits. Compared against a simple regex and a native `indexOf`/`lastIndexOf` structural check.\n\n> **Note:** `simple regex` and `native string check` are coarse baselines — they do not validate hostname-label structure (hyphen rules, label length), so they accept many addresses 1o1-utils correctly rejects. Their numbers are shown for reference only and are not apples-to-apples.",
+  },
+  isValidPhone: {
+    slug: "is-valid-phone",
+    description:
+      "Validates a string as a well-formed E.164 international phone number. Strips common separators (spaces, hyphens, parentheses, dots) before checking for a leading `+`, a non-zero country code, and 1–15 total digits. Compared against a simple regex and a native char-code structural check.\n\n> **Note:** baselines do not strip separators or enforce E.164's non-zero country-code rule, so they accept inputs 1o1-utils rejects. Numbers shown for reference only.",
+  },
+  normalizeEmail: {
+    slug: "normalize-email",
+    description:
+      "Normalizes an email: trim, lowercase, and optionally strip plus-addressing (`user+tag@x.com` → `user@x.com`). Compared against a native `trim().toLowerCase()` baseline and a regex-based plus-stripper.",
+  },
+  deburr: {
+    slug: "deburr",
+    description:
+      "Strips diacritics (accents) from a string via Unicode NFD normalization. Compared against a native inline `normalize('NFD').replace(...)` baseline.",
+  },
   zip: {
     slug: "zip",
     description:
@@ -207,6 +227,11 @@ const SUITE_META: Record<string, { slug: string; description: string }> = {
     slug: "map-values",
     description:
       "Transforms an object's values via an iteratee function. Compared against `lodash.mapValues` and a native `Object.fromEntries(Object.entries().map())` approach.",
+  },
+  "partition (by role)": {
+    slug: "partition",
+    description:
+      "Splits an array into two groups based on a predicate. Compared against `lodash.partition`, a native two-`filter` approach, and a native single-pass loop.",
   },
 };
 

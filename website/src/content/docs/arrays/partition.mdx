@@ -1,0 +1,95 @@
+---
+title: partition
+description: Split an array into two groups based on a predicate
+---
+
+Splits an array into two groups based on a predicate. The first group contains items for which the predicate returns truthy; the second contains the rest. Order is preserved within each group. Supports a type-guard predicate (`(item) => item is U`) to narrow the resulting tuple to `[U[], Exclude<T, U>[]]`.
+
+## Import
+
+```ts
+import { partition } from "1o1-utils";
+```
+
+```ts
+import { partition } from "1o1-utils/partition";
+```
+
+## Signature
+
+```ts
+function partition<T, U extends T>(
+  params: { array: T[]; predicate: (item: T, index: number) => item is U }
+): [U[], Exclude<T, U>[]];
+
+function partition<T>(
+  params: { array: T[]; predicate: (item: T, index: number) => boolean }
+): [T[], T[]];
+```
+
+## Parameters
+
+| Name      | Type                                       | Required | Description                                              |
+| --------- | ------------------------------------------ | -------- | -------------------------------------------------------- |
+| array     | `T[]`                                      | Yes      | The array to partition                                   |
+| predicate | `(item: T, index: number) => boolean`      | Yes      | Predicate called with `(item, index)` for every element |
+
+## Returns
+
+`[T[], T[]]` — A tuple where the first array contains items matching the predicate and the second contains the rest. With a type-guard predicate, the tuple narrows to `[U[], Exclude<T, U>[]]`.
+
+## Examples
+
+```ts
+partition({ array: [1, 2, 3, 4, 5], predicate: (n) => n % 2 === 0 });
+// => [[2, 4], [1, 3, 5]]
+
+const users = [
+  { name: "Alice", isActive: true },
+  { name: "Bob", isActive: false },
+  { name: "Carol", isActive: true },
+];
+const [active, inactive] = partition({
+  array: users,
+  predicate: (u) => u.isActive,
+});
+```
+
+Type-guard narrowing:
+
+```ts
+type Admin = { kind: "admin"; level: number };
+type User = { kind: "user"; name: string };
+
+const people: Array<Admin | User> = [
+  { kind: "admin", level: 1 },
+  { kind: "user", name: "Bob" },
+];
+
+const [admins, users] = partition({
+  array: people,
+  predicate: (p): p is Admin => p.kind === "admin",
+});
+// admins: Admin[]
+// users: User[]
+```
+
+## Edge Cases
+
+- Returns `[[], []]` for an empty input array.
+- Order is preserved within each group.
+- Does not mutate the input array.
+- The predicate receives `(item, index)`, matching the signature of `Array.prototype.filter`.
+- Iterates every index, including holes in sparse arrays — the predicate is invoked with `undefined` for empty slots. This differs from `Array.prototype.filter`, which skips holes.
+- Throws if `array` is not an array.
+- Throws if `predicate` is not a function.
+
+## Also known as
+
+partition, split, divide, bifurcate, group, filter
+
+## Prompt suggestion
+
+```text
+I'm using 1o1-utils (npm: https://www.npmjs.com/package/1o1-utils, GitHub: https://github.com/pedrotroccoli/1o1-utils, LLM context: https://pedrotroccoli.github.io/1o1-utils/llms.txt). Show me how to use partition to split an array into two groups based on a predicate.
+```
