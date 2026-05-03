@@ -1,9 +1,14 @@
 import { expect } from "chai";
 import * as fc from "fast-check";
-import { describe, it } from "mocha";
+import { afterEach, describe, it } from "mocha";
 import { pick } from "./index.js";
 
 describe("pick (fuzz)", () => {
+  afterEach(() => {
+    // biome-ignore lint/suspicious/noExplicitAny: prototype probe cleanup
+    delete (Object.prototype as any).polluted;
+  });
+
   it("never throws on arbitrary string keys + object inputs", () => {
     fc.assert(
       fc.property(
