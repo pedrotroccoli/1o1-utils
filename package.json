@@ -73,7 +73,11 @@
     "split",
     "bifurcate",
     "normalize-email",
-    "email"
+    "email",
+    "deburr",
+    "diacritic",
+    "accent",
+    "remove-accents"
   ],
   "author": "Pedro Troccoli <contact@pedrotroccoli.com>",
   "license": "MIT",
@@ -271,6 +275,10 @@
     "./normalize-email": {
       "import": "./dist/strings/normalize-email/index.js",
       "types": "./dist/strings/normalize-email/index.d.ts"
+    },
+    "./deburr": {
+      "import": "./dist/strings/deburr/index.js",
+      "types": "./dist/strings/deburr/index.d.ts"
     }
   },
   "scripts": {

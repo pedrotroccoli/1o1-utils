@@ -36,6 +36,7 @@ export { omit } from "./objects/omit/index.js";
 export { pick } from "./objects/pick/index.js";
 export { set } from "./objects/set/index.js";
 export { capitalize } from "./strings/capitalize/index.js";
+export { deburr } from "./strings/deburr/index.js";
 export { escapeRegExp } from "./strings/escape-reg-exp/index.js";
 export { normalizeEmail } from "./strings/normalize-email/index.js";
 export { slugify } from "./strings/slugify/index.js";
