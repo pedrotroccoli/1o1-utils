@@ -125,6 +125,33 @@ Groups are keyed by String(value[key]).
 
 ---
 
+### partition
+
+Split an array into two groups based on a predicate. The first group contains items for which the predicate returns truthy; the second contains the rest. Order is preserved within each group. Supports a type-guard predicate to narrow the result types.
+
+Import: import { partition } from "1o1-utils/partition";
+
+Signature:
+function partition<T, U extends T>({ array, predicate }: { array: T[]; predicate: (item: T, index: number) => item is U }): [U[], Exclude<T, U>[]];
+function partition<T>({ array, predicate }: { array: T[]; predicate: (item: T, index: number) => boolean }): [T[], T[]];
+
+Parameters:
+- array (T[], required): The array to partition
+- predicate ((item: T, index: number) => boolean, required): Predicate called for every element
+
+Returns: A tuple `[matches, rest]`.
+
+Example:
+partition({ array: [1, 2, 3, 4, 5], predicate: (n) => n % 2 === 0 });
+// => [[2, 4], [1, 3, 5]]
+
+const users = [{ active: true }, { active: false }];
+const [active, inactive] = partition({ array: users, predicate: (u) => u.active });
+
+Throws: Error if array is not an array. Error if predicate is not a function.
+
+---
+
 ### sortBy
 
 Return a new array sorted by a specified property. Supports ascending/descending and dot notation for nested properties.

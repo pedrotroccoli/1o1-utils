@@ -204,5 +204,10 @@
     "name": "random-int",
     "path": "dist/numbers/random-int/index.js",
     "limit": "1 kB"
+  },
+  {
+    "name": "partition",
+    "path": "dist/arrays/partition/index.js",
+    "limit": "1 kB"
   }
 ]
