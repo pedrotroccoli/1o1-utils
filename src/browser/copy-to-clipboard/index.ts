@@ -72,6 +72,9 @@ async function copyToClipboard({
   }
 
   if (text === "") {
+    if (apiError !== undefined) {
+      throw apiError;
+    }
     return;
   }
 
@@ -105,9 +108,9 @@ async function copyToClipboard({
     textarea.select();
     const ok = doc.execCommand("copy");
     if (!ok) {
-      throw new Error("Failed to copy to clipboard", {
-        cause: apiError,
-      });
+      throw apiError !== undefined
+        ? new Error("Failed to copy to clipboard", { cause: apiError })
+        : new Error("Failed to copy to clipboard");
     }
   } finally {
     textarea.remove();

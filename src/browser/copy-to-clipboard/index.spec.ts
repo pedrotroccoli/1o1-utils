@@ -340,6 +340,31 @@ describe("copyToClipboard", () => {
       expect(fake.elements).to.have.lengthOf(0);
     });
 
+    it("should propagate Clipboard API error for empty string when API rejected", async () => {
+      const fake = makeFakeDoc(true);
+      const apiErr = new Error("NotAllowedError");
+      setGlobal("isSecureContext", true);
+      setGlobal("navigator", {
+        clipboard: {
+          writeText: async () => {
+            throw apiErr;
+          },
+        },
+      });
+      setGlobal("document", fake.doc);
+      setGlobal("getSelection", () => fake.selection);
+
+      let caught: Error | undefined;
+      try {
+        await copyToClipboard({ text: "" });
+      } catch (err) {
+        caught = err as Error;
+      }
+      expect(caught).to.equal(apiErr);
+      expect(fake.execCalls).to.deep.equal([]);
+      expect(fake.elements).to.have.lengthOf(0);
+    });
+
     it("should attach Clipboard API rejection as cause when fallback also fails", async () => {
       const fake = makeFakeDoc(false);
       const apiErr = new Error("NotAllowedError");
