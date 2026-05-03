@@ -46,6 +46,10 @@
     "is-valid-email",
     "validate-email",
     "email-validator",
+    "is-valid-phone",
+    "validate-phone",
+    "phone-validator",
+    "e164",
     "safely",
     "tryit",
     "try-catch",
@@ -235,6 +239,10 @@
     "./is-valid-email": {
       "import": "./dist/validators/is-valid-email/index.js",
       "types": "./dist/validators/is-valid-email/index.d.ts"
+    },
+    "./is-valid-phone": {
+      "import": "./dist/validators/is-valid-phone/index.js",
+      "types": "./dist/validators/is-valid-phone/index.d.ts"
     },
     "./is-valid-url": {
       "import": "./dist/validators/is-valid-url/index.js",

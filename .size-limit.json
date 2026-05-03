@@ -3,7 +3,7 @@
     "name": "Total (tree-shaken + gzipped)",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "6 kB"
+    "limit": "9 kB"
   },
   {
     "name": "array-to-hash",
@@ -169,6 +169,11 @@
     "name": "is-valid-email",
     "path": "dist/validators/is-valid-email/index.js",
     "limit": "1 kB"
+  },
+  {
+    "name": "is-valid-phone",
+    "path": "dist/validators/is-valid-phone/index.js",
+    "limit": "2 kB"
   },
   {
     "name": "is-valid-url",
