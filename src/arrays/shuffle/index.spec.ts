@@ -72,6 +72,17 @@ describe("shuffle", () => {
     expect(seen.size).to.equal(6);
   });
 
+  it("should clamp out-of-range random output to keep indices in bounds", () => {
+    const result = shuffle({
+      array: [1, 2, 3, 4, 5],
+      random: () => 1,
+    });
+
+    expect([...result].sort((a, b) => a - b)).to.deep.equal([1, 2, 3, 4, 5]);
+    expect(result).to.have.lengthOf(5);
+    expect(result.every((v) => v !== undefined)).to.equal(true);
+  });
+
   it("should throw an error if the array is not an array", () => {
     // @ts-expect-error - we want to test the error case
     expect(() => shuffle({ array: "not an array" })).to.throw(
