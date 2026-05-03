@@ -234,5 +234,10 @@
     "name": "partition",
     "path": "dist/arrays/partition/index.js",
     "limit": "1 kB"
+  },
+  {
+    "name": "replace",
+    "path": "dist/arrays/replace/index.js",
+    "limit": "1 kB"
   }
 ]

@@ -4,6 +4,7 @@ export { diff } from "./arrays/diff/index.js";
 export { groupBy } from "./arrays/group-by/index.js";
 export { partition } from "./arrays/partition/index.js";
 export { range } from "./arrays/range/index.js";
+export { replace } from "./arrays/replace/index.js";
 export { shuffle } from "./arrays/shuffle/index.js";
 export { sortBy } from "./arrays/sort-by/index.js";
 export { times } from "./arrays/times/index.js";
