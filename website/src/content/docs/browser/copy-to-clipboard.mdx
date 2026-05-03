@@ -1,0 +1,83 @@
+---
+title: copyToClipboard
+description: Copy a string to the system clipboard with Clipboard API + execCommand fallback
+---
+
+import Playground from "../../../components/Playground.tsx";
+
+Copies a string to the system clipboard. Uses the asynchronous Clipboard API when available in a secure context, and falls back to a hidden `<textarea>` plus `document.execCommand("copy")` for older browsers and edge cases (iOS Safari, document not focused).
+
+Browser-only utility — does not work in Node.js or other non-DOM environments.
+
+## Try it
+
+<Playground client:only="react" utilityId="copy-to-clipboard" />
+
+:::caution
+The Clipboard API requires a user gesture (click, keydown, etc.). Calling `copyToClipboard` outside a user-initiated handler may reject with `NotAllowedError`.
+:::
+
+## Import
+
+```ts
+import { copyToClipboard } from "1o1-utils";
+```
+
+```ts
+import { copyToClipboard } from "1o1-utils/copy-to-clipboard";
+```
+
+## Signature
+
+```ts
+async function copyToClipboard({ text }: CopyToClipboardParams): Promise<void>
+```
+
+## Parameters
+
+| Name   | Type     | Required | Description                       |
+| ------ | -------- | -------- | --------------------------------- |
+| `text` | `string` | Yes      | The string to copy to the clipboard |
+
+## Returns
+
+`Promise<void>` — Resolves once the text has been copied. Rejects when no clipboard mechanism is available or both Clipboard API and `execCommand` fallback fail.
+
+## Examples
+
+```ts
+import { copyToClipboard } from "1o1-utils/copy-to-clipboard";
+
+button.addEventListener("click", async () => {
+  await copyToClipboard({ text: "Hello world" });
+  toast.show("Copied!");
+});
+```
+
+```ts
+import { safely } from "1o1-utils/safely";
+import { copyToClipboard } from "1o1-utils/copy-to-clipboard";
+
+const [err] = await safely(() => copyToClipboard({ text: code }))();
+if (err) toast.show("Copy failed — please copy manually.");
+else toast.show("Copied!");
+```
+
+## Edge Cases
+
+- Throws if `text` is not a string.
+- The Clipboard API is only attempted when `globalThis.isSecureContext` is `true` (HTTPS or `localhost`).
+- The fallback inserts an off-screen, hidden `<textarea>`, copies via Range + Selection, and removes it. The user's existing selection is restored after the copy.
+- An empty string short-circuits — `execCommand("copy")` rejects empty selections in some browsers.
+- When both paths fail, the thrown error carries the original Clipboard API error in `cause`.
+- Throws `Clipboard not available in this environment` when neither API nor `document.body` is reachable (e.g. SSR, Node).
+
+## Also known as
+
+clipboard, copy, copy text, paste, navigator clipboard, execCommand
+
+## Prompt suggestion
+
+```text
+I'm using 1o1-utils (npm: https://www.npmjs.com/package/1o1-utils, GitHub: https://github.com/pedrotroccoli/1o1-utils, LLM context: https://pedrotroccoli.github.io/1o1-utils/llms.txt). Show me how to use copyToClipboard to add a "Copy code" button to a code block.
+```

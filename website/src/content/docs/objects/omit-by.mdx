@@ -1,0 +1,72 @@
+---
+title: omitBy
+description: Create an object excluding the entries that match a predicate
+---
+
+import Playground from "../../../components/Playground.tsx";
+
+Creates a new object excluding the entries for which the predicate returns truthy. The predicate receives `(value, key)` for each own enumerable string property. Inverse of [`pickBy`](./pick-by/).
+
+## Try it
+
+<Playground client:only="react" utilityId="omit-by" />
+
+## Import
+
+```ts
+import { omitBy } from "1o1-utils";
+```
+
+```ts
+import { omitBy } from "1o1-utils/omit-by";
+```
+
+## Signature
+
+```ts
+function omitBy<T extends Record<string, unknown>>({
+  obj,
+  predicate,
+}: OmitByParams<T>): Partial<T>
+```
+
+## Parameters
+
+| Name        | Type                              | Required | Description                                                              |
+| ----------- | --------------------------------- | -------- | ------------------------------------------------------------------------ |
+| `obj`       | `Record<string, unknown>`         | Yes      | The source object                                                        |
+| `predicate` | `(value, key) => boolean`         | Yes      | Called per entry; the entry is removed when the function returns truthy  |
+
+## Returns
+
+`Partial<T>` — A new object without the entries the predicate matched.
+
+## Examples
+
+```ts
+omitBy({ obj: { a: 1, b: 2, c: 3 }, predicate: (v) => v > 1 });
+// => { a: 1 }
+
+omitBy({
+  obj: { id: 1, name: "Ada", password: "secret", token: "xyz" },
+  predicate: (_, key) => key === "password" || key === "token",
+});
+// => { id: 1, name: "Ada" }
+```
+
+## Edge Cases
+
+- Throws if `obj` is not an object or is `null`.
+- Throws if `predicate` is not a function.
+- Prototype-pollution keys (`__proto__`, `constructor`, `prototype`) are skipped.
+- Inherited keys are ignored — only own enumerable string keys are visited.
+
+## Also known as
+
+filter object, exclude by value, conditional omit, predicate omit, reject
+
+## Prompt suggestion
+
+```text
+I'm using 1o1-utils (npm: https://www.npmjs.com/package/1o1-utils, GitHub: https://github.com/pedrotroccoli/1o1-utils, LLM context: https://pedrotroccoli.github.io/1o1-utils/llms.txt). Show me how to use omitBy to strip secret fields from an object before logging it.
+```
