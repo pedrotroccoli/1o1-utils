@@ -52,8 +52,11 @@ compact({ obj: { a: NaN, b: 1 }, keep: [NaN] });
 ## Edge Cases
 
 - Throws if `obj` is not an object.
+- Throws if `obj` is an array (use `.filter(Boolean)` instead).
 - Throws if `keep` is provided but not an array.
 - Skips unsafe keys (`__proto__`, `constructor`, `prototype`) to prevent prototype pollution.
+- Symbol-keyed properties are ignored (only string-keyed enumerable own properties are processed).
+- Truthy values inside `keep` are no-ops — `keep` is only useful for falsy values you want to preserve.
 - Distinguishes `0` from `-0` via `Object.is`.
 - Does not mutate the original object.
 

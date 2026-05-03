@@ -444,8 +444,8 @@ compact({ obj: { a: 1, b: null, c: "", d: 0, e: false, f: "ok" } });
 compact({ obj: { a: 0, b: null, c: "" }, keep: [0] });
 // => { a: 0 }
 
-Throws: Error if obj is not an object. Error if keep is not an array.
-Skips unsafe keys (`__proto__`, `constructor`, `prototype`) to prevent prototype pollution. Does not mutate the input.
+Throws: Error if obj is not an object. Error if obj is an array (use `.filter(Boolean)` for arrays). Error if keep is not an array.
+Skips unsafe keys (`__proto__`, `constructor`, `prototype`) to prevent prototype pollution. Symbol-keyed properties are ignored. Truthy values in `keep` are no-ops. Does not mutate the input.
 
 ---
 

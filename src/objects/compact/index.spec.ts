@@ -138,4 +138,31 @@ describe("compact", () => {
       compact({ obj: { a: 1 }, keep: "not an array" }),
     ).to.throw("The 'keep' parameter is not an array");
   });
+
+  it("should throw an error if obj is an array", () => {
+    expect(() =>
+      // @ts-expect-error - testing invalid input
+      compact({ obj: [1, null, 2] }),
+    ).to.throw("The 'obj' parameter must not be an array");
+  });
+
+  it("should ignore truthy values listed in keep (no-op)", () => {
+    const result = compact({
+      obj: { a: 1, b: 0, c: null },
+      keep: ["truthy-no-op", 42, 0],
+    });
+
+    expect(result).to.deep.equal({ a: 1, b: 0 });
+  });
+
+  it("should ignore symbol-keyed properties", () => {
+    const sym = Symbol("hidden");
+    const obj: Record<string | symbol, unknown> = { a: 1 };
+    obj[sym] = "secret";
+
+    const result = compact({ obj: obj as Record<string, unknown> });
+
+    expect(result).to.deep.equal({ a: 1 });
+    expect(Object.getOwnPropertySymbols(result)).to.have.lengthOf(0);
+  });
 });
