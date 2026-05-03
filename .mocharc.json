@@ -1,5 +1,5 @@
 {
-  "require": ["tsx", "src/test-setup/happy-dom.ts"],
+  "require": ["tsx"],
   "spec": "src/**/*.spec.ts",
   "watch": false
 }

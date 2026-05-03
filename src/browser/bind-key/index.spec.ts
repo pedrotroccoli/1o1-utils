@@ -1,5 +1,6 @@
+import { GlobalRegistrator } from "@happy-dom/global-registrator";
 import { expect } from "chai";
-import { beforeEach, describe, it } from "mocha";
+import { after, before, beforeEach, describe, it } from "mocha";
 import { bindKey } from "./index.js";
 
 interface DispatchOptions {
@@ -37,6 +38,14 @@ function press(
 
 describe("bindKey", () => {
   let target: EventTarget;
+
+  before(() => {
+    if (!GlobalRegistrator.isRegistered) GlobalRegistrator.register();
+  });
+
+  after(async () => {
+    if (GlobalRegistrator.isRegistered) await GlobalRegistrator.unregister();
+  });
 
   beforeEach(() => {
     target = new EventTarget();

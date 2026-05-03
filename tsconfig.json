@@ -19,7 +19,6 @@
     "dist",
     "src/**/*.spec.ts",
     "src/**/*.bench.ts",
-    "src/benchmarks",
-    "src/test-setup"
+    "src/benchmarks"
   ]
 }
