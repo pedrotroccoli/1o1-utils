@@ -240,6 +240,10 @@
 		"./times": {
 			"import": "./dist/arrays/times/index.js",
 			"types": "./dist/arrays/times/index.d.ts"
+		},
+		"./random-int": {
+			"import": "./dist/numbers/random-int/index.js",
+			"types": "./dist/numbers/random-int/index.d.ts"
 		}
 	},
 	"scripts": {

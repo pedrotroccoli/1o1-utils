@@ -199,5 +199,10 @@
     "name": "times",
     "path": "dist/arrays/times/index.js",
     "limit": "1 kB"
+  },
+  {
+    "name": "random-int",
+    "path": "dist/numbers/random-int/index.js",
+    "limit": "1 kB"
   }
 ]
