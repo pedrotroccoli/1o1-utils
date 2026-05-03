@@ -84,17 +84,21 @@ async function waitForCondition({
     }
   });
 
-  cancel.catch(() => {});
+  const deadline = Date.now() + timeout;
 
   try {
     while (true) {
-      const result = await Promise.race([
-        Promise.resolve().then(() => condition()),
-        cancel,
-      ]);
+      const condPromise = Promise.resolve().then(() => condition());
+      condPromise.catch(() => {});
+      const result = await Promise.race([condPromise, cancel]);
       if (result) return;
+      const remaining = deadline - Date.now();
+      if (remaining <= 0) {
+        await cancel;
+      }
+      const wait = Math.min(interval, remaining);
       await Promise.race([
-        new Promise<void>((resolve) => setTimeout(resolve, interval)),
+        new Promise<void>((resolve) => setTimeout(resolve, wait)),
         cancel,
       ]);
     }

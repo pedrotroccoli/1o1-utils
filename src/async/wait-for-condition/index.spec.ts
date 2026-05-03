@@ -310,4 +310,29 @@ describe("waitForCondition", () => {
       expect(error).to.be.instanceOf(TimeoutError);
     }
   });
+
+  it("should not emit unhandledRejection when condition rejects after timeout wins", async () => {
+    const captured: unknown[] = [];
+    const listener = (reason: unknown) => captured.push(reason);
+    process.on("unhandledRejection", listener);
+
+    try {
+      await waitForCondition({
+        condition: () =>
+          new Promise((_, reject) =>
+            setTimeout(() => reject(new Error("late condition")), 50),
+          ),
+        interval: 100,
+        timeout: 10,
+      });
+      expect.fail("should have thrown");
+    } catch (error) {
+      expect(error).to.be.instanceOf(TimeoutError);
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, 80));
+    process.off("unhandledRejection", listener);
+
+    expect(captured).to.have.length(0);
+  });
 });
