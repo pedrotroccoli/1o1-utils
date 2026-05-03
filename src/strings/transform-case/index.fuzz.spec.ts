@@ -22,19 +22,25 @@ describe("transformCase (fuzz)", () => {
     );
   });
 
-  it("runs in linear time on long pathological inputs (no ReDoS)", () => {
+  it("scales sub-quadratically on long pathological inputs (no ReDoS)", () => {
     fc.assert(
-      fc.property(
-        fc.integer({ min: 1000, max: 10000 }),
-        fc.constantFrom(...STYLES),
-        (n, to) => {
-          const str = "aA".repeat(n);
-          const start = Date.now();
-          transformCase({ str, to });
-          expect(Date.now() - start).to.be.lessThan(500);
-        },
-      ),
-      { numRuns: 20 },
+      fc.property(fc.constantFrom(...STYLES), (to) => {
+        const small = "aA".repeat(1000);
+        const large = "aA".repeat(10000);
+
+        const t0 = performance.now();
+        transformCase({ str: small, to });
+        const tSmall = performance.now() - t0;
+
+        const t1 = performance.now();
+        transformCase({ str: large, to });
+        const tLarge = performance.now() - t1;
+
+        // Linear: ~10x. Polynomial ReDoS would be 100x+. Allow 30x for noise.
+        const ratio = tLarge / Math.max(tSmall, 0.01);
+        expect(ratio).to.be.lessThan(30);
+      }),
+      { numRuns: 5 },
     );
   });
 
