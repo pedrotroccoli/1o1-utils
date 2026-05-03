@@ -168,6 +168,11 @@ const SUITE_META: Record<string, { slug: string; description: string }> = {
     description:
       "Wraps a function so it runs at most once; subsequent calls return the cached result. Compared against `lodash.once`.",
   },
+  memo: {
+    slug: "memo",
+    description:
+      "Memoizes a function with optional TTL and custom cache key. Compared against `lodash.memoize` for wrapper creation, cache hits, and cache misses.",
+  },
   inRange: {
     slug: "in-range",
     description:

@@ -62,7 +62,11 @@
     "map-values",
     "escape-regexp",
     "escape-regex",
-    "regex-escape"
+    "regex-escape",
+    "memo",
+    "memoize",
+    "cache",
+    "ttl-cache"
   ],
   "author": "Pedro Troccoli <contact@pedrotroccoli.com>",
   "license": "MIT",
@@ -244,6 +248,10 @@
     "./random-int": {
       "import": "./dist/numbers/random-int/index.js",
       "types": "./dist/numbers/random-int/index.d.ts"
+    },
+    "./memo": {
+      "import": "./dist/functions/memo/index.js",
+      "types": "./dist/functions/memo/index.d.ts"
     }
   },
   "scripts": {
