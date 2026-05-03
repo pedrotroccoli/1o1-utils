@@ -58,7 +58,7 @@ isValidPhone({ phone: "+15551234567", country: "US" });     // => true
 
 ## Supported countries
 
-AE, AR, AT, AU, BE, BR, CA, CH, CL, CN, CO, DE, DK, EC, EG, ES, FI, FR, GB, HK, ID, IE, IL, IN, IT, JP, KE, KR, MX, MY, NG, NL, NO, NZ, PE, PH, PL, PT, RU, SA, SE, SG, TH, TR, US, UY, VE, VN, ZA.
+All ISO 3166-1 alpha-2 codes with an assigned ITU-T E.164 country code (~240 territories). Includes every UN member state plus dependent territories such as `GG` (Guernsey), `IM` (Isle of Man), `JE` (Jersey), `BL` (Saint Barthélemy), `MF` (Saint Martin), `XK` (Kosovo), `BQ`/`CW`/`SX` (former Netherlands Antilles), and minor Pacific islands (`NU`, `TK`, `WF`, etc.).
 
 Passing a `country` outside this set returns `false`.
 

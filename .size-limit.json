@@ -3,7 +3,7 @@
     "name": "Total (tree-shaken + gzipped)",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "7 kB"
+    "limit": "9 kB"
   },
   {
     "name": "array-to-hash",
@@ -173,7 +173,7 @@
   {
     "name": "is-valid-phone",
     "path": "dist/validators/is-valid-phone/index.js",
-    "limit": "1 kB"
+    "limit": "2 kB"
   },
   {
     "name": "is-valid-url",

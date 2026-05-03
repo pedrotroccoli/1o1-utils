@@ -209,5 +209,45 @@ describe("isValidPhone", () => {
         false,
       );
     });
+
+    it("should accept a Kosovo number (+383)", () => {
+      expect(isValidPhone({ phone: "+38349123456", country: "XK" })).to.equal(
+        true,
+      );
+    });
+
+    it("should accept a Vatican number (+379)", () => {
+      expect(isValidPhone({ phone: "+379061234567", country: "VA" })).to.equal(
+        true,
+      );
+    });
+
+    it("should accept an Isle of Man number (+44)", () => {
+      expect(isValidPhone({ phone: "+441624123456", country: "IM" })).to.equal(
+        true,
+      );
+    });
+
+    it("should accept a Niue number (+683, 7 digits)", () => {
+      expect(isValidPhone({ phone: "+6831234", country: "NU" })).to.equal(true);
+    });
+
+    it("should accept an Iraq mobile (+964, 13 digits)", () => {
+      expect(isValidPhone({ phone: "+9647901234567", country: "IQ" })).to.equal(
+        true,
+      );
+    });
+
+    it("should accept a Jamaica number under NANP", () => {
+      expect(isValidPhone({ phone: "+18761234567", country: "JM" })).to.equal(
+        true,
+      );
+    });
+
+    it("should reject a number that uses wrong prefix for its assigned country", () => {
+      expect(isValidPhone({ phone: "+449161234567", country: "DE" })).to.equal(
+        false,
+      );
+    });
   });
 });
