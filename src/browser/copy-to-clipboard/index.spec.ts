@@ -138,6 +138,7 @@ describe("copyToClipboard", () => {
             tag,
             value: "",
             contentEditable: "",
+            readOnly: false,
             style: {} as Record<string, string>,
             attrs: {} as Record<string, string>,
             setAttribute(name: string, val: string) {
@@ -175,11 +176,20 @@ describe("copyToClipboard", () => {
       const selection = {
         cleared: 0,
         added: [] as unknown[],
+        ranges: [] as unknown[],
+        get rangeCount() {
+          return this.ranges.length;
+        },
+        getRangeAt(i: number) {
+          return this.ranges[i];
+        },
         removeAllRanges() {
           this.cleared++;
+          this.ranges = [];
         },
         addRange(range: unknown) {
           this.added.push(range);
+          this.ranges.push(range);
         },
       };
       return {
@@ -211,7 +221,7 @@ describe("copyToClipboard", () => {
       expect(fake.removed[0]).to.equal(fake.elements[0].node);
     });
 
-    it("should set contentEditable and use Range/Selection for iOS Safari support", async () => {
+    it("should set contentEditable, readOnly, and use Range/Selection for iOS Safari support", async () => {
       const fake = makeFakeDoc(true);
       setGlobal("isSecureContext", false);
       clearGlobal("navigator");
@@ -221,12 +231,66 @@ describe("copyToClipboard", () => {
       await copyToClipboard({ text: "iOS" });
 
       expect(fake.elements[0].node.contentEditable).to.equal("true");
+      expect(fake.elements[0].node.readOnly).to.equal(true);
       expect(fake.ranges).to.have.lengthOf(1);
       expect(fake.ranges[0].selectedNode).to.equal(fake.elements[0].node);
-      expect(fake.selection.cleared).to.equal(1);
-      expect(fake.selection.added).to.deep.equal([fake.ranges[0]]);
+      expect(fake.selection.added[0]).to.equal(fake.ranges[0]);
       expect(fake.elements[0].node.selectionStart).to.equal(0);
       expect(fake.elements[0].node.selectionEnd).to.equal(3);
+    });
+
+    it("should save and restore the user's existing selection", async () => {
+      const fake = makeFakeDoc(true);
+      const userRange = { id: "user-range" };
+      fake.selection.ranges = [userRange];
+      setGlobal("isSecureContext", false);
+      clearGlobal("navigator");
+      setGlobal("document", fake.doc);
+      setGlobal("getSelection", () => fake.selection);
+
+      await copyToClipboard({ text: "x" });
+
+      expect(fake.selection.ranges).to.deep.equal([userRange]);
+      expect(fake.selection.added).to.deep.equal([fake.ranges[0], userRange]);
+    });
+
+    it("should fall back to execCommand when Clipboard API rejects", async () => {
+      const fake = makeFakeDoc(true);
+      setGlobal("isSecureContext", true);
+      setGlobal("navigator", {
+        clipboard: {
+          writeText: async () => {
+            throw new Error("NotAllowedError");
+          },
+        },
+      });
+      setGlobal("document", fake.doc);
+      setGlobal("getSelection", () => fake.selection);
+
+      await copyToClipboard({ text: "fallback" });
+
+      expect(fake.execCalls).to.deep.equal(["copy"]);
+      expect(fake.elements[0].node.value).to.equal("fallback");
+    });
+
+    it("should propagate Clipboard API rejection when no fallback is possible", async () => {
+      setGlobal("isSecureContext", true);
+      setGlobal("navigator", {
+        clipboard: {
+          writeText: async () => {
+            throw new Error("denied");
+          },
+        },
+      });
+      clearGlobal("document");
+
+      let caught: Error | undefined;
+      try {
+        await copyToClipboard({ text: "x" });
+      } catch (err) {
+        caught = err as Error;
+      }
+      expect(caught?.message).to.equal("denied");
     });
 
     it("should copy via fallback when navigator.clipboard is unavailable", async () => {

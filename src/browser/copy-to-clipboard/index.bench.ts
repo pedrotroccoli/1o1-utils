@@ -7,8 +7,10 @@ type GlobalLike = typeof globalThis & {
 };
 
 const g = globalThis as GlobalLike;
-const originalSecure = Object.getOwnPropertyDescriptor(g, "isSecureContext");
-const originalNavigator = Object.getOwnPropertyDescriptor(g, "navigator");
+
+let captured = false;
+let originalSecure: PropertyDescriptor | undefined;
+let originalNavigator: PropertyDescriptor | undefined;
 
 const short = "Hello world";
 const long = "x".repeat(10_000);
@@ -17,6 +19,11 @@ const bench = new Bench({
   name: "copyToClipboard",
   time: 1000,
   setup: () => {
+    if (!captured) {
+      originalSecure = Object.getOwnPropertyDescriptor(g, "isSecureContext");
+      originalNavigator = Object.getOwnPropertyDescriptor(g, "navigator");
+      captured = true;
+    }
     Object.defineProperty(g, "isSecureContext", {
       value: true,
       configurable: true,

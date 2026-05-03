@@ -27,12 +27,14 @@ import type { CopyToClipboardParams, CopyToClipboardResult } from "./types.js";
  *
  * @remarks
  * The Clipboard API is only used when `globalThis.isSecureContext` is `true`
- * (HTTPS or `localhost`). On insecure pages and older browsers the function
- * inserts a hidden, off-screen `<textarea>`, selects its content via a Range
- * + Selection (required by iOS Safari, which ignores `select()` on readonly
- * textareas), runs the deprecated `execCommand("copy")`, and removes the
- * node afterwards. The fallback requires a `document` and must be invoked
- * from within a user gesture handler (click, keydown, etc.).
+ * (HTTPS or `localhost`). When the API rejects (e.g. `NotAllowedError`,
+ * document not focused) and a `document.body` is available, the function
+ * falls back to inserting a hidden, off-screen `<textarea>`, selecting its
+ * content via a Range + Selection (required by iOS Safari, which ignores
+ * `select()` on readonly textareas), running the deprecated
+ * `execCommand("copy")`, and removing the node afterwards. The fallback
+ * preserves any prior user selection by saving and restoring it. It must
+ * be invoked from within a user gesture handler (click, keydown, etc.).
  */
 async function copyToClipboard({
   text,
@@ -49,8 +51,14 @@ async function copyToClipboard({
   };
 
   if (g.isSecureContext === true && g.navigator?.clipboard?.writeText) {
-    await g.navigator.clipboard.writeText(text);
-    return;
+    try {
+      await g.navigator.clipboard.writeText(text);
+      return;
+    } catch (err) {
+      if (!g.document?.body) {
+        throw err;
+      }
+    }
   }
 
   const doc = g.document;
@@ -60,19 +68,28 @@ async function copyToClipboard({
 
   const textarea = doc.createElement("textarea");
   textarea.value = text;
-  textarea.setAttribute("readonly", "");
   textarea.setAttribute("aria-hidden", "true");
+  // iOS Safari requires both contentEditable and readOnly on the textarea
+  // for the Range/Selection trick to copy without mutating the input.
   textarea.contentEditable = "true";
+  textarea.readOnly = true;
   textarea.style.position = "fixed";
   textarea.style.top = "0";
   textarea.style.left = "-9999px";
   textarea.style.opacity = "0";
   doc.body.appendChild(textarea);
 
+  const selection = g.getSelection?.();
+  const savedRanges: Range[] = [];
+  if (selection) {
+    for (let i = 0; i < selection.rangeCount; i++) {
+      savedRanges.push(selection.getRangeAt(i));
+    }
+  }
+
   try {
     const range = doc.createRange();
     range.selectNodeContents(textarea);
-    const selection = g.getSelection?.();
     selection?.removeAllRanges();
     selection?.addRange(range);
     textarea.setSelectionRange(0, text.length);
@@ -83,6 +100,12 @@ async function copyToClipboard({
     }
   } finally {
     textarea.remove();
+    if (selection) {
+      selection.removeAllRanges();
+      for (const r of savedRanges) {
+        selection.addRange(r);
+      }
+    }
   }
 }
 
