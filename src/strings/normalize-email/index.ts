@@ -1,7 +1,4 @@
-import type {
-  NormalizeEmailParams,
-  NormalizeEmailResult,
-} from "./types.js";
+import type { NormalizeEmailParams, NormalizeEmailResult } from "./types.js";
 
 /**
  * Normalizes an email address: trim, lowercase, and optionally strip

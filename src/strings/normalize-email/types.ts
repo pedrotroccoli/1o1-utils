@@ -7,8 +7,4 @@ type NormalizeEmailResult = string;
 
 type NormalizeEmailFn = (params: NormalizeEmailParams) => NormalizeEmailResult;
 
-export type {
-  NormalizeEmailFn,
-  NormalizeEmailParams,
-  NormalizeEmailResult,
-};
+export type { NormalizeEmailFn, NormalizeEmailParams, NormalizeEmailResult };
