@@ -10,8 +10,4 @@ type Memoized<T extends (...args: never[]) => unknown> = T & {
   readonly size: number;
 };
 
-type MemoFn = <T extends (...args: never[]) => unknown>(
-  params: MemoParams<T>,
-) => Memoized<T>;
-
-export type { MemoFn, Memoized, MemoParams };
+export type { Memoized, MemoParams };

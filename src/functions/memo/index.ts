@@ -1,10 +1,5 @@
 import type { Memoized, MemoParams } from "./types.js";
 
-const defaultKey = (args: unknown[]): unknown =>
-  args.length === 1 && (typeof args[0] !== "object" || args[0] === null)
-    ? args[0]
-    : JSON.stringify(args);
-
 /**
  * Memoizes a function: caches its return value per unique argument set so
  * repeat calls skip the computation. Optionally expires entries after `ttl`

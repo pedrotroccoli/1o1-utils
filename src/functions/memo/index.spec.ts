@@ -4,7 +4,7 @@ import { sleep } from "../../async/sleep/index.js";
 import { memo } from "./index.js";
 
 describe("memo", () => {
-  it("should cache the result for repeated calls with the same args", async () => {
+  it("should cache the result for repeated calls with the same args", () => {
     let callCount = 0;
     const memoized = memo({
       fn: (n: number) => {
@@ -63,7 +63,7 @@ describe("memo", () => {
     expect(callCount).to.equal(1);
   });
 
-  it("should return the cached value before TTL expires", async () => {
+  it("should return the cached value before TTL expires", () => {
     let callCount = 0;
     const memoized = memo({
       fn: (n: number) => {
@@ -220,6 +220,34 @@ describe("memo", () => {
     expect(memoized(1)).to.equal(undefined);
     expect(memoized(1)).to.equal(undefined);
     expect(callCount).to.equal(1);
+  });
+
+  it("should always recompute when ttl is 0", () => {
+    let callCount = 0;
+    const memoized = memo({
+      fn: (n: number) => {
+        callCount++;
+        return n;
+      },
+      ttl: 0,
+    });
+
+    memoized(1);
+    memoized(1);
+    memoized(1);
+    expect(callCount).to.equal(3);
+  });
+
+  it("should warn callers via docs about Symbol/BigInt key collisions", () => {
+    const memoized = memo({
+      fn: (obj: { tag: symbol | bigint }) => obj.tag,
+    });
+
+    const a = Symbol("a");
+    const b = Symbol("b");
+    expect(memoized({ tag: a })).to.equal(a);
+    expect(memoized({ tag: b })).to.equal(a);
+    expect(() => memoized({ tag: 1n })).to.throw(TypeError);
   });
 
   it("should propagate errors and not cache them", () => {

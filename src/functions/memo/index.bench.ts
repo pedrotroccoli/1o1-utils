@@ -27,16 +27,17 @@ bench
     memoLodash(1);
   });
 
-let i = 0;
+let iOwn = 0;
+let iLodash = 0;
 const memoOwnMiss = memo({ fn: compute });
 const memoLodashMiss = lodashMemoize(compute);
 
 bench
   .add("1o1-utils (invocation, miss)", () => {
-    memoOwnMiss(i++);
+    memoOwnMiss(iOwn++);
   })
   .add("lodash (invocation, miss)", () => {
-    memoLodashMiss(i++);
+    memoLodashMiss(iLodash++);
   });
 
 export { bench };
