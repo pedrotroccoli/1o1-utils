@@ -66,6 +66,9 @@
     "escape-regexp",
     "escape-regex",
     "regex-escape",
+    "shuffle",
+    "fisher-yates",
+    "randomize",
     "partition",
     "split",
     "bifurcate"
@@ -254,6 +257,10 @@
     "./random-int": {
       "import": "./dist/numbers/random-int/index.js",
       "types": "./dist/numbers/random-int/index.d.ts"
+    },
+    "./shuffle": {
+      "import": "./dist/arrays/shuffle/index.js",
+      "types": "./dist/arrays/shuffle/index.d.ts"
     },
     "./partition": {
       "import": "./dist/arrays/partition/index.js",

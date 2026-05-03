@@ -211,6 +211,11 @@
     "limit": "1 kB"
   },
   {
+    "name": "shuffle",
+    "path": "dist/arrays/shuffle/index.js",
+    "limit": "1 kB"
+  },
+  {
     "name": "partition",
     "path": "dist/arrays/partition/index.js",
     "limit": "1 kB"

@@ -18,6 +18,7 @@
 - [groupBy](https://pedrotroccoli.github.io/1o1-utils/arrays/group-by/): Group array elements by a property value
 - [partition](https://pedrotroccoli.github.io/1o1-utils/arrays/partition/): Split an array into two groups based on a predicate
 - [range](https://pedrotroccoli.github.io/1o1-utils/arrays/range/): Generate an array of numbers in a given range with optional start and step
+- [shuffle](https://pedrotroccoli.github.io/1o1-utils/arrays/shuffle/): Randomly reorder an array using Fisher-Yates, with an optional injectable random source
 - [sortBy](https://pedrotroccoli.github.io/1o1-utils/arrays/sort-by/): Sort an array of objects by a property with dot notation support
 - [times](https://pedrotroccoli.github.io/1o1-utils/arrays/times/): Invoke a function N times with the current index and collect the results
 - [unique](https://pedrotroccoli.github.io/1o1-utils/arrays/unique/): Remove duplicate elements from an array by value or key
