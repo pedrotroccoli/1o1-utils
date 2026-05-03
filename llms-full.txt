@@ -422,6 +422,33 @@ Primitives are returned as-is. Functions are copied by reference. Map values are
 
 ---
 
+### compact
+
+Remove all falsy values (`false`, `0`, `-0`, `0n`, `""`, `null`, `undefined`, `NaN`) from an object. Pass `keep` to preserve specific falsy values; matching uses `Object.is`, so `0` vs `-0` and `NaN` are handled exactly.
+
+Import: import { compact } from "1o1-utils/compact";
+
+Signature:
+function compact<T extends Record<string, unknown>>({ obj, keep }: CompactParams<T>): Partial<T>
+
+Parameters:
+- obj (T, required): The source object
+- keep (unknown[], optional): Falsy values to preserve
+
+Returns: Partial<T> — A new object without falsy entries (except those listed in `keep`).
+
+Example:
+compact({ obj: { a: 1, b: null, c: "", d: 0, e: false, f: "ok" } });
+// => { a: 1, f: "ok" }
+
+compact({ obj: { a: 0, b: null, c: "" }, keep: [0] });
+// => { a: 0 }
+
+Throws: Error if obj is not an object. Error if obj is an array (use `.filter(Boolean)` for arrays). Error if keep is not an array.
+Skips unsafe keys (`__proto__`, `constructor`, `prototype`) to prevent prototype pollution. Symbol-keyed properties are ignored. Truthy values in `keep` are no-ops. Does not mutate the input.
+
+---
+
 ### deepMerge
 
 Recursively merge two objects into a new object. Nested plain objects are merged deeply; arrays and other types are overwritten.

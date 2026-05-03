@@ -41,6 +41,11 @@
     "limit": "2 kB"
   },
   {
+    "name": "compact",
+    "path": "dist/objects/compact/index.js",
+    "limit": "1 kB"
+  },
+  {
     "name": "deep-merge",
     "path": "dist/objects/deep-merge/index.js",
     "limit": "2 kB"
