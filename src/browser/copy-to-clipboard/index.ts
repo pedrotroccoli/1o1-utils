@@ -33,8 +33,11 @@ import type { CopyToClipboardParams, CopyToClipboardResult } from "./types.js";
  * content via a Range + Selection (required by iOS Safari, which ignores
  * `select()` on readonly textareas), running the deprecated
  * `execCommand("copy")`, and removing the node afterwards. The fallback
- * preserves any prior user selection by saving and restoring it. It must
- * be invoked from within a user gesture handler (click, keydown, etc.).
+ * preserves any prior user selection by cloning and restoring its ranges,
+ * is a no-op for an empty string (since `execCommand("copy")` rejects an
+ * empty selection on some browsers), and must be invoked from within a
+ * user gesture handler (click, keydown, etc.). When both paths fail the
+ * thrown error carries the original Clipboard API error in `cause`.
  */
 async function copyToClipboard({
   text,
@@ -50,20 +53,26 @@ async function copyToClipboard({
     getSelection?: () => Selection | null;
   };
 
+  let apiError: unknown;
   if (g.isSecureContext === true && g.navigator?.clipboard?.writeText) {
     try {
       await g.navigator.clipboard.writeText(text);
       return;
     } catch (err) {
-      if (!g.document?.body) {
-        throw err;
-      }
+      apiError = err;
     }
   }
 
   const doc = g.document;
   if (!doc?.body) {
+    if (apiError !== undefined) {
+      throw apiError;
+    }
     throw new Error("Clipboard not available in this environment");
+  }
+
+  if (text === "") {
+    return;
   }
 
   const textarea = doc.createElement("textarea");
@@ -83,7 +92,7 @@ async function copyToClipboard({
   const savedRanges: Range[] = [];
   if (selection) {
     for (let i = 0; i < selection.rangeCount; i++) {
-      savedRanges.push(selection.getRangeAt(i));
+      savedRanges.push(selection.getRangeAt(i).cloneRange());
     }
   }
 
@@ -96,7 +105,9 @@ async function copyToClipboard({
     textarea.select();
     const ok = doc.execCommand("copy");
     if (!ok) {
-      throw new Error("Failed to copy to clipboard");
+      throw new Error("Failed to copy to clipboard", {
+        cause: apiError,
+      });
     }
   } finally {
     textarea.remove();

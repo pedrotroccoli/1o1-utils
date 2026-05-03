@@ -239,9 +239,17 @@ describe("copyToClipboard", () => {
       expect(fake.elements[0].node.selectionEnd).to.equal(3);
     });
 
-    it("should save and restore the user's existing selection", async () => {
+    it("should save and restore the user's existing selection (cloned)", async () => {
       const fake = makeFakeDoc(true);
-      const userRange = { id: "user-range" };
+      const cloned: unknown[] = [];
+      const userRange = {
+        id: "user-range",
+        cloneRange() {
+          const clone = { id: "user-range-clone", source: this };
+          cloned.push(clone);
+          return clone;
+        },
+      };
       fake.selection.ranges = [userRange];
       setGlobal("isSecureContext", false);
       clearGlobal("navigator");
@@ -250,8 +258,10 @@ describe("copyToClipboard", () => {
 
       await copyToClipboard({ text: "x" });
 
-      expect(fake.selection.ranges).to.deep.equal([userRange]);
-      expect(fake.selection.added).to.deep.equal([fake.ranges[0], userRange]);
+      expect(cloned).to.have.lengthOf(1);
+      expect(fake.selection.ranges).to.deep.equal([cloned[0]]);
+      expect(fake.selection.added[0]).to.equal(fake.ranges[0]);
+      expect(fake.selection.added[1]).to.equal(cloned[0]);
     });
 
     it("should fall back to execCommand when Clipboard API rejects", async () => {
@@ -315,6 +325,44 @@ describe("copyToClipboard", () => {
       await copyToClipboard({ text: "no-selection" });
 
       expect(fake.execCalls).to.deep.equal(["copy"]);
+    });
+
+    it("should be a no-op for empty string in fallback path", async () => {
+      const fake = makeFakeDoc(true);
+      setGlobal("isSecureContext", false);
+      clearGlobal("navigator");
+      setGlobal("document", fake.doc);
+      setGlobal("getSelection", () => fake.selection);
+
+      await copyToClipboard({ text: "" });
+
+      expect(fake.execCalls).to.deep.equal([]);
+      expect(fake.elements).to.have.lengthOf(0);
+    });
+
+    it("should attach Clipboard API rejection as cause when fallback also fails", async () => {
+      const fake = makeFakeDoc(false);
+      const apiErr = new Error("NotAllowedError");
+      setGlobal("isSecureContext", true);
+      setGlobal("navigator", {
+        clipboard: {
+          writeText: async () => {
+            throw apiErr;
+          },
+        },
+      });
+      setGlobal("document", fake.doc);
+      setGlobal("getSelection", () => fake.selection);
+
+      let caught: Error | undefined;
+      try {
+        await copyToClipboard({ text: "x" });
+      } catch (err) {
+        caught = err as Error;
+      }
+
+      expect(caught?.message).to.equal("Failed to copy to clipboard");
+      expect((caught as Error & { cause?: unknown })?.cause).to.equal(apiErr);
     });
 
     it("should remove textarea even when execCommand fails", async () => {
