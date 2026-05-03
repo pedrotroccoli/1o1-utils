@@ -1,5 +1,7 @@
 import type { PickByParams } from "./types.js";
 
+const UNSAFE_KEYS = new Set(["__proto__", "constructor", "prototype"]);
+
 /**
  * Creates an object with only the entries for which the predicate returns truthy.
  *
@@ -36,6 +38,7 @@ function pickBy<T extends Record<string, unknown>>({
 
   for (let i = 0; i < keys.length; i++) {
     const key = keys[i];
+    if (UNSAFE_KEYS.has(key)) continue;
     const value = obj[key];
     if (predicate(value, key)) {
       result[key] = value;

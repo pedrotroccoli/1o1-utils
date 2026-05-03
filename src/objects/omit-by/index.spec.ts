@@ -55,6 +55,32 @@ describe("omitBy", () => {
     expect(result).to.not.equal(obj);
   });
 
+  it("should coerce truthy/falsy non-boolean predicate returns", () => {
+    const result = omitBy({
+      obj: { a: 0, b: 1, c: "", d: "ok" },
+      // @ts-expect-error - returning the value itself (number/string), not a boolean
+      predicate: (v) => v,
+    });
+
+    expect(result).to.deep.equal({ a: 0, c: "" });
+  });
+
+  it("should skip unsafe keys to prevent prototype pollution", () => {
+    const obj: Record<string, unknown> = {};
+    Object.defineProperty(obj, "__proto__", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: { polluted: true },
+    });
+    obj.safe = 1;
+
+    const result = omitBy({ obj, predicate: () => false });
+
+    expect(result).to.deep.equal({ safe: 1 });
+    expect(({} as Record<string, unknown>).polluted).to.equal(undefined);
+  });
+
   it("should throw an error if obj is not an object", () => {
     expect(() =>
       // @ts-expect-error - testing invalid input
