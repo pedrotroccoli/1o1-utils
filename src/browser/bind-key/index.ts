@@ -2,6 +2,19 @@ import type { BindKeyHandler, BindKeyOptions, ParsedStep } from "./types.js";
 
 const MODIFIERS = new Set(["ctrl", "shift", "alt", "meta", "cmd", "mod"]);
 
+const KEY_ALIASES: Record<string, string> = {
+  space: " ",
+  spacebar: " ",
+  esc: "escape",
+  return: "enter",
+  del: "delete",
+  ins: "insert",
+  up: "arrowup",
+  down: "arrowdown",
+  left: "arrowleft",
+  right: "arrowright",
+};
+
 function isMac(): boolean {
   if (typeof navigator === "undefined") return false;
   const platform =
@@ -42,7 +55,7 @@ function parseStep(raw: string, mac: boolean): ParsedStep {
           `Invalid key combo: "${raw}" — multiple non-modifier keys`,
         );
       }
-      step.key = part;
+      step.key = KEY_ALIASES[part] ?? part;
     }
   }
 
@@ -64,14 +77,25 @@ function parseCombo(combo: string): ParsedStep[] {
     .map((step) => parseStep(step, mac));
 }
 
+function codeKey(code: string): string {
+  if (code.startsWith("Key")) return code.slice(3).toLowerCase();
+  if (code.startsWith("Digit")) return code.slice(5);
+  if (code.startsWith("Numpad")) return code.slice(6).toLowerCase();
+  return code.toLowerCase();
+}
+
 function eventMatches(event: KeyboardEvent, step: ParsedStep): boolean {
-  return (
-    event.key.toLowerCase() === step.key &&
-    event.ctrlKey === step.ctrl &&
-    event.shiftKey === step.shift &&
-    event.altKey === step.alt &&
-    event.metaKey === step.meta
-  );
+  if (
+    event.ctrlKey !== step.ctrl ||
+    event.shiftKey !== step.shift ||
+    event.altKey !== step.alt ||
+    event.metaKey !== step.meta
+  ) {
+    return false;
+  }
+  const key = event.key.toLowerCase();
+  if (key === step.key) return true;
+  return event.code !== undefined && codeKey(event.code) === step.key;
 }
 
 function isEditableTarget(target: EventTarget | null): boolean {
@@ -103,8 +127,14 @@ function now(): number {
  * Combo grammar: `+` joins simultaneous modifiers (e.g. `ctrl+shift+p`),
  * spaces separate sequence steps (e.g. `g i`). Modifiers: `ctrl`, `shift`,
  * `alt`, `meta` (alias `cmd`), and `mod` (= `meta` on Mac, `ctrl` elsewhere).
- * Key names match `KeyboardEvent.key` lowercased — use `"arrowleft"`,
- * `"escape"`, `"enter"`, `" "` (space), `"f1"`, etc. for non-printable keys.
+ *
+ * Key names match `KeyboardEvent.key` lowercased. Aliases: `space`,
+ * `esc`, `return`, `del`, `ins`, `up`, `down`, `left`, `right`. Use
+ * full names like `arrowleft`, `escape`, `enter`, `f1` if preferred.
+ *
+ * Shift+digit and shift+letter combos compare against `event.code`
+ * (`Digit1`, `KeyA`) when `event.key` doesn't match, so `shift+1`
+ * fires regardless of the OS-level shifted symbol (`!`, `@`, etc.).
  *
  * @param combo - Key combo string. Case-insensitive.
  * @param handler - Called with the final `KeyboardEvent` on a match.
@@ -119,6 +149,9 @@ function now(): number {
  *   resets. Defaults to `1000`.
  * @param options.preventDefault - When true, calls `event.preventDefault()`
  *   on a full match. Defaults to `false`.
+ * @param options.ignoreRepeat - When true (default), auto-repeat events
+ *   (`event.repeat === true`) are ignored, so the handler fires once per
+ *   physical keypress. Set to `false` to fire on every repeat.
  * @returns Idempotent unbind function.
  *
  * @example
@@ -127,6 +160,7 @@ function now(): number {
  * bindKey("g i", () => goToInbox());
  * bindKey("escape", () => closeModal());
  * bindKey("ctrl+arrowleft", () => prevTab());
+ * bindKey("space", () => togglePlay());
  * unbind();
  * ```
  *
@@ -148,14 +182,15 @@ function bindKey(
   }
 
   const steps = parseCombo(combo);
+  const firstStep = steps[0] as ParsedStep;
   const filterInputs = options.filterInputs !== false;
   const sequenceTimeout = options.sequenceTimeout ?? 1000;
   const preventDefault = options.preventDefault === true;
+  const ignoreRepeat = options.ignoreRepeat !== false;
   const bypassFilter = steps.some(hasNonShiftModifier);
 
   const target =
-    options.target ??
-    (typeof window !== "undefined" ? (window as EventTarget) : undefined);
+    options.target ?? (typeof window !== "undefined" ? window : undefined);
   if (target === undefined) {
     throw new Error(
       "bindKey requires a 'target' option in non-browser environments",
@@ -167,6 +202,8 @@ function bindKey(
 
   const listener = (event: Event): void => {
     const ke = event as KeyboardEvent;
+    if (ignoreRepeat && ke.repeat) return;
+
     const t = now();
     if (cursor > 0 && t - lastTime > sequenceTimeout) {
       cursor = 0;
@@ -182,7 +219,7 @@ function bindKey(
     if (!eventMatches(ke, step)) {
       if (cursor > 0) {
         cursor = 0;
-        if (eventMatches(ke, steps[0] as ParsedStep)) {
+        if (eventMatches(ke, firstStep)) {
           cursor = 1;
           lastTime = t;
         }

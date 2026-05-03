@@ -7,6 +7,8 @@ interface DispatchOptions {
   shift?: boolean;
   alt?: boolean;
   meta?: boolean;
+  code?: string;
+  repeat?: boolean;
   target?: EventTarget;
 }
 
@@ -17,10 +19,12 @@ function press(
 ): KeyboardEvent {
   const event = new KeyboardEvent("keydown", {
     key,
+    code: opts.code,
     ctrlKey: opts.ctrl ?? false,
     shiftKey: opts.shift ?? false,
     altKey: opts.alt ?? false,
     metaKey: opts.meta ?? false,
+    repeat: opts.repeat ?? false,
     bubbles: true,
     cancelable: true,
   });
@@ -238,5 +242,58 @@ describe("bindKey", () => {
     press(window, "k");
     unbind();
     expect(count).to.equal(1);
+  });
+
+  it("matches `space` alias against the space key", () => {
+    let count = 0;
+    bindKey("space", () => count++, { target });
+    press(target, " ", { code: "Space" });
+    expect(count).to.equal(1);
+  });
+
+  it("matches `esc` alias against escape", () => {
+    let count = 0;
+    bindKey("esc", () => count++, { target });
+    press(target, "Escape", { code: "Escape" });
+    expect(count).to.equal(1);
+  });
+
+  it("matches `up` alias against arrowup", () => {
+    let count = 0;
+    bindKey("up", () => count++, { target });
+    press(target, "ArrowUp", { code: "ArrowUp" });
+    expect(count).to.equal(1);
+  });
+
+  it("matches shift+digit via event.code when key is a shifted symbol", () => {
+    let count = 0;
+    bindKey("shift+1", () => count++, { target });
+    press(target, "!", { shift: true, code: "Digit1" });
+    expect(count).to.equal(1);
+  });
+
+  it("matches shift+letter via event.key uppercase", () => {
+    let count = 0;
+    bindKey("shift+a", () => count++, { target });
+    press(target, "A", { shift: true, code: "KeyA" });
+    expect(count).to.equal(1);
+  });
+
+  it("ignores auto-repeat events by default", () => {
+    let count = 0;
+    bindKey("k", () => count++, { target });
+    press(target, "k");
+    press(target, "k", { repeat: true });
+    press(target, "k", { repeat: true });
+    expect(count).to.equal(1);
+  });
+
+  it("fires on auto-repeat when ignoreRepeat is false", () => {
+    let count = 0;
+    bindKey("k", () => count++, { target, ignoreRepeat: false });
+    press(target, "k");
+    press(target, "k", { repeat: true });
+    press(target, "k", { repeat: true });
+    expect(count).to.equal(3);
   });
 });

@@ -3,6 +3,7 @@ interface BindKeyOptions {
   filterInputs?: boolean;
   sequenceTimeout?: number;
   preventDefault?: boolean;
+  ignoreRepeat?: boolean;
 }
 
 type BindKeyHandler = (event: KeyboardEvent) => void;
