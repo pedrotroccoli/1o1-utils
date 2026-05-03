@@ -183,6 +183,11 @@ const SUITE_META: Record<string, { slug: string; description: string }> = {
     description:
       "Validates a string against the WHATWG `URL` parser. Compared against a native `try/catch` `new URL` implementation and a regex-based check.",
   },
+  isValidEmail: {
+    slug: "is-valid-email",
+    description:
+      "Validates a string against the HTML5 living-standard email pattern with RFC 5321 length limits. Compared against a simple regex and a native `indexOf`/`lastIndexOf` structural check.\n\n> **Note:** `simple regex` and `native string check` are coarse baselines — they do not validate hostname-label structure (hyphen rules, label length), so they accept many addresses 1o1-utils correctly rejects. Their numbers are shown for reference only and are not apples-to-apples.",
+  },
   zip: {
     slug: "zip",
     description:
@@ -202,6 +207,11 @@ const SUITE_META: Record<string, { slug: string; description: string }> = {
     slug: "map-values",
     description:
       "Transforms an object's values via an iteratee function. Compared against `lodash.mapValues` and a native `Object.fromEntries(Object.entries().map())` approach.",
+  },
+  "partition (by role)": {
+    slug: "partition",
+    description:
+      "Splits an array into two groups based on a predicate. Compared against `lodash.partition`, a native two-`filter` approach, and a native single-pass loop.",
   },
 };
 

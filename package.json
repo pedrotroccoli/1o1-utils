@@ -43,6 +43,9 @@
     "is-valid-url",
     "validate-url",
     "url-validator",
+    "is-valid-email",
+    "validate-email",
+    "email-validator",
     "safely",
     "tryit",
     "try-catch",
@@ -65,7 +68,10 @@
     "regex-escape",
     "shuffle",
     "fisher-yates",
-    "randomize"
+    "randomize",
+    "partition",
+    "split",
+    "bifurcate"
   ],
   "author": "Pedro Troccoli <contact@pedrotroccoli.com>",
   "license": "MIT",
@@ -220,6 +226,10 @@
       "import": "./dist/comparisons/deep-equal/index.js",
       "types": "./dist/comparisons/deep-equal/index.d.ts"
     },
+    "./is-valid-email": {
+      "import": "./dist/validators/is-valid-email/index.js",
+      "types": "./dist/validators/is-valid-email/index.d.ts"
+    },
     "./is-valid-url": {
       "import": "./dist/validators/is-valid-url/index.js",
       "types": "./dist/validators/is-valid-url/index.d.ts"
@@ -251,6 +261,10 @@
     "./shuffle": {
       "import": "./dist/arrays/shuffle/index.js",
       "types": "./dist/arrays/shuffle/index.d.ts"
+    },
+    "./partition": {
+      "import": "./dist/arrays/partition/index.js",
+      "types": "./dist/arrays/partition/index.d.ts"
     }
   },
   "scripts": {
