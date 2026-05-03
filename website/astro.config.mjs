@@ -88,6 +88,10 @@ export default defineConfig({
           autogenerate: { directory: "comparisons" },
         },
         {
+          label: "Formatters",
+          autogenerate: { directory: "formatters" },
+        },
+        {
           label: "Functions",
           autogenerate: { directory: "functions" },
         },

@@ -86,9 +86,28 @@
     "memoize",
     "cache",
     "ttl-cache",
+    "copy-to-clipboard",
+    "clipboard",
+    "copy",
     "compact",
     "remove-falsy",
     "clean-object",
+    "replace",
+    "swap",
+    "update-array",
+    "bind-key",
+    "bindkey",
+    "hotkey",
+    "keyboard-shortcut",
+    "keymap",
+    "seconds-to-time-format",
+    "time-format-to-seconds",
+    "format-seconds",
+    "parse-time",
+    "hh-mm-ss",
+    "mm-ss",
+    "duration",
+    "clock-format",
     "string-strength",
     "entropy",
     "shannon",
@@ -231,6 +250,10 @@
       "import": "./dist/async/with-timeout/index.js",
       "types": "./dist/async/with-timeout/index.d.ts"
     },
+    "./wait-for-condition": {
+      "import": "./dist/async/wait-for-condition/index.js",
+      "types": "./dist/async/wait-for-condition/index.d.ts"
+    },
     "./once": {
       "import": "./dist/functions/once/index.js",
       "types": "./dist/functions/once/index.d.ts"
@@ -307,6 +330,26 @@
       "import": "./dist/functions/memo/index.js",
       "types": "./dist/functions/memo/index.d.ts"
     },
+    "./copy-to-clipboard": {
+      "import": "./dist/browser/copy-to-clipboard/index.js",
+      "types": "./dist/browser/copy-to-clipboard/index.d.ts"
+    },
+    "./replace": {
+      "import": "./dist/arrays/replace/index.js",
+      "types": "./dist/arrays/replace/index.d.ts"
+    },
+    "./bind-key": {
+      "import": "./dist/browser/bind-key/index.js",
+      "types": "./dist/browser/bind-key/index.d.ts"
+    },
+    "./seconds-to-time-format": {
+      "import": "./dist/formatters/seconds-to-time-format/index.js",
+      "types": "./dist/formatters/seconds-to-time-format/index.d.ts"
+    },
+    "./time-format-to-seconds": {
+      "import": "./dist/formatters/time-format-to-seconds/index.js",
+      "types": "./dist/formatters/time-format-to-seconds/index.d.ts"
+    },
     "./string-strength": {
       "import": "./dist/strings/string-strength/index.js",
       "types": "./dist/strings/string-strength/index.d.ts"
@@ -351,16 +394,20 @@
   "devDependencies": {
     "@biomejs/biome": "^2.4.10",
     "@changesets/cli": "^2.30.0",
+    "@happy-dom/global-registrator": "^20.9.0",
     "@size-limit/file": "^12.0.1",
     "@size-limit/preset-small-lib": "^12.0.1",
     "@types/chai": "^5.2.2",
     "@types/lodash": "^4.17.24",
     "@types/mocha": "^10.0.10",
+    "@types/mousetrap": "^1.6.15",
     "c8": "^11.0.0",
     "chai": "^6.2.2",
     "es-toolkit": "^1.45.1",
+    "happy-dom": "^20.9.0",
     "lodash": "^4.18.1",
     "mocha": "^11.7.5",
+    "mousetrap": "^1.6.5",
     "radash": "^12.1.1",
     "size-limit": "^12.0.1",
     "tinybench": "^6.0.0",

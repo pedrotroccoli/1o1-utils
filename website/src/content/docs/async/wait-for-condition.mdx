@@ -1,0 +1,93 @@
+---
+title: waitForCondition
+description: Poll a sync or async predicate until truthy, rejecting on timeout
+---
+
+Polls a `condition` function at a given `interval` until it returns truthy or the `timeout` elapses. Supports synchronous and asynchronous predicates, an optional `AbortSignal`, and a custom timeout `message`. Rejects with `TimeoutError` (the same class exported by [`withTimeout`](/async/with-timeout)) on timeout, so a single `instanceof` check covers both utilities.
+
+## Import
+
+```ts
+import { waitForCondition } from "1o1-utils";
+```
+
+```ts
+import { waitForCondition } from "1o1-utils/wait-for-condition";
+import { TimeoutError } from "1o1-utils/with-timeout";
+```
+
+## Signature
+
+```ts
+function waitForCondition({
+  condition,
+  interval,
+  timeout,
+  message,
+  signal,
+}: WaitForConditionParams): Promise<void>
+```
+
+## Parameters
+
+| Name      | Type                                | Required | Description                                                                  |
+| --------- | ----------------------------------- | -------- | ---------------------------------------------------------------------------- |
+| condition | `() => boolean \| Promise<boolean>` | Yes      | Predicate evaluated on each poll. Truthy return resolves; throws propagate. |
+| interval  | `number`                            | No       | Polling interval in milliseconds (default: `100`)                            |
+| timeout   | `number`                            | No       | Maximum total wait in milliseconds (default: `5000`)                         |
+| message   | `string \| (() => string)`          | No       | Error message or lazy factory. Default: `Condition not met within {timeout}ms` |
+| signal    | `AbortSignal`                       | No       | Rejects with `signal.reason` when aborted                                    |
+
+## Returns
+
+`Promise<void>` — resolves when the condition is truthy, rejects with `TimeoutError` on timeout, or with `signal.reason` if aborted.
+
+## Examples
+
+```ts
+await waitForCondition({
+  condition: () => document.querySelector("#app") !== null,
+  interval: 100,
+  timeout: 5000,
+});
+```
+
+```ts
+await waitForCondition({
+  condition: async () => {
+    const res = await fetch("/api/health");
+    return res.ok;
+  },
+  interval: 500,
+  timeout: 30_000,
+  message: "service never became healthy",
+});
+```
+
+```ts
+const controller = new AbortController();
+const task = waitForCondition({
+  condition: () => isReady(),
+  signal: controller.signal,
+});
+controller.abort(); // rejects with signal.reason
+```
+
+## Edge Cases
+
+- Rejects synchronously-thrown errors and async rejections from `condition` without further polling.
+- If `signal` is already aborted, rejects immediately with `signal.reason` and never calls `condition`.
+- The `message` factory is invoked lazily — only when the timeout fires.
+- Internal timer and abort listener are cleaned up after settle.
+- `timeout: 0` rejects unless the initial check is truthy.
+- Validation errors (non-function `condition`, NaN/negative `interval` or `timeout`, non-`AbortSignal` `signal`) reject the returned promise.
+
+## Also known as
+
+poll, wait until, busy wait, await condition, retry until true
+
+## Prompt suggestion
+
+```text
+I'm using 1o1-utils (npm: https://www.npmjs.com/package/1o1-utils, GitHub: https://github.com/pedrotroccoli/1o1-utils, LLM context: https://pedrotroccoli.github.io/1o1-utils/llms.txt). Show me how to use waitForCondition to poll for a DOM element with a 5 second timeout.
+```

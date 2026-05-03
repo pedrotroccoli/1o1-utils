@@ -1,0 +1,101 @@
+---
+title: replace
+description: Replace element(s) in an array by predicate, with optional updater function
+---
+
+Replaces element(s) in an array by predicate. Returns a new array — the input is never mutated. By default, only the first matching item is replaced; pass `all: true` to replace every match. `value` accepts either a static replacement or an updater function `(item, index) => newItem` that derives the new value from the matched item.
+
+## Import
+
+```ts
+import { replace } from "1o1-utils";
+```
+
+```ts
+import { replace } from "1o1-utils/replace";
+```
+
+## Signature
+
+```ts
+function replace<T>(params: {
+  array: T[];
+  predicate: (item: T, index: number) => boolean;
+  value: T | ((item: T, index: number) => T);
+  all?: boolean;
+}): T[];
+```
+
+## Parameters
+
+| Name      | Type                                            | Required | Description                                                                  |
+| --------- | ----------------------------------------------- | -------- | ---------------------------------------------------------------------------- |
+| array     | `T[]`                                           | Yes      | The source array                                                             |
+| predicate | `(item: T, index: number) => boolean`           | Yes      | Predicate called with `(item, index)` to identify matches                    |
+| value     | `T \| ((item: T, index: number) => T)`          | Yes      | Static replacement, or updater fn that derives the new value from the match  |
+| all       | `boolean`                                       | No       | When `true`, replace every match. Defaults to `false` (first match only).    |
+
+## Returns
+
+`T[]` — A new array with matched item(s) replaced. When no item matches, a shallow copy of the input is returned.
+
+## Examples
+
+```ts
+const users = [
+  { id: 1, name: "Ana" },
+  { id: 2, name: "Bob" },
+];
+
+replace({
+  array: users,
+  predicate: (u) => u.id === 2,
+  value: { id: 2, name: "Bobby" },
+});
+// => [{ id: 1, name: "Ana" }, { id: 2, name: "Bobby" }]
+```
+
+Replace every match with `all: true`:
+
+```ts
+replace({
+  array: [1, 2, 3, 2, 4],
+  predicate: (n) => n === 2,
+  value: 99,
+  all: true,
+});
+// => [1, 99, 3, 99, 4]
+```
+
+Updater function — derive the new value from the matched item:
+
+```ts
+replace({
+  array: [10, 20, 30, 20],
+  predicate: (n) => n === 20,
+  value: (item, index) => item + index,
+  all: true,
+});
+// => [10, 21, 30, 23]
+```
+
+## Edge Cases
+
+- Returns a shallow copy when no item matches the predicate.
+- Returns `[]` for an empty input array.
+- Does not mutate the input array.
+- The predicate receives `(item, index)`, matching the signature of `Array.prototype.filter`.
+- When `T` itself is a function type, `value` is detected as an updater via `typeof value === "function"`. Use an updater that returns the desired function in that case.
+- Throws if `array` is not an array.
+- Throws if `predicate` is not a function.
+- Throws if `value` is `undefined`.
+
+## Also known as
+
+replace, set, update, swap, replace-by, splice
+
+## Prompt suggestion
+
+```text
+I'm using 1o1-utils (npm: https://www.npmjs.com/package/1o1-utils, GitHub: https://github.com/pedrotroccoli/1o1-utils, LLM context: https://pedrotroccoli.github.io/1o1-utils/llms.txt). Show me how to use replace to replace an element in an array by predicate.
+```

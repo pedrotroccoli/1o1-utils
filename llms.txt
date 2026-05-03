@@ -18,6 +18,7 @@
 - [groupBy](https://pedrotroccoli.github.io/1o1-utils/arrays/group-by/): Group array elements by a property value
 - [partition](https://pedrotroccoli.github.io/1o1-utils/arrays/partition/): Split an array into two groups based on a predicate
 - [range](https://pedrotroccoli.github.io/1o1-utils/arrays/range/): Generate an array of numbers in a given range with optional start and step
+- [replace](https://pedrotroccoli.github.io/1o1-utils/arrays/replace/): Replace element(s) in an array by predicate, with optional updater function
 - [shuffle](https://pedrotroccoli.github.io/1o1-utils/arrays/shuffle/): Randomly reorder an array using Fisher-Yates, with an optional injectable random source
 - [sortBy](https://pedrotroccoli.github.io/1o1-utils/arrays/sort-by/): Sort an array of objects by a property with dot notation support
 - [times](https://pedrotroccoli.github.io/1o1-utils/arrays/times/): Invoke a function N times with the current index and collect the results
@@ -65,11 +66,21 @@
 - [throttle](https://pedrotroccoli.github.io/1o1-utils/async/throttle/): Create a throttled function with cancel support
 - [withTimeout](https://pedrotroccoli.github.io/1o1-utils/async/with-timeout/): Race a promise against a timeout with AbortSignal support
 
+## Browser
+
+- [bindKey](https://pedrotroccoli.github.io/1o1-utils/browser/bind-key/): Bind keyboard shortcuts to a handler — supports modifiers, key sequences, input filtering, and returns an unbind function
+- [copyToClipboard](https://pedrotroccoli.github.io/1o1-utils/browser/copy-to-clipboard/): Copy text to the system clipboard using the Clipboard API with `document.execCommand` fallback
+
 ## Comparisons
 
 - [deepEqual](https://pedrotroccoli.github.io/1o1-utils/comparisons/deep-equal/): Recursively compare two values for structural equality across nested objects, arrays, and built-ins
 - [isNil](https://pedrotroccoli.github.io/1o1-utils/comparisons/is-nil/): Check if a value is `null` or `undefined`
 - [shallowEqual](https://pedrotroccoli.github.io/1o1-utils/comparisons/shallow-equal/): Compare two values by their top-level entries using `Object.is`
+
+## Formatters
+
+- [secondsToTimeFormat](https://pedrotroccoli.github.io/1o1-utils/formatters/seconds-to-time-format/): Convert a number of seconds to a zero-padded `MM:SS` or `H:MM:SS` time string with optional hour padding
+- [timeFormatToSeconds](https://pedrotroccoli.github.io/1o1-utils/formatters/time-format-to-seconds/): Parse a `MM:SS` or `[H]H:MM:SS` time string into a total number of seconds
 
 ## Functions
 

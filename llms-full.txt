@@ -152,6 +152,35 @@ Throws: Error if array is not an array. Error if predicate is not a function.
 
 ---
 
+### replace
+
+Replace element(s) in an array by predicate. Returns a new array; the input is never mutated. Replaces only the first match by default; pass `all: true` to replace every match. `value` accepts a static value or an updater function `(item, index) => newItem`.
+
+Import: import { replace } from "1o1-utils/replace";
+
+Signature:
+function replace<T>({ array, predicate, value, all }: { array: T[]; predicate: (item: T, index: number) => boolean; value: T | ((item: T, index: number) => T); all?: boolean }): T[];
+
+Parameters:
+- array (T[], required): The source array
+- predicate ((item: T, index: number) => boolean, required): Function called for every element until a match (or for all elements when `all` is true)
+- value (T | (item: T, index: number) => T, required): Replacement value, or updater fn that derives the new value from the matched item
+- all (boolean, optional): When true, replace every match. Defaults to false (first match only).
+
+Returns: T[] — A new array with matched item(s) replaced.
+
+Example:
+const users = [{ id: 1, name: "Ana" }, { id: 2, name: "Bob" }];
+replace({ array: users, predicate: (u) => u.id === 2, value: { id: 2, name: "Bobby" } });
+// => [{ id: 1, name: "Ana" }, { id: 2, name: "Bobby" }]
+
+replace({ array: [1, 2, 3, 2], predicate: (n) => n === 2, value: (n) => n * 10, all: true });
+// => [1, 20, 3, 20]
+
+Throws: Error if array is not an array. Error if predicate is not a function. Error if value is undefined.
+
+---
+
 ### shuffle
 
 Randomly reorder an array using the Fisher-Yates algorithm. Returns a new array; the input is not mutated.
@@ -1060,6 +1089,67 @@ Throws: Error if promise is not thenable. Error if ms is not a non-negative numb
 
 ---
 
+## Browser
+
+### bindKey
+
+Bind a keyboard shortcut to a handler. Supports single keys, modifier combos (`+`-joined), and key sequences (space-separated). Returns an idempotent unbind function. Browser-only — requires a `target` option in non-browser environments.
+
+Import: import { bindKey } from "1o1-utils/bind-key";
+
+Signature:
+function bindKey(combo: string, handler: (event: KeyboardEvent) => void, options?: BindKeyOptions): () => void
+
+Parameters:
+- combo (string, required): Key combo. Grammar: `+` joins one or more modifiers with a single key into a simultaneous step (e.g. `ctrl+shift+p`); each `+`-joined step accepts at most one non-modifier key, so `g+i` throws. Spaces separate sequence steps pressed in order (e.g. `g i`); steps may themselves use `+`, so `ctrl+k ctrl+t` is a two-step sequence of modifier combos. Modifiers: `ctrl`, `shift`, `alt`, `meta` (alias `cmd`), `mod` (= `meta` on Mac, `ctrl` elsewhere). Key names match `KeyboardEvent.key` lowercased. Aliases: `space`, `esc`, `return`, `del`, `ins`, `up`, `down`, `left`, `right`. Shift+digit and shift+letter combos fall back to `event.code` (`Digit1`, `KeyA`), so `shift+1` fires regardless of the OS-level shifted symbol. Case-insensitive.
+- handler ((event: KeyboardEvent) => void, required): Called with the final `KeyboardEvent` on a full match.
+- options (BindKeyOptions, optional):
+  - target (EventTarget, optional, default `window`): Target to attach the listener to.
+  - filterInputs (boolean, optional, default `true`): Skip handler when focus is on `INPUT`/`TEXTAREA`/`SELECT`/`contenteditable`. Combos with any non-shift modifier bypass the filter — including sequences where only one step carries a modifier.
+  - sequenceTimeout (number, optional, default `1000`): Idle ms after which a partial sequence resets. Uses `performance.now()` for monotonic timing.
+  - preventDefault (boolean, optional, default `false`): Call `event.preventDefault()` on full match.
+  - ignoreRepeat (boolean, optional, default `true`): Ignore auto-repeat events (`event.repeat === true`). Set to `false` to fire on every repeat while a key is held.
+
+Returns: () => void — idempotent unbind function.
+
+Example:
+const unbind = bindKey("ctrl+k", () => openSearch());
+bindKey("ctrl+shift+p", () => openCommandPalette());
+bindKey("g i", () => goToInbox());
+bindKey("escape", () => closeModal());
+bindKey("space", () => togglePlay());
+bindKey("shift+1", () => switchTo(1));
+unbind();
+
+Throws: Error if combo is empty or malformed. Error if handler is not a function. Error if no target is provided in a non-browser environment.
+
+---
+
+### copyToClipboard
+
+Copy a string to the system clipboard. Uses the asynchronous Clipboard API in secure contexts and falls back to a hidden textarea + `document.execCommand("copy")` for older browsers and insecure pages. Browser-only utility — does not work in Node.js or other non-DOM environments.
+
+Import: import { copyToClipboard } from "1o1-utils/copy-to-clipboard";
+
+Signature:
+function copyToClipboard({ text }: CopyToClipboardParams): Promise<void>
+
+Parameters:
+- text (string, required): The string to copy to the clipboard
+
+Returns: Promise<void> — resolves once the text has been copied
+
+Example:
+await copyToClipboard({ text: "Hello world" });
+
+button.addEventListener("click", async () => {
+  await copyToClipboard({ text: "user@example.com" });
+});
+
+Throws: Error if text is not a string. Error if no clipboard mechanism is available in the current environment ("Clipboard not available in this environment"). Error if the execCommand fallback fails ("Failed to copy to clipboard"). The Clipboard API path is only used when `globalThis.isSecureContext === true` (HTTPS or localhost). The fallback must be invoked from within a user gesture handler (click, keydown, etc.).
+
+---
+
 ## Comparisons
 
 ### deepEqual
@@ -1151,6 +1241,58 @@ shallowEqual({ a: Number.NaN, b: Number.NaN });
 // => true (Object.is semantics)
 
 Uses Object.is for primitive comparison, so NaN equals NaN and +0 is distinct from -0. Symbol-keyed properties, non-enumerable properties, and prototype differences are ignored. Maps, Sets, Dates, RegExps and other built-ins fall back to reference equality.
+
+---
+
+## Formatters
+
+### secondsToTimeFormat
+
+Convert a non-negative number of seconds into a zero-padded time-format string. Uses `MM:SS` when under one hour and `H:MM:SS` (or `HH:MM:SS` with `padHours: true`) otherwise. Hours are not capped at 24.
+
+Import: import { secondsToTimeFormat } from "1o1-utils/seconds-to-time-format";
+
+Signature:
+function secondsToTimeFormat({ seconds, padHours }: SecondsToTimeFormatParams): string
+
+Parameters:
+- seconds (number, required): Total seconds to format. Must be a finite, non-negative number. Floored if not an integer.
+- padHours (boolean, optional, default false): Zero-pad the hours to two digits when present.
+
+Returns: string
+
+Example:
+secondsToTimeFormat({ seconds: 90 });                    // "01:30"
+secondsToTimeFormat({ seconds: 3661 });                  // "1:01:01"
+secondsToTimeFormat({ seconds: 3661, padHours: true });  // "01:01:01"
+secondsToTimeFormat({ seconds: 0 });                     // "00:00"
+secondsToTimeFormat({ seconds: 90000 });                 // "25:00:00"
+
+Throws: Error if seconds is not a finite number, is NaN, or is negative.
+
+---
+
+### timeFormatToSeconds
+
+Parse a time-format string (`MM:SS` or `[H]H:MM:SS`) into a total number of seconds. Inverse of `secondsToTimeFormat`. Hours are not capped; minutes and seconds must be in `0..59`.
+
+Import: import { timeFormatToSeconds } from "1o1-utils/time-format-to-seconds";
+
+Signature:
+function timeFormatToSeconds({ time }: TimeFormatToSecondsParams): number
+
+Parameters:
+- time (string, required): Time string in `MM:SS` or `H:MM:SS` / `HH:MM:SS` form. Each segment must be one or more digits.
+
+Returns: number
+
+Example:
+timeFormatToSeconds({ time: "01:30" });    // 90
+timeFormatToSeconds({ time: "1:01:01" });  // 3661
+timeFormatToSeconds({ time: "01:01:01" }); // 3661
+timeFormatToSeconds({ time: "100:00:00" });// 360000
+
+Throws: Error if time is not a string, is malformed, has minutes >= 60 in `MM:SS` form, or has minutes/seconds >= 60 in `HH:MM:SS` form.
 
 ---
 
