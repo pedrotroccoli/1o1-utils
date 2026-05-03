@@ -152,6 +152,35 @@ Throws: Error if array is not an array. Error if predicate is not a function.
 
 ---
 
+### replace
+
+Replace element(s) in an array by predicate. Returns a new array; the input is never mutated. Replaces only the first match by default; pass `all: true` to replace every match. `value` accepts a static value or an updater function `(item, index) => newItem`.
+
+Import: import { replace } from "1o1-utils/replace";
+
+Signature:
+function replace<T>({ array, predicate, value, all }: { array: T[]; predicate: (item: T, index: number) => boolean; value: T | ((item: T, index: number) => T); all?: boolean }): T[];
+
+Parameters:
+- array (T[], required): The source array
+- predicate ((item: T, index: number) => boolean, required): Function called for every element until a match (or for all elements when `all` is true)
+- value (T | (item: T, index: number) => T, required): Replacement value, or updater fn that derives the new value from the matched item
+- all (boolean, optional): When true, replace every match. Defaults to false (first match only).
+
+Returns: T[] — A new array with matched item(s) replaced.
+
+Example:
+const users = [{ id: 1, name: "Ana" }, { id: 2, name: "Bob" }];
+replace({ array: users, predicate: (u) => u.id === 2, value: { id: 2, name: "Bobby" } });
+// => [{ id: 1, name: "Ana" }, { id: 2, name: "Bobby" }]
+
+replace({ array: [1, 2, 3, 2], predicate: (n) => n === 2, value: (n) => n * 10, all: true });
+// => [1, 20, 3, 20]
+
+Throws: Error if array is not an array. Error if predicate is not a function. Error if value is undefined.
+
+---
+
 ### shuffle
 
 Randomly reorder an array using the Fisher-Yates algorithm. Returns a new array; the input is not mutated.

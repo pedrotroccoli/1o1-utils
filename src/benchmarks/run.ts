@@ -233,6 +233,11 @@ const SUITE_META: Record<string, { slug: string; description: string }> = {
     description:
       "Splits an array into two groups based on a predicate. Compared against `lodash.partition`, a native two-`filter` approach, and a native single-pass loop.",
   },
+  "replace (by id)": {
+    slug: "replace",
+    description:
+      "Replaces element(s) in an array by predicate, returning a new array. Compared against a native `map` ternary and a native single-pass `for` loop. Both first-match (default) and `all: true` modes are benchmarked.",
+  },
 };
 
 function getSizes(rows: TaskRow[]): string[] {

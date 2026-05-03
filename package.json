@@ -88,7 +88,10 @@
     "ttl-cache",
     "compact",
     "remove-falsy",
-    "clean-object"
+    "clean-object",
+    "replace",
+    "swap",
+    "update-array"
   ],
   "author": "Pedro Troccoli <contact@pedrotroccoli.com>",
   "license": "MIT",
@@ -302,6 +305,10 @@
     "./memo": {
       "import": "./dist/functions/memo/index.js",
       "types": "./dist/functions/memo/index.d.ts"
+    },
+    "./replace": {
+      "import": "./dist/arrays/replace/index.js",
+      "types": "./dist/arrays/replace/index.d.ts"
     }
   },
   "scripts": {
