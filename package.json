@@ -43,6 +43,9 @@
     "is-valid-url",
     "validate-url",
     "url-validator",
+    "is-valid-email",
+    "validate-email",
+    "email-validator",
     "safely",
     "tryit",
     "try-catch",
@@ -216,6 +219,10 @@
     "./deep-equal": {
       "import": "./dist/comparisons/deep-equal/index.js",
       "types": "./dist/comparisons/deep-equal/index.d.ts"
+    },
+    "./is-valid-email": {
+      "import": "./dist/validators/is-valid-email/index.js",
+      "types": "./dist/validators/is-valid-email/index.d.ts"
     },
     "./is-valid-url": {
       "import": "./dist/validators/is-valid-url/index.js",

@@ -166,6 +166,11 @@
     "limit": "2 kB"
   },
   {
+    "name": "is-valid-email",
+    "path": "dist/validators/is-valid-email/index.js",
+    "limit": "1 kB"
+  },
+  {
     "name": "is-valid-url",
     "path": "dist/validators/is-valid-url/index.js",
     "limit": "1 kB"

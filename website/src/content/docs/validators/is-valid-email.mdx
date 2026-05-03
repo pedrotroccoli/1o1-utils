@@ -1,0 +1,92 @@
+---
+title: isValidEmail
+description: Check if a string is a well-formed email address using the HTML5 living-standard pattern
+---
+
+Validates whether a string is a well-formed email address. Uses the HTML5 living-standard email pattern (the same one browsers use for `<input type="email">`) plus RFC 5321 length limits (local part ≤64, total ≤254). Pragmatic over RFC 5322 strict — accepts the addresses people actually use.
+
+## Import
+
+```ts
+import { isValidEmail } from "1o1-utils";
+```
+
+```ts
+import { isValidEmail } from "1o1-utils/is-valid-email";
+```
+
+## Signature
+
+```ts
+function isValidEmail({ email, allowDisplayName }: IsValidEmailParams): boolean
+```
+
+## Parameters
+
+| Name               | Type      | Required | Description                                                                                                                            |
+| ------------------ | --------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `email`            | `unknown` | Yes      | The value to validate                                                                                                                  |
+| `allowDisplayName` | `boolean` | No       | When `true`, also accepts display-name form like `"Jane Doe <jane@example.com>"` or `'"Doe, Jane" <jane@example.com>'`. Default `false` |
+
+## Returns
+
+`boolean` — `true` if the value is a parseable email, `false` otherwise.
+
+## Examples
+
+```ts
+isValidEmail({ email: "user@example.com" });           // => true
+isValidEmail({ email: "user+tag@gmail.com" });         // => true
+isValidEmail({ email: "first.last@sub.example.io" }); // => true
+
+isValidEmail({ email: "invalid@" });                   // => false
+isValidEmail({ email: "no-at-sign.com" });             // => false
+isValidEmail({ email: "" });                           // => false
+isValidEmail({ email: null });                         // => false
+```
+
+```ts
+// Display-name form (opt-in)
+isValidEmail({
+  email: "Jane Doe <jane@example.com>",
+  allowDisplayName: true,
+}); // => true
+
+isValidEmail({
+  email: '"Doe, Jane" <jane@example.com>',
+  allowDisplayName: true,
+}); // => true
+
+isValidEmail({
+  email: "Jane Doe <jane@example.com>",
+}); // => false (not allowed by default)
+```
+
+```ts
+// Validate user input before sending
+function subscribe(input: string) {
+  if (!isValidEmail({ email: input })) {
+    throw new Error("Invalid email");
+  }
+  return api.subscribe(input);
+}
+```
+
+## Edge Cases
+
+- Non-string inputs (`null`, `undefined`, numbers, objects, arrays) return `false`.
+- Empty strings return `false` without invoking the regex.
+- Length-bounded: local part > 64 chars or total > 254 chars returns `false`.
+- Hostname labels cannot start or end with a hyphen, and empty labels (`example..com`) are rejected.
+- Whitespace and control characters anywhere in the address return `false` unless `allowDisplayName` is set and the wrapper itself contains whitespace.
+- The validator is structural — it does not perform DNS, MX, or SMTP checks.
+
+## Also known as
+
+email, validate email, is email, valid email, email check, email validator
+
+## Prompt suggestion
+
+```text
+I'm using 1o1-utils (npm: https://www.npmjs.com/package/1o1-utils, GitHub: https://github.com/pedrotroccoli/1o1-utils, LLM context: https://pedrotroccoli.github.io/1o1-utils/llms.txt). Show me how to use isValidEmail to validate a user-supplied email before submitting a form.
+```
