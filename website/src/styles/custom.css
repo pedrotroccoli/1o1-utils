@@ -172,6 +172,28 @@ nav.sidebar ul ul li {
 }
 
 /* ========================================
+   SANDPACK — isolate from doc typography
+   Sandpack initializes CodeMirror after hydration; before init the raw
+   <pre> inherits the doc's --sl-line-height (1.8) and h2 margin rules,
+   which produced massive vertical gaps on first paint. Reset here.
+   ======================================== */
+.sl-markdown-content .sp-wrapper,
+.sl-markdown-content .sp-wrapper * {
+  line-height: 1.5;
+}
+
+.sl-markdown-content .sp-wrapper p,
+.sl-markdown-content .sp-wrapper pre,
+.sl-markdown-content .sp-wrapper code {
+  margin: 0;
+}
+
+.sl-markdown-content .sp-wrapper pre,
+.sl-markdown-content .sp-wrapper code {
+  font-family: var(--sl-font-mono);
+}
+
+/* ========================================
    CONTENT — GitBook spacing & typography
    ======================================== */
 
