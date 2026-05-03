@@ -18,6 +18,7 @@ export { sleep } from "./async/sleep/index.js";
 export { throttle } from "./async/throttle/index.js";
 export { waitForCondition } from "./async/wait-for-condition/index.js";
 export { withTimeout } from "./async/with-timeout/index.js";
+export { copyToClipboard } from "./browser/copy-to-clipboard/index.js";
 export { deepEqual } from "./comparisons/deep-equal/index.js";
 export { isNil } from "./comparisons/is-nil/index.js";
 export { shallowEqual } from "./comparisons/shallow-equal/index.js";

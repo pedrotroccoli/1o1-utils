@@ -236,6 +236,11 @@
     "limit": "1 kB"
   },
   {
+    "name": "copy-to-clipboard",
+    "path": "dist/browser/copy-to-clipboard/index.js",
+    "limit": "1 kB"
+  },
+  {
     "name": "replace",
     "path": "dist/arrays/replace/index.js",
     "limit": "1 kB"

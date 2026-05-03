@@ -1045,6 +1045,33 @@ Throws: Error if promise is not thenable. Error if ms is not a non-negative numb
 
 ---
 
+## Browser
+
+### copyToClipboard
+
+Copy a string to the system clipboard. Uses the asynchronous Clipboard API in secure contexts and falls back to a hidden textarea + `document.execCommand("copy")` for older browsers and insecure pages. Browser-only utility — does not work in Node.js or other non-DOM environments.
+
+Import: import { copyToClipboard } from "1o1-utils/copy-to-clipboard";
+
+Signature:
+function copyToClipboard({ text }: CopyToClipboardParams): Promise<void>
+
+Parameters:
+- text (string, required): The string to copy to the clipboard
+
+Returns: Promise<void> — resolves once the text has been copied
+
+Example:
+await copyToClipboard({ text: "Hello world" });
+
+button.addEventListener("click", async () => {
+  await copyToClipboard({ text: "user@example.com" });
+});
+
+Throws: Error if text is not a string. Error if no clipboard mechanism is available in the current environment ("Clipboard not available in this environment"). Error if the execCommand fallback fails ("Failed to copy to clipboard"). The Clipboard API path is only used when `globalThis.isSecureContext === true` (HTTPS or localhost). The fallback must be invoked from within a user gesture handler (click, keydown, etc.).
+
+---
+
 ## Comparisons
 
 ### deepEqual

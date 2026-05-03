@@ -86,6 +86,9 @@
     "memoize",
     "cache",
     "ttl-cache",
+    "copy-to-clipboard",
+    "clipboard",
+    "copy",
     "compact",
     "remove-falsy",
     "clean-object",
@@ -309,6 +312,10 @@
     "./memo": {
       "import": "./dist/functions/memo/index.js",
       "types": "./dist/functions/memo/index.d.ts"
+    },
+    "./copy-to-clipboard": {
+      "import": "./dist/browser/copy-to-clipboard/index.js",
+      "types": "./dist/browser/copy-to-clipboard/index.d.ts"
     },
     "./replace": {
       "import": "./dist/arrays/replace/index.js",
