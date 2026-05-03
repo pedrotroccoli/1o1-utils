@@ -1,3 +1,4 @@
+import { deburr } from "../deburr/index.js";
 import type { SlugifyParams, SlugifyResult } from "./types.js";
 
 /**
@@ -22,9 +23,7 @@ function slugify({ str }: SlugifyParams): SlugifyResult {
     throw new Error("The 'str' parameter must be a string");
   }
 
-  return str
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
+  return deburr({ str })
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
