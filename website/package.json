@@ -8,11 +8,15 @@
     "preview": "astro preview"
   },
   "dependencies": {
+    "@astrojs/react": "^5.0.4",
     "@astrojs/starlight": "^0.38",
+    "@codesandbox/sandpack-react": "^2.20.0",
     "astro": "^6.1",
     "astro-og-canvas": "^0.11.0",
     "canvaskit-wasm": "^0.41.1",
     "iconoir": "^7.11.0",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
     "sharp": "^0.33",
     "starlight-typedoc": "^0.21",
     "typedoc": "^0.28",
@@ -23,5 +27,9 @@
       "esbuild",
       "sharp"
     ]
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3"
   }
 }
