@@ -239,5 +239,15 @@
     "name": "replace",
     "path": "dist/arrays/replace/index.js",
     "limit": "1 kB"
+  },
+  {
+    "name": "seconds-to-time-format",
+    "path": "dist/formatters/seconds-to-time-format/index.js",
+    "limit": "1 kB"
+  },
+  {
+    "name": "time-format-to-seconds",
+    "path": "dist/formatters/time-format-to-seconds/index.js",
+    "limit": "1 kB"
   }
 ]
