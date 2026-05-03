@@ -1,0 +1,112 @@
+---
+title: memo
+description: Memoize a function with optional TTL and custom cache key
+---
+
+Caches a function's return value per unique argument set so repeat calls skip the computation. Optionally expires entries after `ttl` milliseconds, and accepts a custom `key` resolver for control over cache identity.
+
+## Import
+
+```ts
+import { memo } from "1o1-utils";
+```
+
+```ts
+import { memo } from "1o1-utils/memo";
+```
+
+## Signature
+
+```ts
+function memo<T extends (...args: never[]) => unknown>(params: {
+  fn: T;
+  ttl?: number;
+  key?: (args: Parameters<T>) => unknown;
+}): T & {
+  clear: () => void;
+  delete: (key: unknown) => boolean;
+  readonly size: number;
+}
+```
+
+## Parameters
+
+| Name    | Type                                  | Required | Description                                                                            |
+| ------- | ------------------------------------- | -------- | -------------------------------------------------------------------------------------- |
+| `fn`    | `T`                                   | Yes      | The function to memoize                                                                |
+| `ttl`   | `number`                              | No       | Entry lifetime in milliseconds (non-negative). Omit for no expiry.                     |
+| `key`   | `(args: Parameters<T>) => unknown`    | No       | Resolver mapping the call arguments to a cache key. Omit to use the default resolver.  |
+
+## Returns
+
+A memoized wrapper with the same call signature as `fn`, plus:
+
+- `.clear()` — empty the cache
+- `.delete(key)` — remove a single entry; returns `true` if it existed
+- `.size` — number of cached entries (read-only)
+
+## Examples
+
+```ts
+const slow = (n: number) => {
+  for (let i = 0; i < 1e7; i++);
+  return n * 2;
+};
+
+const fast = memo({ fn: slow });
+fast(5); // computes
+fast(5); // cached
+```
+
+```ts
+// Time-bounded cache
+const fetchUser = memo({ fn: getUser, ttl: 60_000 });
+
+await fetchUser("alice"); // network call
+await fetchUser("alice"); // cached for 60s
+```
+
+```ts
+// Normalize args via custom key
+const search = memo({
+  fn: (q: string) => index.query(q),
+  key: (args) => args[0].toLowerCase().trim(),
+});
+
+search("React");
+search("react ");
+search("REACT"); // all share one cache entry
+```
+
+```ts
+// Inspect and reset the cache
+const lookup = memo({ fn: (id: number) => db.get(id) });
+
+lookup(1);
+lookup(2);
+lookup.size;       // 2
+lookup.delete(1);  // true
+lookup.clear();
+```
+
+## Edge Cases
+
+- Throws if `fn` is not a function.
+- Throws if `ttl` is provided and is not a non-negative number (NaN rejected).
+- Throws if `key` is provided and is not a function.
+- The default key resolver is hybrid: when the call has a single primitive argument it uses that argument directly; otherwise it falls back to `JSON.stringify(args)`. Provide your own `key` for non-serializable args (functions, circular structures, `BigInt`, `Symbol`).
+- TTL is measured against `performance.now()` and is monotonic — immune to system clock changes.
+- Expiry is lazy: stale entries are not actively swept; they are recomputed on the next call for that key.
+- A return value of `undefined` is cached — `fn` will not re-run.
+- If `fn` throws, the error propagates and the entry is NOT cached, so the next call retries.
+- The `this` context of each call is forwarded to `fn`.
+
+## Also known as
+
+memoize, cache, function cache, ttl cache, result cache, lazy compute
+
+## Prompt suggestion
+
+```text
+I'm using 1o1-utils (npm: https://www.npmjs.com/package/1o1-utils, GitHub: https://github.com/pedrotroccoli/1o1-utils, LLM context: https://pedrotroccoli.github.io/1o1-utils/llms.txt). Show me how to use memo to cache an expensive function with a TTL
+```

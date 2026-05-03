@@ -81,7 +81,11 @@
     "deburr",
     "diacritic",
     "accent",
-    "remove-accents"
+    "remove-accents",
+    "memo",
+    "memoize",
+    "cache",
+    "ttl-cache"
   ],
   "author": "Pedro Troccoli <contact@pedrotroccoli.com>",
   "license": "MIT",
@@ -287,6 +291,10 @@
     "./deburr": {
       "import": "./dist/strings/deburr/index.js",
       "types": "./dist/strings/deburr/index.d.ts"
+    },
+    "./memo": {
+      "import": "./dist/functions/memo/index.js",
+      "types": "./dist/functions/memo/index.d.ts"
     }
   },
   "scripts": {

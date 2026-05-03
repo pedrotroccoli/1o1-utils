@@ -19,6 +19,7 @@ export { withTimeout } from "./async/with-timeout/index.js";
 export { deepEqual } from "./comparisons/deep-equal/index.js";
 export { isNil } from "./comparisons/is-nil/index.js";
 export { shallowEqual } from "./comparisons/shallow-equal/index.js";
+export { memo } from "./functions/memo/index.js";
 export { once } from "./functions/once/index.js";
 export { pipe } from "./functions/pipe/index.js";
 export { clamp } from "./numbers/clamp/index.js";
