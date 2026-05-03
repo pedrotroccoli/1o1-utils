@@ -49,7 +49,8 @@ function pickNested(
   while (dot !== -1) {
     const seg = key.substring(start, dot);
     if (UNSAFE_KEYS.has(seg)) return;
-    if (!Object.hasOwn(tgt, seg)) {
+    const existing = tgt[seg];
+    if (typeof existing !== "object" || existing === null) {
       safeAssign(tgt, seg, {});
     }
     tgt = tgt[seg] as Record<string, unknown>;
