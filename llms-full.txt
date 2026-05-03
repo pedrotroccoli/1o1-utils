@@ -678,6 +678,33 @@ Escapes the 12 ECMAScript regex specials: . * + ? ^ $ { } ( ) | [ ] \
 
 ---
 
+### normalizeEmail
+
+Normalize an email address by trimming whitespace, lowercasing, and optionally stripping plus-addressing (`+alias`). Useful for deduplicating emails since most providers route `user+tag@example.com` to the same mailbox as `user@example.com`.
+
+Import: import { normalizeEmail } from "1o1-utils/normalize-email";
+
+Signature:
+function normalizeEmail({ email, stripPlus }: NormalizeEmailParams): string
+
+Parameters:
+- email (string, required): The email address to normalize
+- stripPlus (boolean, optional, default false): When true, drops everything from the first `+` in the local part up to (but excluding) the `@`.
+
+Returns: string
+
+Example:
+normalizeEmail({ email: "  User@Email.COM  " });                            // => "user@email.com"
+normalizeEmail({ email: "user+promotions@gmail.com", stripPlus: true });    // => "user@gmail.com"
+normalizeEmail({ email: "user+1@email.com" });                              // => "user+1@email.com"
+normalizeEmail({ email: "user+a+b@gmail.com", stripPlus: true });           // => "user@gmail.com"
+normalizeEmail({ email: "user@a+b.com", stripPlus: true });                 // => "user@a+b.com"
+
+Throws: Error if email is not a string. Error if email is empty after trimming.
+Lowercases both the local part and the domain. Plus-stripping only touches the local part — a `+` in the domain is left untouched. No format validation is performed; pair with `isValidEmail` for that.
+
+---
+
 ### slugify
 
 Convert a string to a URL-friendly slug by lowercasing, stripping accents, and replacing non-alphanumeric characters with hyphens.

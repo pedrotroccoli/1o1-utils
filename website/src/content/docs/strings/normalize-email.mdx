@@ -1,0 +1,70 @@
+---
+title: normalizeEmail
+description: Normalize an email by trimming, lowercasing, and optionally stripping plus-addressing
+---
+
+Normalizes an email address by trimming whitespace, lowercasing, and optionally stripping plus-addressing (`+alias`). Useful for deduplicating emails since most providers route `user+tag@example.com` to the same mailbox as `user@example.com`.
+
+## Import
+
+```ts
+import { normalizeEmail } from "1o1-utils";
+```
+
+```ts
+import { normalizeEmail } from "1o1-utils/normalize-email";
+```
+
+## Signature
+
+```ts
+function normalizeEmail({ email, stripPlus }: NormalizeEmailParams): string
+```
+
+## Parameters
+
+| Name      | Type      | Required | Description                                                                                                       |
+| --------- | --------- | -------- | ----------------------------------------------------------------------------------------------------------------- |
+| email     | `string`  | Yes      | The email address to normalize                                                                                    |
+| stripPlus | `boolean` | No       | When `true`, drops everything from the first `+` in the local part up to (but excluding) the `@`. Default `false` |
+
+## Returns
+
+`string`
+
+## Examples
+
+```ts
+normalizeEmail({ email: "  User@Email.COM  " });
+// => "user@email.com"
+
+normalizeEmail({ email: "user+promotions@gmail.com", stripPlus: true });
+// => "user@gmail.com"
+
+normalizeEmail({ email: "user+1@email.com" });
+// => "user+1@email.com" — default keeps plus-addressing
+
+normalizeEmail({ email: "user+a+b@gmail.com", stripPlus: true });
+// => "user@gmail.com" — strips from first plus
+
+normalizeEmail({ email: "user@a+b.com", stripPlus: true });
+// => "user@a+b.com" — plus in domain is preserved
+```
+
+## Edge Cases
+
+- Throws if `email` is not a string.
+- Throws if `email` is empty after trimming.
+- Lowercases both the local part and the domain.
+- `stripPlus` only touches the local part — a `+` that appears in the domain is preserved.
+- No format validation is performed. Pair with [`isValidEmail`](/1o1-utils/validators/is-valid-email/) for that.
+
+## Also known as
+
+normalize email, lowercase email, dedupe email, plus addressing, strip plus
+
+## Prompt suggestion
+
+```text
+I'm using 1o1-utils (npm: https://www.npmjs.com/package/1o1-utils, GitHub: https://github.com/pedrotroccoli/1o1-utils, LLM context: https://pedrotroccoli.github.io/1o1-utils/llms.txt). Show me how to use normalizeEmail with stripPlus to deduplicate user signups by email.
+```
