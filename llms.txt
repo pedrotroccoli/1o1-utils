@@ -52,6 +52,7 @@
 - [escapeRegExp](https://pedrotroccoli.github.io/1o1-utils/strings/escape-reg-exp/): Escape regex metacharacters so a string can be safely interpolated into a `RegExp`
 - [normalizeEmail](https://pedrotroccoli.github.io/1o1-utils/strings/normalize-email/): Normalize an email address by trimming, lowercasing, and optionally stripping plus-addressing (`+alias`)
 - [slugify](https://pedrotroccoli.github.io/1o1-utils/strings/slugify/): Convert a string to a URL-friendly slug with accent handling
+- [stringStrength](https://pedrotroccoli.github.io/1o1-utils/strings/string-strength/): Score string strength via Shannon entropy and character pool diversity (passwords, tokens, API keys)
 - [transformCase](https://pedrotroccoli.github.io/1o1-utils/strings/transform-case/): Convert between camelCase, kebab-case, snake_case, PascalCase, and Title Case with optional acronym preservation
 - [truncate](https://pedrotroccoli.github.io/1o1-utils/strings/truncate/): Truncate a string to a length with a configurable suffix
 

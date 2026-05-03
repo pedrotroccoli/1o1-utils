@@ -88,7 +88,11 @@
     "ttl-cache",
     "compact",
     "remove-falsy",
-    "clean-object"
+    "clean-object",
+    "string-strength",
+    "entropy",
+    "shannon",
+    "password-strength"
   ],
   "author": "Pedro Troccoli <contact@pedrotroccoli.com>",
   "license": "MIT",
@@ -302,6 +306,10 @@
     "./memo": {
       "import": "./dist/functions/memo/index.js",
       "types": "./dist/functions/memo/index.d.ts"
+    },
+    "./string-strength": {
+      "import": "./dist/strings/string-strength/index.js",
+      "types": "./dist/strings/string-strength/index.d.ts"
     }
   },
   "scripts": {

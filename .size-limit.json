@@ -229,5 +229,10 @@
     "name": "partition",
     "path": "dist/arrays/partition/index.js",
     "limit": "1 kB"
+  },
+  {
+    "name": "string-strength",
+    "path": "dist/strings/string-strength/index.js",
+    "limit": "1 kB"
   }
 ]

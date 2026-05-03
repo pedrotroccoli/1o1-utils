@@ -1,0 +1,101 @@
+---
+title: stringStrength
+description: Score string strength via Shannon entropy and character pool diversity (passwords, tokens, API keys)
+---
+
+Evaluates the strength of a string via Shannon entropy and character pool diversity. A generic alternative to password-rule validators — useful for passwords, tokens, API keys, or any string where complexity matters.
+
+## Import
+
+```ts
+import { stringStrength } from "1o1-utils";
+```
+
+```ts
+import { stringStrength } from "1o1-utils/string-strength";
+```
+
+## Signature
+
+```ts
+function stringStrength({ str }: StringStrengthParams): StringStrengthResult
+```
+
+## Parameters
+
+| Name | Type     | Required | Description              |
+| ---- | -------- | -------- | ------------------------ |
+| str  | `string` | Yes      | The string to evaluate.  |
+
+## Returns
+
+```ts
+{
+  entropy: number;          // per-char Shannon H
+  effectiveEntropy: number; // H × length, in bits
+  score: 0 | 1 | 2 | 3 | 4 | 5;
+  level: "very-weak" | "weak" | "fair" | "good" | "strong" | "very-strong";
+  pools: ("lowercase" | "uppercase" | "digit" | "symbol" | "unicode")[];
+  poolCount: number;
+}
+```
+
+## Score Thresholds
+
+Score is derived from `effectiveEntropy` (E = entropy × length) in bits.
+
+| Score | Level         | E range          |
+| ----- | ------------- | ---------------- |
+| 0     | `very-weak`   | `E === 0`        |
+| 1     | `weak`        | `0 < E < 12`     |
+| 2     | `fair`        | `12 ≤ E < 24`    |
+| 3     | `good`        | `24 ≤ E < 36`    |
+| 4     | `strong`      | `36 ≤ E < 60`    |
+| 5     | `very-strong` | `E ≥ 60`         |
+
+## Examples
+
+```ts
+stringStrength({ str: "aaaaaa" });
+// => { entropy: 0, effectiveEntropy: 0, score: 0, level: "very-weak",
+//      pools: ["lowercase"], poolCount: 1 }
+
+stringStrength({ str: "abc123" });
+// => { entropy: ~2.585, effectiveEntropy: ~15.51, score: 2, level: "fair",
+//      pools: ["lowercase", "digit"], poolCount: 2 }
+
+stringStrength({ str: "Tr0ub4dor&3" });
+// => { entropy: ~3.277, effectiveEntropy: ~36.05, score: 4, level: "strong",
+//      pools: ["lowercase", "uppercase", "digit", "symbol"], poolCount: 4 }
+
+stringStrength({ str: "correct-horse-battery-staple" });
+// => { entropy: ~3.495, effectiveEntropy: ~97.86, score: 5, level: "very-strong",
+//      pools: ["lowercase", "symbol"], poolCount: 2 }
+```
+
+## Edge Cases
+
+- Throws if `str` is not a string.
+- Empty string returns `{ entropy: 0, effectiveEntropy: 0, score: 0, level: "very-weak", pools: [], poolCount: 0 }`.
+- Single character returns `entropy: 0` (no diversity).
+- Iterates code points via `[...str]`, so emoji and CJK characters count as one symbol.
+
+## Pools
+
+| Pool        | Detection                     |
+| ----------- | ----------------------------- |
+| `lowercase` | `a`–`z`                       |
+| `uppercase` | `A`–`Z`                       |
+| `digit`     | `0`–`9`                       |
+| `symbol`    | ASCII non-alphanumeric        |
+| `unicode`   | any non-ASCII code point      |
+
+## Also known as
+
+password strength, entropy score, shannon entropy, complexity check, token strength
+
+## Prompt suggestion
+
+```text
+I'm using 1o1-utils (npm: https://www.npmjs.com/package/1o1-utils, GitHub: https://github.com/pedrotroccoli/1o1-utils, LLM context: https://pedrotroccoli.github.io/1o1-utils/llms.txt). Show me how to use stringStrength to gate a password form, rejecting anything below score 3.
+```
