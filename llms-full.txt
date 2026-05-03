@@ -1045,6 +1045,67 @@ Throws: Error if promise is not thenable. Error if ms is not a non-negative numb
 
 ---
 
+## Browser
+
+### bindKey
+
+Bind a keyboard shortcut to a handler. Supports single keys, modifier combos (`+`-joined), and key sequences (space-separated). Returns an idempotent unbind function. Browser-only — requires a `target` option in non-browser environments.
+
+Import: import { bindKey } from "1o1-utils/bind-key";
+
+Signature:
+function bindKey(combo: string, handler: (event: KeyboardEvent) => void, options?: BindKeyOptions): () => void
+
+Parameters:
+- combo (string, required): Key combo. Grammar: `+` joins one or more modifiers with a single key into a simultaneous step (e.g. `ctrl+shift+p`); each `+`-joined step accepts at most one non-modifier key, so `g+i` throws. Spaces separate sequence steps pressed in order (e.g. `g i`); steps may themselves use `+`, so `ctrl+k ctrl+t` is a two-step sequence of modifier combos. Modifiers: `ctrl`, `shift`, `alt`, `meta` (alias `cmd`), `mod` (= `meta` on Mac, `ctrl` elsewhere). Key names match `KeyboardEvent.key` lowercased. Aliases: `space`, `esc`, `return`, `del`, `ins`, `up`, `down`, `left`, `right`. Shift+digit and shift+letter combos fall back to `event.code` (`Digit1`, `KeyA`), so `shift+1` fires regardless of the OS-level shifted symbol. Case-insensitive.
+- handler ((event: KeyboardEvent) => void, required): Called with the final `KeyboardEvent` on a full match.
+- options (BindKeyOptions, optional):
+  - target (EventTarget, optional, default `window`): Target to attach the listener to.
+  - filterInputs (boolean, optional, default `true`): Skip handler when focus is on `INPUT`/`TEXTAREA`/`SELECT`/`contenteditable`. Combos with any non-shift modifier bypass the filter — including sequences where only one step carries a modifier.
+  - sequenceTimeout (number, optional, default `1000`): Idle ms after which a partial sequence resets. Uses `performance.now()` for monotonic timing.
+  - preventDefault (boolean, optional, default `false`): Call `event.preventDefault()` on full match.
+  - ignoreRepeat (boolean, optional, default `true`): Ignore auto-repeat events (`event.repeat === true`). Set to `false` to fire on every repeat while a key is held.
+
+Returns: () => void — idempotent unbind function.
+
+Example:
+const unbind = bindKey("ctrl+k", () => openSearch());
+bindKey("ctrl+shift+p", () => openCommandPalette());
+bindKey("g i", () => goToInbox());
+bindKey("escape", () => closeModal());
+bindKey("space", () => togglePlay());
+bindKey("shift+1", () => switchTo(1));
+unbind();
+
+Throws: Error if combo is empty or malformed. Error if handler is not a function. Error if no target is provided in a non-browser environment.
+
+---
+
+### copyToClipboard
+
+Copy a string to the system clipboard. Uses the asynchronous Clipboard API in secure contexts and falls back to a hidden textarea + `document.execCommand("copy")` for older browsers and insecure pages. Browser-only utility — does not work in Node.js or other non-DOM environments.
+
+Import: import { copyToClipboard } from "1o1-utils/copy-to-clipboard";
+
+Signature:
+function copyToClipboard({ text }: CopyToClipboardParams): Promise<void>
+
+Parameters:
+- text (string, required): The string to copy to the clipboard
+
+Returns: Promise<void> — resolves once the text has been copied
+
+Example:
+await copyToClipboard({ text: "Hello world" });
+
+button.addEventListener("click", async () => {
+  await copyToClipboard({ text: "user@example.com" });
+});
+
+Throws: Error if text is not a string. Error if no clipboard mechanism is available in the current environment ("Clipboard not available in this environment"). Error if the execCommand fallback fails ("Failed to copy to clipboard"). The Clipboard API path is only used when `globalThis.isSecureContext === true` (HTTPS or localhost). The fallback must be invoked from within a user gesture handler (click, keydown, etc.).
+
+---
+
 ## Comparisons
 
 ### deepEqual

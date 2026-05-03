@@ -3,7 +3,7 @@
     "name": "Total (tree-shaken + gzipped)",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "9 kB"
+    "limit": "10 kB"
   },
   {
     "name": "array-to-hash",
@@ -236,9 +236,19 @@
     "limit": "1 kB"
   },
   {
+    "name": "copy-to-clipboard",
+    "path": "dist/browser/copy-to-clipboard/index.js",
+    "limit": "1 kB"
+  },
+  {
     "name": "replace",
     "path": "dist/arrays/replace/index.js",
     "limit": "1 kB"
+  },
+  {
+    "name": "bind-key",
+    "path": "dist/browser/bind-key/index.js",
+    "limit": "2 kB"
   },
   {
     "name": "seconds-to-time-format",

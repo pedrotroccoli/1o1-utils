@@ -65,6 +65,11 @@
 - [throttle](https://pedrotroccoli.github.io/1o1-utils/async/throttle/): Create a throttled function with cancel support
 - [withTimeout](https://pedrotroccoli.github.io/1o1-utils/async/with-timeout/): Race a promise against a timeout with AbortSignal support
 
+## Browser
+
+- [bindKey](https://pedrotroccoli.github.io/1o1-utils/browser/bind-key/): Bind keyboard shortcuts to a handler — supports modifiers, key sequences, input filtering, and returns an unbind function
+- [copyToClipboard](https://pedrotroccoli.github.io/1o1-utils/browser/copy-to-clipboard/): Copy text to the system clipboard using the Clipboard API with `document.execCommand` fallback
+
 ## Comparisons
 
 - [deepEqual](https://pedrotroccoli.github.io/1o1-utils/comparisons/deep-equal/): Recursively compare two values for structural equality across nested objects, arrays, and built-ins
