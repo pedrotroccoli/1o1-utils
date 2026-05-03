@@ -78,7 +78,11 @@ stringStrength({ str: "correct-horse-battery-staple" });
 - Throws if `str` is not a string.
 - Empty string returns `{ entropy: 0, effectiveEntropy: 0, score: 0, level: "very-weak", pools: [], poolCount: 0 }`.
 - Single character returns `entropy: 0` (no diversity).
-- Iterates code points via `[...str]`, so emoji and CJK characters count as one symbol.
+- Iterates Unicode code points, so emoji and CJK characters count as one symbol each.
+
+## Limitations
+
+Shannon entropy measures character distribution only — it does not detect patterns, dictionary words, or sequences. Inputs like `"abababab..."` can score high despite being trivial to guess. Pair with a dictionary-aware tool (e.g. zxcvbn) when those threats matter.
 
 ## Pools
 

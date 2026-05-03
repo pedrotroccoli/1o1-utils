@@ -6,13 +6,13 @@ import type {
   StringStrengthResult,
 } from "./types.js";
 
-const POOL_ORDER: Pool[] = [
+const POOL_ORDER = [
   "lowercase",
   "uppercase",
   "digit",
   "symbol",
   "unicode",
-];
+] as const satisfies readonly Pool[];
 
 /**
  * Evaluates the strength of a string via Shannon entropy and character pool
@@ -44,7 +44,8 @@ const POOL_ORDER: Pool[] = [
  *
  * @remarks
  * Per-char Shannon entropy: `H = -Σ p(x) * log2(p(x))` over Unicode code-point
- * frequencies (iterates with `[...str]` so emoji and CJK count as one symbol).
+ * frequencies (iterates the string's code-point iterator so emoji and CJK
+ * count as one symbol).
  * Effective entropy `E = H × length` is used to derive the score:
  *
  * | score | level       | E threshold        |
@@ -59,6 +60,11 @@ const POOL_ORDER: Pool[] = [
  * Pools detected: `lowercase`, `uppercase`, `digit`, `symbol` (ASCII
  * non-alphanumeric), `unicode` (any non-ASCII code point).
  *
+ * Shannon entropy measures character distribution only — it does not detect
+ * patterns, dictionary words, or sequences. Inputs like `"abababab..."` can
+ * score high despite being trivial to guess. Pair with a dictionary-aware
+ * tool (e.g. zxcvbn) when those threats matter.
+ *
  * @throws Error if `str` is not a string
  */
 function stringStrength({ str }: StringStrengthParams): StringStrengthResult {
@@ -66,40 +72,18 @@ function stringStrength({ str }: StringStrengthParams): StringStrengthResult {
     throw new Error("The 'str' parameter must be a string");
   }
 
-  const codePoints = [...str];
-  const length = codePoints.length;
-
-  if (length === 0) {
-    return {
-      entropy: 0,
-      effectiveEntropy: 0,
-      score: 0,
-      level: "very-weak",
-      pools: [],
-      poolCount: 0,
-    };
-  }
-
   const freq = new Map<string, number>();
-  for (const ch of codePoints) {
-    freq.set(ch, (freq.get(ch) ?? 0) + 1);
-  }
-
-  let entropy = 0;
-  for (const count of freq.values()) {
-    const p = count / length;
-    entropy -= p * Math.log2(p);
-  }
-
-  const effectiveEntropy = entropy * length;
-
   let hasLower = false;
   let hasUpper = false;
   let hasDigit = false;
   let hasSymbol = false;
   let hasUnicode = false;
+  let length = 0;
 
-  for (const ch of codePoints) {
+  for (const ch of str) {
+    freq.set(ch, (freq.get(ch) ?? 0) + 1);
+    length++;
+
     const code = ch.codePointAt(0) ?? 0;
     if (code > 127) {
       hasUnicode = true;
@@ -113,6 +97,25 @@ function stringStrength({ str }: StringStrengthParams): StringStrengthResult {
       hasSymbol = true;
     }
   }
+
+  if (length === 0) {
+    return {
+      entropy: 0,
+      effectiveEntropy: 0,
+      score: 0,
+      level: "very-weak",
+      pools: [],
+      poolCount: 0,
+    };
+  }
+
+  let entropy = 0;
+  for (const count of freq.values()) {
+    const p = count / length;
+    entropy -= p * Math.log2(p);
+  }
+
+  const effectiveEntropy = entropy * length;
 
   const detected = {
     lowercase: hasLower,
@@ -135,12 +138,15 @@ function stringStrength({ str }: StringStrengthParams): StringStrengthResult {
   };
 }
 
-function scoreFromEntropy(e: number): { score: Score; level: Level } {
-  if (e === 0) return { score: 0, level: "very-weak" };
-  if (e < 12) return { score: 1, level: "weak" };
-  if (e < 24) return { score: 2, level: "fair" };
-  if (e < 36) return { score: 3, level: "good" };
-  if (e < 60) return { score: 4, level: "strong" };
+function scoreFromEntropy(effectiveEntropy: number): {
+  score: Score;
+  level: Level;
+} {
+  if (effectiveEntropy === 0) return { score: 0, level: "very-weak" };
+  if (effectiveEntropy < 12) return { score: 1, level: "weak" };
+  if (effectiveEntropy < 24) return { score: 2, level: "fair" };
+  if (effectiveEntropy < 36) return { score: 3, level: "good" };
+  if (effectiveEntropy < 60) return { score: 4, level: "strong" };
   return { score: 5, level: "very-strong" };
 }
 
