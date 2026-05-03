@@ -7,8 +7,9 @@ import {
   SandpackPreview,
 } from "@codesandbox/sandpack-react";
 import { EXAMPLES, EXAMPLES_BY_ID, type Example } from "../content/examples/index";
+import pkg from "../../../package.json" with { type: "json" };
 
-const PKG_VERSION = "1.8.0";
+const PKG_VERSION: string = pkg.version;
 
 const indexHtml = `<!doctype html>
 <html>
