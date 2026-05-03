@@ -76,9 +76,11 @@ function subscribe(input: string) {
 
 - Non-string inputs (`null`, `undefined`, numbers, objects, arrays) return `false`.
 - Empty strings return `false` without invoking the regex.
-- Length-bounded: local part > 64 chars or total > 254 chars returns `false`.
+- Length-bounded: local part > 64 chars, total > 254 chars, or raw input > 320 chars returns `false` (the 320-char input cap blocks pathological payloads before any regex work).
 - Hostname labels cannot start or end with a hyphen, and empty labels (`example..com`) are rejected.
 - Whitespace and control characters anywhere in the address return `false` unless `allowDisplayName` is set and the wrapper itself contains whitespace.
+- ASCII-only host part — internationalized domain names (IDN) such as `user@münchen.de` return `false`. Convert IDN hosts to Punycode (e.g., `user@xn--mnchen-3ya.de`) before validating.
+- Consecutive, leading, or trailing dots in the local part (e.g., `a..b@example.com`, `.user@example.com`) are accepted — matches the HTML5 living standard. RFC 5322 strict disallows them; this validator favors HTML5 compatibility.
 - The validator is structural — it does not perform DNS, MX, or SMTP checks.
 
 ## Also known as

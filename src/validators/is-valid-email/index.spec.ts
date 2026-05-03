@@ -108,6 +108,44 @@ describe("isValidEmail", () => {
       expect(long.length).to.be.greaterThan(254);
       expect(isValidEmail({ email: long })).to.equal(false);
     });
+
+    it("should return false when input exceeds 320 chars", () => {
+      const huge = "a".repeat(321);
+      expect(isValidEmail({ email: huge })).to.equal(false);
+    });
+
+    it("should reject pathological input quickly via input cap", () => {
+      const huge = `${"a".repeat(500)}@example.com`;
+      expect(isValidEmail({ email: huge })).to.equal(false);
+    });
+  });
+
+  describe("internationalized domains (IDN)", () => {
+    it("should return false for a Unicode host (no IDN support)", () => {
+      expect(isValidEmail({ email: "user@münchen.de" })).to.equal(false);
+    });
+
+    it("should return false for a Unicode local part", () => {
+      expect(isValidEmail({ email: "üser@example.com" })).to.equal(false);
+    });
+
+    it("should return true for a Punycode-encoded host", () => {
+      expect(isValidEmail({ email: "user@xn--mnchen-3ya.de" })).to.equal(true);
+    });
+  });
+
+  describe("HTML5 vs RFC 5322 dot rules", () => {
+    it("should accept consecutive dots in local part (HTML5 spec)", () => {
+      expect(isValidEmail({ email: "a..b@example.com" })).to.equal(true);
+    });
+
+    it("should accept leading dot in local part (HTML5 spec)", () => {
+      expect(isValidEmail({ email: ".user@example.com" })).to.equal(true);
+    });
+
+    it("should accept trailing dot in local part (HTML5 spec)", () => {
+      expect(isValidEmail({ email: "user.@example.com" })).to.equal(true);
+    });
   });
 
   describe("non-string inputs", () => {

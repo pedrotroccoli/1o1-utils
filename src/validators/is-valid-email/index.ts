@@ -7,6 +7,7 @@ const DISPLAY_NAME_REGEX = /^\s*(?:"([^"]*)"|([^<"]+?))\s*<([^>]+)>\s*$/;
 
 const MAX_TOTAL_LENGTH = 254;
 const MAX_LOCAL_LENGTH = 64;
+const MAX_INPUT_LENGTH = 320;
 
 /**
  * Checks whether a string is a well-formed email address.
@@ -49,13 +50,25 @@ const MAX_LOCAL_LENGTH = 64;
  * objects) always return `false`. Empty strings return `false` without
  * invoking the regex. The validator is deliberately structural and does
  * not perform DNS, MX, or SMTP checks.
+ *
+ * Inputs longer than 320 characters (RFC 5321 maximum address size) are
+ * rejected immediately to avoid unbounded regex work on pathological
+ * input.
+ *
+ * The host part is ASCII-only — internationalized domain names (IDN)
+ * such as `user@münchen.de` return `false`. Convert IDN hosts to their
+ * Punycode form (`user@xn--mnchen-3ya.de`) before validating if needed.
+ *
+ * Consecutive dots in the local part (e.g., `a..b@example.com`) are
+ * accepted, matching the HTML5 living standard. RFC 5322 strict
+ * disallows them; this validator favors HTML5 compatibility.
  */
 function isValidEmail({
   email,
   allowDisplayName = false,
 }: IsValidEmailParams): IsValidEmailResult {
   if (typeof email !== "string") return false;
-  if (email.length === 0) return false;
+  if (email.length === 0 || email.length > MAX_INPUT_LENGTH) return false;
 
   let addr = email;
   if (allowDisplayName) {
