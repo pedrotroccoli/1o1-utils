@@ -1,0 +1,78 @@
+---
+title: isValidPhone
+description: Check if a string is a well-formed E.164 international phone number
+---
+
+Validates whether a string is a well-formed E.164 international phone number. Requires a leading `+`, a non-zero country code, and 1–15 total digits. Common readability separators — spaces, hyphens, parentheses, and dots — are stripped before validation; any other character causes rejection.
+
+## Import
+
+```ts
+import { isValidPhone } from "1o1-utils";
+```
+
+```ts
+import { isValidPhone } from "1o1-utils/is-valid-phone";
+```
+
+## Signature
+
+```ts
+function isValidPhone({ phone }: IsValidPhoneParams): boolean
+```
+
+## Parameters
+
+| Name    | Type      | Required | Description           |
+| ------- | --------- | -------- | --------------------- |
+| `phone` | `unknown` | Yes      | The value to validate |
+
+## Returns
+
+`boolean` — `true` if the value is a parseable E.164 phone number, `false` otherwise.
+
+## Examples
+
+```ts
+isValidPhone({ phone: "+5511999999999" });        // => true
+isValidPhone({ phone: "+1 555 1234567" });        // => true
+isValidPhone({ phone: "+44 (20) 7946-0958" });    // => true
+isValidPhone({ phone: "+1.555.123.4567" });       // => true
+
+isValidPhone({ phone: "11999999999" });           // => false (no country code)
+isValidPhone({ phone: "+0123456789" });           // => false (country code starts with 0)
+isValidPhone({ phone: "abc" });                   // => false
+isValidPhone({ phone: "" });                      // => false
+isValidPhone({ phone: null });                    // => false
+```
+
+```ts
+// Validate user input before sending
+function notify(input: string) {
+  if (!isValidPhone({ phone: input })) {
+    throw new Error("Invalid phone");
+  }
+  return sms.send(input);
+}
+```
+
+## Edge Cases
+
+- Non-string inputs (`null`, `undefined`, numbers, objects, arrays) return `false`.
+- Empty strings return `false` without invoking the regex.
+- Inputs longer than 32 characters are rejected immediately to avoid pathological regex work.
+- The leading `+` is mandatory — local-format numbers without a country code return `false`.
+- Country code cannot start with `0` (E.164 rule).
+- Total digit count must be 1–15 after separators are stripped; 16+ digits return `false`.
+- Allowed separators: space, hyphen, parentheses, dot. Any other character (`/`, `_`, letters, etc.) causes rejection.
+- Validation is structural — it does not check whether the country code, area code, or subscriber number actually exist. For carrier-grade validation, use a library backed by phone metadata.
+
+## Also known as
+
+phone, validate phone, is phone, valid phone, phone number, e164, international phone
+
+## Prompt suggestion
+
+```text
+I'm using 1o1-utils (npm: https://www.npmjs.com/package/1o1-utils, GitHub: https://github.com/pedrotroccoli/1o1-utils, LLM context: https://pedrotroccoli.github.io/1o1-utils/llms.txt). Show me how to use isValidPhone to validate a user-supplied phone number before submitting a form.
+```

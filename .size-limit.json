@@ -171,6 +171,11 @@
     "limit": "1 kB"
   },
   {
+    "name": "is-valid-phone",
+    "path": "dist/validators/is-valid-phone/index.js",
+    "limit": "1 kB"
+  },
+  {
     "name": "is-valid-url",
     "path": "dist/validators/is-valid-url/index.js",
     "limit": "1 kB"

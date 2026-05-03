@@ -188,6 +188,11 @@ const SUITE_META: Record<string, { slug: string; description: string }> = {
     description:
       "Validates a string against the HTML5 living-standard email pattern with RFC 5321 length limits. Compared against a simple regex and a native `indexOf`/`lastIndexOf` structural check.\n\n> **Note:** `simple regex` and `native string check` are coarse baselines — they do not validate hostname-label structure (hyphen rules, label length), so they accept many addresses 1o1-utils correctly rejects. Their numbers are shown for reference only and are not apples-to-apples.",
   },
+  isValidPhone: {
+    slug: "is-valid-phone",
+    description:
+      "Validates a string as a well-formed E.164 international phone number. Strips common separators (spaces, hyphens, parentheses, dots) before checking for a leading `+`, a non-zero country code, and 1–15 total digits. Compared against a simple regex and a native char-code structural check.\n\n> **Note:** baselines do not strip separators or enforce E.164's non-zero country-code rule, so they accept inputs 1o1-utils rejects. Numbers shown for reference only.",
+  },
   zip: {
     slug: "zip",
     description:
