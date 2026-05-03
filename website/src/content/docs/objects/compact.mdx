@@ -1,0 +1,68 @@
+---
+title: compact
+description: Remove falsy values from an object
+---
+
+Creates a new object with all falsy values removed. Pass `keep` to preserve specific falsy values that should survive.
+
+Falsy values are `false`, `0`, `-0`, `0n`, `""`, `null`, `undefined`, and `NaN`. Matches in `keep` use `Object.is`, so `0` vs `-0` and `NaN` are handled exactly.
+
+## Import
+
+```ts
+import { compact } from "1o1-utils";
+```
+
+```ts
+import { compact } from "1o1-utils/compact";
+```
+
+## Signature
+
+```ts
+function compact<T extends Record<string, unknown>>({ obj, keep }: CompactParams<T>): Partial<T>
+```
+
+## Parameters
+
+| Name   | Type        | Required | Description                                          |
+| ------ | ----------- | -------- | ---------------------------------------------------- |
+| `obj`  | `T`         | Yes      | The source object                                    |
+| `keep` | `unknown[]` | No       | Falsy values to preserve (matched via `Object.is`)   |
+
+## Returns
+
+`Partial<T>` — A new object without falsy entries (except those listed in `keep`).
+
+## Examples
+
+```ts
+compact({ obj: { a: 1, b: null, c: "", d: 0, e: false, f: "ok" } });
+// => { a: 1, f: "ok" }
+
+// Preserve specific falsy values
+compact({ obj: { a: 0, b: null, c: "" }, keep: [0] });
+// => { a: 0 }
+
+// Match NaN exactly
+compact({ obj: { a: NaN, b: 1 }, keep: [NaN] });
+// => { a: NaN, b: 1 }
+```
+
+## Edge Cases
+
+- Throws if `obj` is not an object.
+- Throws if `keep` is provided but not an array.
+- Skips unsafe keys (`__proto__`, `constructor`, `prototype`) to prevent prototype pollution.
+- Distinguishes `0` from `-0` via `Object.is`.
+- Does not mutate the original object.
+
+## Also known as
+
+remove falsy, clean object, drop empty, prune null
+
+## Prompt suggestion
+
+```text
+I'm using 1o1-utils (npm: https://www.npmjs.com/package/1o1-utils, GitHub: https://github.com/pedrotroccoli/1o1-utils, LLM context: https://pedrotroccoli.github.io/1o1-utils/llms.txt). Show me how to use compact to strip null/undefined fields from an object before serializing.
+```

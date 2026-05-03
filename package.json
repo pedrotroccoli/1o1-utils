@@ -85,7 +85,10 @@
     "memo",
     "memoize",
     "cache",
-    "ttl-cache"
+    "ttl-cache",
+    "compact",
+    "remove-falsy",
+    "clean-object"
   ],
   "author": "Pedro Troccoli <contact@pedrotroccoli.com>",
   "license": "MIT",
@@ -127,6 +130,10 @@
     "./clone-deep": {
       "import": "./dist/objects/clone-deep/index.js",
       "types": "./dist/objects/clone-deep/index.d.ts"
+    },
+    "./compact": {
+      "import": "./dist/objects/compact/index.js",
+      "types": "./dist/objects/compact/index.d.ts"
     },
     "./deep-merge": {
       "import": "./dist/objects/deep-merge/index.js",
