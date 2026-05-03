@@ -1057,7 +1057,7 @@ Signature:
 function bindKey(combo: string, handler: (event: KeyboardEvent) => void, options?: BindKeyOptions): () => void
 
 Parameters:
-- combo (string, required): Key combo. `+` joins simultaneous modifiers, spaces separate sequence steps. Modifiers: `ctrl`, `shift`, `alt`, `meta` (alias `cmd`), `mod` (= `meta` on Mac, `ctrl` elsewhere). Key names match `KeyboardEvent.key` lowercased. Aliases: `space`, `esc`, `return`, `del`, `ins`, `up`, `down`, `left`, `right`. Shift+digit and shift+letter combos fall back to `event.code` (`Digit1`, `KeyA`), so `shift+1` fires regardless of the OS-level shifted symbol. Case-insensitive.
+- combo (string, required): Key combo. Grammar: `+` joins one or more modifiers with a single key into a simultaneous step (e.g. `ctrl+shift+p`); each `+`-joined step accepts at most one non-modifier key, so `g+i` throws. Spaces separate sequence steps pressed in order (e.g. `g i`); steps may themselves use `+`, so `ctrl+k ctrl+t` is a two-step sequence of modifier combos. Modifiers: `ctrl`, `shift`, `alt`, `meta` (alias `cmd`), `mod` (= `meta` on Mac, `ctrl` elsewhere). Key names match `KeyboardEvent.key` lowercased. Aliases: `space`, `esc`, `return`, `del`, `ins`, `up`, `down`, `left`, `right`. Shift+digit and shift+letter combos fall back to `event.code` (`Digit1`, `KeyA`), so `shift+1` fires regardless of the OS-level shifted symbol. Case-insensitive.
 - handler ((event: KeyboardEvent) => void, required): Called with the final `KeyboardEvent` on a full match.
 - options (BindKeyOptions, optional):
   - target (EventTarget, optional, default `window`): Target to attach the listener to.

@@ -124,9 +124,18 @@ function now(): number {
  * Binds a keyboard shortcut to a handler. Returns a cleanup function that
  * removes the listener.
  *
- * Combo grammar: `+` joins simultaneous modifiers (e.g. `ctrl+shift+p`),
- * spaces separate sequence steps (e.g. `g i`). Modifiers: `ctrl`, `shift`,
- * `alt`, `meta` (alias `cmd`), and `mod` (= `meta` on Mac, `ctrl` elsewhere).
+ * Combo grammar:
+ * - `+` joins one or more modifiers with a single key into one
+ *   simultaneous step (e.g. `ctrl+shift+p`). Each `+`-joined step must
+ *   contain at most one non-modifier key — `g+i` throws because both
+ *   are keys, not modifiers. Modifier-only steps (e.g. just `ctrl`)
+ *   also throw.
+ * - Spaces separate sequence steps pressed in order (e.g. `g i` =
+ *   press `g`, then `i`). Steps may themselves use `+`, so
+ *   `ctrl+k ctrl+t` is a two-step sequence of modifier combos.
+ *
+ * Modifiers: `ctrl`, `shift`, `alt`, `meta` (alias `cmd`), and `mod`
+ * (= `meta` on Mac, `ctrl` elsewhere).
  *
  * Key names match `KeyboardEvent.key` lowercased. Aliases: `space`,
  * `esc`, `return`, `del`, `ins`, `up`, `down`, `left`, `right`. Use
