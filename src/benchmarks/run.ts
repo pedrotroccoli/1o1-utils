@@ -208,6 +208,11 @@ const SUITE_META: Record<string, { slug: string; description: string }> = {
     description:
       "Transforms an object's values via an iteratee function. Compared against `lodash.mapValues` and a native `Object.fromEntries(Object.entries().map())` approach.",
   },
+  "partition (by role)": {
+    slug: "partition",
+    description:
+      "Splits an array into two groups based on a predicate. Compared against `lodash.partition`, a native two-`filter` approach, and a native single-pass loop.",
+  },
 };
 
 function getSizes(rows: TaskRow[]): string[] {

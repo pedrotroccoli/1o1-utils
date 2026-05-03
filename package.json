@@ -65,7 +65,10 @@
     "map-values",
     "escape-regexp",
     "escape-regex",
-    "regex-escape"
+    "regex-escape",
+    "partition",
+    "split",
+    "bifurcate"
   ],
   "author": "Pedro Troccoli <contact@pedrotroccoli.com>",
   "license": "MIT",
@@ -251,6 +254,10 @@
     "./random-int": {
       "import": "./dist/numbers/random-int/index.js",
       "types": "./dist/numbers/random-int/index.d.ts"
+    },
+    "./partition": {
+      "import": "./dist/arrays/partition/index.js",
+      "types": "./dist/arrays/partition/index.d.ts"
     }
   },
   "scripts": {
