@@ -2,6 +2,19 @@ import type { PickParams } from "./types.js";
 
 const UNSAFE_KEYS = new Set(["__proto__", "constructor", "prototype"]);
 
+function safeAssign(
+  tgt: Record<string, unknown>,
+  key: string,
+  value: unknown,
+): void {
+  Object.defineProperty(tgt, key, {
+    value,
+    writable: true,
+    enumerable: true,
+    configurable: true,
+  });
+}
+
 function pickNested(
   source: Record<string, unknown>,
   target: Record<string, unknown>,
@@ -35,15 +48,16 @@ function pickNested(
 
   while (dot !== -1) {
     const seg = key.substring(start, dot);
-    if (tgt[seg] === undefined) {
-      tgt[seg] = {};
+    if (UNSAFE_KEYS.has(seg)) return;
+    if (!Object.hasOwn(tgt, seg)) {
+      safeAssign(tgt, seg, {});
     }
     tgt = tgt[seg] as Record<string, unknown>;
     start = dot + 1;
     dot = key.indexOf(".", start);
   }
 
-  tgt[lastSeg] = value;
+  safeAssign(tgt, lastSeg, value);
 }
 
 /**
