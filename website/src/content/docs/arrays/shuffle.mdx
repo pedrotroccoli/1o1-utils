@@ -47,7 +47,21 @@ Inject a deterministic random source for tests or seeded randomness:
 
 ```ts
 shuffle({ array: [1, 2, 3, 4, 5], random: () => 0 });
-// => [5, 1, 2, 3, 4]
+// => [2, 3, 4, 5, 1]
+```
+
+## Security
+
+The default `random` is `Math.random`, which is **not** cryptographically secure. For adversarial contexts (raffles, sampling that must resist prediction), inject a CSPRNG-based source — for example one built on `crypto.getRandomValues`:
+
+```ts
+function cryptoRandom() {
+  const buf = new Uint32Array(1);
+  crypto.getRandomValues(buf);
+  return buf[0] / 2 ** 32;
+}
+
+shuffle({ array: items, random: cryptoRandom });
 ```
 
 ## Edge Cases
@@ -56,6 +70,7 @@ shuffle({ array: [1, 2, 3, 4, 5], random: () => 0 });
 - Returns an empty array when given an empty array.
 - Returns a single-element array unchanged.
 - Always returns a new array reference; the input is never mutated.
+- The `random` function must return a value in `[0, 1)`. Out-of-range outputs are clamped to keep swap indices in bounds.
 
 ## Also known as
 

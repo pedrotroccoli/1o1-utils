@@ -145,10 +145,10 @@ shuffle({ array: [1, 2, 3, 4, 5] });
 // => [3, 1, 5, 2, 4] (random)
 
 shuffle({ array: [1, 2, 3, 4, 5], random: () => 0 });
-// => [5, 1, 2, 3, 4] (deterministic)
+// => [2, 3, 4, 5, 1] (deterministic)
 
 Throws: Error if array is not an array.
-Uses unbiased Fisher-Yates: copies the input, then iterates from end to start swapping each index with a random earlier-or-equal index.
+Uses unbiased Fisher-Yates: copies the input, then iterates from end to start swapping each index with a random earlier-or-equal index. The `random` function must return a value in `[0, 1)`; values are clamped to stay in range. Default `Math.random` is NOT cryptographically secure — for adversarial use (lotteries, security-sensitive sampling), inject a CSPRNG-based source such as one built on `crypto.getRandomValues`.
 
 ---
 
