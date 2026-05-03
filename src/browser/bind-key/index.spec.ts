@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { afterEach, beforeEach, describe, it } from "mocha";
+import { beforeEach, describe, it } from "mocha";
 import { bindKey } from "./index.js";
 
 interface DispatchOptions {
@@ -162,6 +162,15 @@ describe("bindKey", () => {
     let count = 0;
     bindKey("ctrl+k", () => count++, { target });
     press(target, "k", { ctrl: true, target: input });
+    expect(count).to.equal(1);
+  });
+
+  it("sequence with any modifier-step bypasses input filter for all steps", () => {
+    const input = document.createElement("input");
+    let count = 0;
+    bindKey("ctrl+g i", () => count++, { target });
+    press(target, "g", { ctrl: true, target: input });
+    press(target, "i", { target: input });
     expect(count).to.equal(1);
   });
 

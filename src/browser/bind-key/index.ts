@@ -8,8 +8,7 @@ function isMac(): boolean {
     (navigator as { userAgentData?: { platform?: string } }).userAgentData
       ?.platform ??
     navigator.platform ??
-    navigator.userAgent ??
-    "";
+    navigator.userAgent;
   return /mac|iphone|ipad|ipod/i.test(platform);
 }
 
@@ -90,6 +89,13 @@ function hasNonShiftModifier(step: ParsedStep): boolean {
   return step.ctrl || step.alt || step.meta;
 }
 
+function now(): number {
+  return typeof performance !== "undefined" &&
+    typeof performance.now === "function"
+    ? performance.now()
+    : Date.now();
+}
+
 /**
  * Binds a keyboard shortcut to a handler. Returns a cleanup function that
  * removes the listener.
@@ -97,14 +103,18 @@ function hasNonShiftModifier(step: ParsedStep): boolean {
  * Combo grammar: `+` joins simultaneous modifiers (e.g. `ctrl+shift+p`),
  * spaces separate sequence steps (e.g. `g i`). Modifiers: `ctrl`, `shift`,
  * `alt`, `meta` (alias `cmd`), and `mod` (= `meta` on Mac, `ctrl` elsewhere).
+ * Key names match `KeyboardEvent.key` lowercased — use `"arrowleft"`,
+ * `"escape"`, `"enter"`, `" "` (space), `"f1"`, etc. for non-printable keys.
  *
  * @param combo - Key combo string. Case-insensitive.
  * @param handler - Called with the final `KeyboardEvent` on a match.
  * @param options - Optional configuration.
  * @param options.target - Event target to attach to. Defaults to `window`.
- * @param options.filterInputs - When true (default), shortcuts without a
- *   non-shift modifier are ignored while focus is on `INPUT`, `TEXTAREA`,
- *   `SELECT`, or a `contenteditable` element.
+ * @param options.filterInputs - When true (default), the handler is skipped
+ *   while focus is on `INPUT`, `TEXTAREA`, `SELECT`, or a `contenteditable`
+ *   element. Combos with any non-shift modifier (`ctrl`, `alt`, `meta`,
+ *   `cmd`, `mod`) bypass the filter and always fire — including sequences
+ *   where only one step carries a modifier.
  * @param options.sequenceTimeout - Idle ms after which a sequence buffer
  *   resets. Defaults to `1000`.
  * @param options.preventDefault - When true, calls `event.preventDefault()`
@@ -115,6 +125,8 @@ function hasNonShiftModifier(step: ParsedStep): boolean {
  * ```ts
  * const unbind = bindKey("ctrl+k", () => openSearch());
  * bindKey("g i", () => goToInbox());
+ * bindKey("escape", () => closeModal());
+ * bindKey("ctrl+arrowleft", () => prevTab());
  * unbind();
  * ```
  *
@@ -139,6 +151,7 @@ function bindKey(
   const filterInputs = options.filterInputs !== false;
   const sequenceTimeout = options.sequenceTimeout ?? 1000;
   const preventDefault = options.preventDefault === true;
+  const bypassFilter = steps.some(hasNonShiftModifier);
 
   const target =
     options.target ??
@@ -154,39 +167,31 @@ function bindKey(
 
   const listener = (event: Event): void => {
     const ke = event as KeyboardEvent;
-    const now = Date.now();
-    if (cursor > 0 && now - lastTime > sequenceTimeout) {
+    const t = now();
+    if (cursor > 0 && t - lastTime > sequenceTimeout) {
       cursor = 0;
+    }
+
+    if (filterInputs && !bypassFilter && isEditableTarget(ke.target)) {
+      return;
     }
 
     const step = steps[cursor];
     if (step === undefined) return;
 
-    if (
-      filterInputs &&
-      !hasNonShiftModifier(step) &&
-      isEditableTarget(ke.target)
-    ) {
-      return;
-    }
-
     if (!eventMatches(ke, step)) {
-      cursor = 0;
-      const first = steps[0];
-      if (first !== undefined && eventMatches(ke, first)) {
-        cursor = 1;
-        lastTime = now;
-        if (steps.length === 1) {
-          if (preventDefault) ke.preventDefault();
-          cursor = 0;
-          handler(ke);
+      if (cursor > 0) {
+        cursor = 0;
+        if (eventMatches(ke, steps[0] as ParsedStep)) {
+          cursor = 1;
+          lastTime = t;
         }
       }
       return;
     }
 
     cursor += 1;
-    lastTime = now;
+    lastTime = t;
 
     if (cursor === steps.length) {
       cursor = 0;

@@ -6,11 +6,11 @@ if (!GlobalRegistrator.isRegistered) {
   GlobalRegistrator.register();
 }
 
-const Mousetrap = (await import("mousetrap")).default as unknown as {
-  (el?: Element): {
-    bind(keys: string, cb: () => void): unknown;
-    unbind(keys: string): unknown;
-  };
+const Mousetrap = (await import("mousetrap")).default as unknown as (
+  el?: Element,
+) => {
+  bind(keys: string, cb: () => void): unknown;
+  unbind(keys: string): unknown;
 };
 
 const noop = () => {};
