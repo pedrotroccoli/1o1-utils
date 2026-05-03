@@ -224,5 +224,10 @@
     "name": "partition",
     "path": "dist/arrays/partition/index.js",
     "limit": "1 kB"
+  },
+  {
+    "name": "copy-to-clipboard",
+    "path": "dist/browser/copy-to-clipboard/index.js",
+    "limit": "1 kB"
   }
 ]

@@ -85,7 +85,10 @@
     "memo",
     "memoize",
     "cache",
-    "ttl-cache"
+    "ttl-cache",
+    "copy-to-clipboard",
+    "clipboard",
+    "copy"
   ],
   "author": "Pedro Troccoli <contact@pedrotroccoli.com>",
   "license": "MIT",
@@ -295,6 +298,10 @@
     "./memo": {
       "import": "./dist/functions/memo/index.js",
       "types": "./dist/functions/memo/index.d.ts"
+    },
+    "./copy-to-clipboard": {
+      "import": "./dist/browser/copy-to-clipboard/index.js",
+      "types": "./dist/browser/copy-to-clipboard/index.d.ts"
     }
   },
   "scripts": {

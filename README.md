@@ -101,6 +101,12 @@ import { pick } from "1o1-utils/pick";
 | `sleep` | Promise-based delay | `1o1-utils/sleep` |
 | `throttle` | Throttle function calls | `1o1-utils/throttle` |
 
+### Browser
+
+| Utility | Description | Import |
+| --- | --- | --- |
+| `copyToClipboard` | Copy text to the clipboard with `execCommand` fallback | `1o1-utils/copy-to-clipboard` |
+
 ## Benchmarks
 
 All utilities are benchmarked against lodash, radash, and native JavaScript.
