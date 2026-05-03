@@ -42,7 +42,8 @@ import type {
  *
  * Plus-stripping only touches the local part: a `+` that appears in the
  * domain is left untouched. When multiple `+` characters exist in the
- * local part, everything from the first `+` through the `@` is removed.
+ * local part, everything from the first `+` up to (but excluding) the
+ * `@` is removed; the `@` and domain are preserved.
  *
  * No format validation is performed — pair with `isValidEmail` for that.
  *
