@@ -52,7 +52,7 @@ async function copyToClipboard({
   }
 
   const doc = g.document;
-  if (!doc) {
+  if (!doc?.body) {
     throw new Error("Clipboard not available in this environment");
   }
 

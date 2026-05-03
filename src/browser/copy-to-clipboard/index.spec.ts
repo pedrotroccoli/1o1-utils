@@ -221,6 +221,23 @@ describe("copyToClipboard", () => {
         "Clipboard not available in this environment",
       );
     });
+
+    it("should throw when document exists but body is null", async () => {
+      setGlobal("isSecureContext", false);
+      clearGlobal("navigator");
+      setGlobal("document", { body: null, createElement: () => ({}) });
+
+      let caught: Error | undefined;
+      try {
+        await copyToClipboard({ text: "x" });
+      } catch (err) {
+        caught = err as Error;
+      }
+
+      expect(caught?.message).to.equal(
+        "Clipboard not available in this environment",
+      );
+    });
   });
 
   describe("invalid inputs", () => {
