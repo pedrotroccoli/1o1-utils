@@ -193,6 +193,11 @@ const SUITE_META: Record<string, { slug: string; description: string }> = {
     description:
       "Validates a string as a well-formed E.164 international phone number. Strips common separators (spaces, hyphens, parentheses, dots) before checking for a leading `+`, a non-zero country code, and 1–15 total digits. Compared against a simple regex and a native char-code structural check.\n\n> **Note:** baselines do not strip separators or enforce E.164's non-zero country-code rule, so they accept inputs 1o1-utils rejects. Numbers shown for reference only.",
   },
+  normalizeEmail: {
+    slug: "normalize-email",
+    description:
+      "Normalizes an email: trim, lowercase, and optionally strip plus-addressing (`user+tag@x.com` → `user@x.com`). Compared against a native `trim().toLowerCase()` baseline and a regex-based plus-stripper.",
+  },
   zip: {
     slug: "zip",
     description:
