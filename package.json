@@ -1,312 +1,319 @@
 {
-	"name": "1o1-utils",
-	"version": "1.7.1",
-	"description": "Fast, tree-shakeable, zero-dependency TypeScript utility library. ~2kB gzipped, fully typed, benchmarked for performance.",
-	"keywords": [
-		"utility",
-		"utilities",
-		"utils",
-		"typescript",
-		"javascript",
-		"tree-shakeable",
-		"zero-dependencies",
-		"esm",
-		"micro-modules",
-		"functional",
-		"chunk",
-		"pick",
-		"omit",
-		"get",
-		"set",
-		"debounce",
-		"throttle",
-		"deep-merge",
-		"clone-deep",
-		"group-by",
-		"sort-by",
-		"slugify",
-		"capitalize",
-		"truncate",
-		"retry",
-		"sleep",
-		"once",
-		"pipe",
-		"compose",
-		"flow",
-		"with-timeout",
-		"in-range",
-		"between",
-		"range-check",
-		"shallow-equal",
-		"deep-equal",
-		"is-equal",
-		"is-valid-url",
-		"validate-url",
-		"url-validator",
-		"safely",
-		"tryit",
-		"try-catch",
-		"is-nil",
-		"nullish",
-		"clamp",
-		"restrict",
-		"bound",
-		"zip",
-		"unzip",
-		"transpose",
-		"times",
-		"repeat",
-		"range",
-		"sequence",
-		"map-keys",
-		"map-values",
-		"escape-regexp",
-		"escape-regex",
-		"regex-escape",
-		"partition",
-		"split",
-		"bifurcate"
-	],
-	"author": "Pedro Troccoli <contact@pedrotroccoli.com>",
-	"license": "MIT",
-	"homepage": "https://pedrotroccoli.github.io/1o1-utils",
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/pedrotroccoli/1o1-utils.git"
-	},
-	"bugs": {
-		"url": "https://github.com/pedrotroccoli/1o1-utils/issues"
-	},
-	"type": "module",
-	"types": "dist/index.d.ts",
-	"sideEffects": false,
-	"files": [
-		"dist"
-	],
-	"exports": {
-		".": {
-			"import": "./dist/index.js",
-			"types": "./dist/index.d.ts"
-		},
-		"./array-to-hash": {
-			"import": "./dist/arrays/array-to-hash/index.js",
-			"types": "./dist/arrays/array-to-hash/index.d.ts"
-		},
-		"./chunk": {
-			"import": "./dist/arrays/chunk/index.js",
-			"types": "./dist/arrays/chunk/index.d.ts"
-		},
-		"./diff": {
-			"import": "./dist/arrays/diff/index.js",
-			"types": "./dist/arrays/diff/index.d.ts"
-		},
-		"./group-by": {
-			"import": "./dist/arrays/group-by/index.js",
-			"types": "./dist/arrays/group-by/index.d.ts"
-		},
-		"./clone-deep": {
-			"import": "./dist/objects/clone-deep/index.js",
-			"types": "./dist/objects/clone-deep/index.d.ts"
-		},
-		"./deep-merge": {
-			"import": "./dist/objects/deep-merge/index.js",
-			"types": "./dist/objects/deep-merge/index.d.ts"
-		},
-		"./defaults": {
-			"import": "./dist/objects/defaults/index.js",
-			"types": "./dist/objects/defaults/index.d.ts"
-		},
-		"./defaults-deep": {
-			"import": "./dist/objects/defaults-deep/index.js",
-			"types": "./dist/objects/defaults-deep/index.d.ts"
-		},
-		"./get": {
-			"import": "./dist/objects/get/index.js",
-			"types": "./dist/objects/get/index.d.ts"
-		},
-		"./omit": {
-			"import": "./dist/objects/omit/index.js",
-			"types": "./dist/objects/omit/index.d.ts"
-		},
-		"./pick": {
-			"import": "./dist/objects/pick/index.js",
-			"types": "./dist/objects/pick/index.d.ts"
-		},
-		"./set": {
-			"import": "./dist/objects/set/index.js",
-			"types": "./dist/objects/set/index.d.ts"
-		},
-		"./sort-by": {
-			"import": "./dist/arrays/sort-by/index.js",
-			"types": "./dist/arrays/sort-by/index.d.ts"
-		},
-		"./in-range": {
-			"import": "./dist/numbers/in-range/index.js",
-			"types": "./dist/numbers/in-range/index.d.ts"
-		},
-		"./is-empty": {
-			"import": "./dist/objects/is-empty/index.js",
-			"types": "./dist/objects/is-empty/index.d.ts"
-		},
-		"./map-keys": {
-			"import": "./dist/objects/map-keys/index.js",
-			"types": "./dist/objects/map-keys/index.d.ts"
-		},
-		"./map-values": {
-			"import": "./dist/objects/map-values/index.js",
-			"types": "./dist/objects/map-values/index.d.ts"
-		},
-		"./sleep": {
-			"import": "./dist/async/sleep/index.js",
-			"types": "./dist/async/sleep/index.d.ts"
-		},
-		"./retry": {
-			"import": "./dist/async/retry/index.js",
-			"types": "./dist/async/retry/index.d.ts"
-		},
-		"./safely": {
-			"import": "./dist/async/safely/index.js",
-			"types": "./dist/async/safely/index.d.ts"
-		},
-		"./capitalize": {
-			"import": "./dist/strings/capitalize/index.js",
-			"types": "./dist/strings/capitalize/index.d.ts"
-		},
-		"./escape-reg-exp": {
-			"import": "./dist/strings/escape-reg-exp/index.js",
-			"types": "./dist/strings/escape-reg-exp/index.d.ts"
-		},
-		"./debounce": {
-			"import": "./dist/async/debounce/index.js",
-			"types": "./dist/async/debounce/index.d.ts"
-		},
-		"./slugify": {
-			"import": "./dist/strings/slugify/index.js",
-			"types": "./dist/strings/slugify/index.d.ts"
-		},
-		"./throttle": {
-			"import": "./dist/async/throttle/index.js",
-			"types": "./dist/async/throttle/index.d.ts"
-		},
-		"./transform-case": {
-			"import": "./dist/strings/transform-case/index.js",
-			"types": "./dist/strings/transform-case/index.d.ts"
-		},
-		"./truncate": {
-			"import": "./dist/strings/truncate/index.js",
-			"types": "./dist/strings/truncate/index.d.ts"
-		},
-		"./with-timeout": {
-			"import": "./dist/async/with-timeout/index.js",
-			"types": "./dist/async/with-timeout/index.d.ts"
-		},
-		"./once": {
-			"import": "./dist/functions/once/index.js",
-			"types": "./dist/functions/once/index.d.ts"
-		},
-		"./pipe": {
-			"import": "./dist/functions/pipe/index.js",
-			"types": "./dist/functions/pipe/index.d.ts"
-		},
-		"./range": {
-			"import": "./dist/arrays/range/index.js",
-			"types": "./dist/arrays/range/index.d.ts"
-		},
-		"./shallow-equal": {
-			"import": "./dist/comparisons/shallow-equal/index.js",
-			"types": "./dist/comparisons/shallow-equal/index.d.ts"
-		},
-		"./deep-equal": {
-			"import": "./dist/comparisons/deep-equal/index.js",
-			"types": "./dist/comparisons/deep-equal/index.d.ts"
-		},
-		"./is-valid-url": {
-			"import": "./dist/validators/is-valid-url/index.js",
-			"types": "./dist/validators/is-valid-url/index.d.ts"
-		},
-		"./is-nil": {
-			"import": "./dist/comparisons/is-nil/index.js",
-			"types": "./dist/comparisons/is-nil/index.d.ts"
-		},
-		"./clamp": {
-			"import": "./dist/numbers/clamp/index.js",
-			"types": "./dist/numbers/clamp/index.d.ts"
-		},
-		"./zip": {
-			"import": "./dist/arrays/zip/index.js",
-			"types": "./dist/arrays/zip/index.d.ts"
-		},
-		"./unzip": {
-			"import": "./dist/arrays/unzip/index.js",
-			"types": "./dist/arrays/unzip/index.d.ts"
-		},
-		"./times": {
-			"import": "./dist/arrays/times/index.js",
-			"types": "./dist/arrays/times/index.d.ts"
-		},
-		"./random-int": {
-			"import": "./dist/numbers/random-int/index.js",
-			"types": "./dist/numbers/random-int/index.d.ts"
-		},
-		"./partition": {
-			"import": "./dist/arrays/partition/index.js",
-			"types": "./dist/arrays/partition/index.d.ts"
-		}
-	},
-	"scripts": {
-		"test": "mocha",
-		"test:coverage": "c8 mocha",
-		"build": "tsc",
-		"dev": "tsx watch src/index.ts",
-		"lint": "biome lint ./src",
-		"format": "biome format --write ./src",
-		"check": "biome check ./src",
-		"check:fix": "biome check --write ./src",
-		"bench": "NODE_OPTIONS='--max-old-space-size=8192' tsx src/benchmarks/run.ts",
-		"size": "size-limit",
-		"size:json": "size-limit --json",
-		"docs:dev": "cd website && pnpm dev",
-		"docs:build": "cd website && pnpm build",
-		"docs:preview": "cd website && pnpm preview"
-	},
-	"packageManager": "pnpm@10.9.0",
-	"engines": {
-		"node": ">=20"
-	},
-	"pnpm": {
-		"overrides": {
-			"glob@<10.5.0": ">=10.5.0",
-			"minimatch@<9.0.7": ">=9.0.7",
-			"serialize-javascript@<7.0.3": ">=7.0.3",
-			"js-yaml@<4.1.1": ">=4.1.1",
-			"brace-expansion@<1.1.12": ">=1.1.12",
-			"brace-expansion@>=2.0.0 <2.0.2": ">=2.0.2",
-			"diff@<4.0.4": ">=4.0.4 <5",
-			"diff@>=5.0.0 <8.0.3": ">=8.0.3"
-		}
-	},
-	"publishConfig": {
-		"registry": "https://registry.npmjs.org",
-		"provenance": true
-	},
-	"devDependencies": {
-		"@biomejs/biome": "^2.4.10",
-		"@changesets/cli": "^2.30.0",
-		"@size-limit/file": "^12.0.1",
-		"@size-limit/preset-small-lib": "^12.0.1",
-		"@types/chai": "^5.2.2",
-		"@types/lodash": "^4.17.24",
-		"@types/mocha": "^10.0.10",
-		"c8": "^11.0.0",
-		"chai": "^6.2.2",
-		"es-toolkit": "^1.45.1",
-		"lodash": "^4.18.1",
-		"mocha": "^11.7.5",
-		"radash": "^12.1.1",
-		"size-limit": "^12.0.1",
-		"tinybench": "^6.0.0",
-		"ts-node": "^10.9.2",
-		"tsx": "^4.20.4",
-		"typescript": "^6.0.3"
-	}
+  "name": "1o1-utils",
+  "version": "1.8.0",
+  "description": "Fast, tree-shakeable, zero-dependency TypeScript utility library. ~2kB gzipped, fully typed, benchmarked for performance.",
+  "keywords": [
+    "utility",
+    "utilities",
+    "utils",
+    "typescript",
+    "javascript",
+    "tree-shakeable",
+    "zero-dependencies",
+    "esm",
+    "micro-modules",
+    "functional",
+    "chunk",
+    "pick",
+    "omit",
+    "get",
+    "set",
+    "debounce",
+    "throttle",
+    "deep-merge",
+    "clone-deep",
+    "group-by",
+    "sort-by",
+    "slugify",
+    "capitalize",
+    "truncate",
+    "retry",
+    "sleep",
+    "once",
+    "pipe",
+    "compose",
+    "flow",
+    "with-timeout",
+    "in-range",
+    "between",
+    "range-check",
+    "shallow-equal",
+    "deep-equal",
+    "is-equal",
+    "is-valid-url",
+    "validate-url",
+    "url-validator",
+    "is-valid-email",
+    "validate-email",
+    "email-validator",
+    "safely",
+    "tryit",
+    "try-catch",
+    "is-nil",
+    "nullish",
+    "clamp",
+    "restrict",
+    "bound",
+    "zip",
+    "unzip",
+    "transpose",
+    "times",
+    "repeat",
+    "range",
+    "sequence",
+    "map-keys",
+    "map-values",
+    "escape-regexp",
+    "escape-regex",
+    "regex-escape",
+    "partition",
+    "split",
+    "bifurcate"
+  ],
+  "author": "Pedro Troccoli <contact@pedrotroccoli.com>",
+  "license": "MIT",
+  "homepage": "https://pedrotroccoli.github.io/1o1-utils",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pedrotroccoli/1o1-utils.git"
+  },
+  "bugs": {
+    "url": "https://github.com/pedrotroccoli/1o1-utils/issues"
+  },
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./array-to-hash": {
+      "import": "./dist/arrays/array-to-hash/index.js",
+      "types": "./dist/arrays/array-to-hash/index.d.ts"
+    },
+    "./chunk": {
+      "import": "./dist/arrays/chunk/index.js",
+      "types": "./dist/arrays/chunk/index.d.ts"
+    },
+    "./diff": {
+      "import": "./dist/arrays/diff/index.js",
+      "types": "./dist/arrays/diff/index.d.ts"
+    },
+    "./group-by": {
+      "import": "./dist/arrays/group-by/index.js",
+      "types": "./dist/arrays/group-by/index.d.ts"
+    },
+    "./clone-deep": {
+      "import": "./dist/objects/clone-deep/index.js",
+      "types": "./dist/objects/clone-deep/index.d.ts"
+    },
+    "./deep-merge": {
+      "import": "./dist/objects/deep-merge/index.js",
+      "types": "./dist/objects/deep-merge/index.d.ts"
+    },
+    "./defaults": {
+      "import": "./dist/objects/defaults/index.js",
+      "types": "./dist/objects/defaults/index.d.ts"
+    },
+    "./defaults-deep": {
+      "import": "./dist/objects/defaults-deep/index.js",
+      "types": "./dist/objects/defaults-deep/index.d.ts"
+    },
+    "./get": {
+      "import": "./dist/objects/get/index.js",
+      "types": "./dist/objects/get/index.d.ts"
+    },
+    "./omit": {
+      "import": "./dist/objects/omit/index.js",
+      "types": "./dist/objects/omit/index.d.ts"
+    },
+    "./pick": {
+      "import": "./dist/objects/pick/index.js",
+      "types": "./dist/objects/pick/index.d.ts"
+    },
+    "./set": {
+      "import": "./dist/objects/set/index.js",
+      "types": "./dist/objects/set/index.d.ts"
+    },
+    "./sort-by": {
+      "import": "./dist/arrays/sort-by/index.js",
+      "types": "./dist/arrays/sort-by/index.d.ts"
+    },
+    "./in-range": {
+      "import": "./dist/numbers/in-range/index.js",
+      "types": "./dist/numbers/in-range/index.d.ts"
+    },
+    "./is-empty": {
+      "import": "./dist/objects/is-empty/index.js",
+      "types": "./dist/objects/is-empty/index.d.ts"
+    },
+    "./map-keys": {
+      "import": "./dist/objects/map-keys/index.js",
+      "types": "./dist/objects/map-keys/index.d.ts"
+    },
+    "./map-values": {
+      "import": "./dist/objects/map-values/index.js",
+      "types": "./dist/objects/map-values/index.d.ts"
+    },
+    "./sleep": {
+      "import": "./dist/async/sleep/index.js",
+      "types": "./dist/async/sleep/index.d.ts"
+    },
+    "./retry": {
+      "import": "./dist/async/retry/index.js",
+      "types": "./dist/async/retry/index.d.ts"
+    },
+    "./safely": {
+      "import": "./dist/async/safely/index.js",
+      "types": "./dist/async/safely/index.d.ts"
+    },
+    "./capitalize": {
+      "import": "./dist/strings/capitalize/index.js",
+      "types": "./dist/strings/capitalize/index.d.ts"
+    },
+    "./escape-reg-exp": {
+      "import": "./dist/strings/escape-reg-exp/index.js",
+      "types": "./dist/strings/escape-reg-exp/index.d.ts"
+    },
+    "./debounce": {
+      "import": "./dist/async/debounce/index.js",
+      "types": "./dist/async/debounce/index.d.ts"
+    },
+    "./slugify": {
+      "import": "./dist/strings/slugify/index.js",
+      "types": "./dist/strings/slugify/index.d.ts"
+    },
+    "./throttle": {
+      "import": "./dist/async/throttle/index.js",
+      "types": "./dist/async/throttle/index.d.ts"
+    },
+    "./transform-case": {
+      "import": "./dist/strings/transform-case/index.js",
+      "types": "./dist/strings/transform-case/index.d.ts"
+    },
+    "./truncate": {
+      "import": "./dist/strings/truncate/index.js",
+      "types": "./dist/strings/truncate/index.d.ts"
+    },
+    "./with-timeout": {
+      "import": "./dist/async/with-timeout/index.js",
+      "types": "./dist/async/with-timeout/index.d.ts"
+    },
+    "./once": {
+      "import": "./dist/functions/once/index.js",
+      "types": "./dist/functions/once/index.d.ts"
+    },
+    "./pipe": {
+      "import": "./dist/functions/pipe/index.js",
+      "types": "./dist/functions/pipe/index.d.ts"
+    },
+    "./range": {
+      "import": "./dist/arrays/range/index.js",
+      "types": "./dist/arrays/range/index.d.ts"
+    },
+    "./shallow-equal": {
+      "import": "./dist/comparisons/shallow-equal/index.js",
+      "types": "./dist/comparisons/shallow-equal/index.d.ts"
+    },
+    "./deep-equal": {
+      "import": "./dist/comparisons/deep-equal/index.js",
+      "types": "./dist/comparisons/deep-equal/index.d.ts"
+    },
+    "./is-valid-email": {
+      "import": "./dist/validators/is-valid-email/index.js",
+      "types": "./dist/validators/is-valid-email/index.d.ts"
+    },
+    "./is-valid-url": {
+      "import": "./dist/validators/is-valid-url/index.js",
+      "types": "./dist/validators/is-valid-url/index.d.ts"
+    },
+    "./is-nil": {
+      "import": "./dist/comparisons/is-nil/index.js",
+      "types": "./dist/comparisons/is-nil/index.d.ts"
+    },
+    "./clamp": {
+      "import": "./dist/numbers/clamp/index.js",
+      "types": "./dist/numbers/clamp/index.d.ts"
+    },
+    "./zip": {
+      "import": "./dist/arrays/zip/index.js",
+      "types": "./dist/arrays/zip/index.d.ts"
+    },
+    "./unzip": {
+      "import": "./dist/arrays/unzip/index.js",
+      "types": "./dist/arrays/unzip/index.d.ts"
+    },
+    "./times": {
+      "import": "./dist/arrays/times/index.js",
+      "types": "./dist/arrays/times/index.d.ts"
+    },
+    "./random-int": {
+      "import": "./dist/numbers/random-int/index.js",
+      "types": "./dist/numbers/random-int/index.d.ts"
+    },
+    "./partition": {
+      "import": "./dist/arrays/partition/index.js",
+      "types": "./dist/arrays/partition/index.d.ts"
+    }
+  },
+  "scripts": {
+    "test": "mocha",
+    "test:coverage": "c8 mocha",
+    "build": "tsc",
+    "dev": "tsx watch src/index.ts",
+    "lint": "biome lint ./src",
+    "format": "biome format --write ./src",
+    "check": "biome check ./src",
+    "check:fix": "biome check --write ./src",
+    "bench": "NODE_OPTIONS='--max-old-space-size=8192' tsx src/benchmarks/run.ts",
+    "size": "size-limit",
+    "size:json": "size-limit --json",
+    "docs:dev": "cd website && pnpm dev",
+    "docs:build": "cd website && pnpm build",
+    "docs:preview": "cd website && pnpm preview"
+  },
+  "packageManager": "pnpm@10.9.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "pnpm": {
+    "overrides": {
+      "glob@<10.5.0": ">=10.5.0",
+      "minimatch@<9.0.7": ">=9.0.7",
+      "serialize-javascript@<7.0.3": ">=7.0.3",
+      "js-yaml@<4.1.1": ">=4.1.1",
+      "brace-expansion@<1.1.12": ">=1.1.12",
+      "brace-expansion@>=2.0.0 <2.0.2": ">=2.0.2",
+      "diff@<4.0.4": ">=4.0.4 <5",
+      "diff@>=5.0.0 <8.0.3": ">=8.0.3"
+    }
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org",
+    "provenance": false
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.4.10",
+    "@changesets/cli": "^2.30.0",
+    "@size-limit/file": "^12.0.1",
+    "@size-limit/preset-small-lib": "^12.0.1",
+    "@types/chai": "^5.2.2",
+    "@types/lodash": "^4.17.24",
+    "@types/mocha": "^10.0.10",
+    "c8": "^11.0.0",
+    "chai": "^6.2.2",
+    "es-toolkit": "^1.45.1",
+    "lodash": "^4.18.1",
+    "mocha": "^11.7.5",
+    "radash": "^12.1.1",
+    "size-limit": "^12.0.1",
+    "tinybench": "^6.0.0",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.20.4",
+    "typescript": "^6.0.3"
+  }
 }

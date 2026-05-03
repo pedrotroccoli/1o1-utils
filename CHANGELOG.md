@@ -1,5 +1,18 @@
 # 1o1-utils
 
+## 1.8.0
+
+### Minor Changes
+
+- 3882bb4: Add `diff` utility for array set-difference with optional iteratee for object identity.
+- 9a6c9bf: Add `range` utility for generating numeric sequences with optional start and step.
+- 79f82a7: Add `clamp` utility under the `numbers` category. `clamp({ value, min, max })` restricts a number to the inclusive range `[min, max]`: returns `min` if `value` is below the range, `max` if above, otherwise `value`. Bounds are swapped silently when `min > max`. Throws if any parameter is not a number or is `NaN`. Works with `Infinity` bounds and floating-point values.
+- 780ea0d: Add `escapeRegExp` utility under the `strings` category. `escapeRegExp({ str })` escapes the 12 ECMAScript regex metacharacters (`. * + ? ^ $ { } ( ) | [ ] \`) so a string can be safely interpolated into a `RegExp`, preventing regex injection when user input drives a pattern. Throws if `str` is not a string. Returns `""` for empty input and leaves strings without specials unchanged.
+- cc7d454: Add `mapKeys` and `mapValues` utilities under the `objects` category. `mapKeys({ obj, iteratee })` returns a new object with each key replaced by `String(iteratee(value, key, obj))`; collisions resolve last-write-wins and prototype-pollution keys (`__proto__`, `constructor`, `prototype`) are skipped. `mapValues({ obj, iteratee })` returns a new object with the same keys but each value replaced by `iteratee(value, key, obj)`. Both walk own enumerable string keys only, do not mutate the input, and throw if `obj` is not a plain object or `iteratee` is not a function.
+- 263c026: Add `randomInt` utility under the `numbers` category. `randomInt({ min, max })` returns a cryptographically-secure random integer in the inclusive range `[min, max]` using `crypto.getRandomValues` with rejection sampling — no modulo bias and no `Math.random`. Supports the full safe-integer range. Bounds are swapped silently when `min > max`. Throws on non-integer input, `NaN`, or a range that exceeds `2^53`.
+- 9a7037e: Add `times` utility under the `arrays` category. `times({ count, fn })` invokes `fn` `count` times with the current index and returns an array of the results. Strictly validates inputs: throws if `count` is not a non-negative integer or `fn` is not a function. `count: 0` returns `[]`.
+- b60ff54: Add `zip` and `unzip` utilities under the `arrays` category. `zip({ arrays })` combines arrays by index into tuples; `unzip({ array })` splits an array of tuples back into separate arrays. Both accept an optional `strategy: "fill" | "truncate"` to control behavior on uneven lengths — `"fill"` (default) pads shorter arrays with `undefined`, `"truncate"` cuts to the shortest.
+
 ## 1.7.1
 
 ### Patch Changes

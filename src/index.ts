@@ -39,4 +39,5 @@ export { escapeRegExp } from "./strings/escape-reg-exp/index.js";
 export { slugify } from "./strings/slugify/index.js";
 export { transformCase } from "./strings/transform-case/index.js";
 export { truncate } from "./strings/truncate/index.js";
+export { isValidEmail } from "./validators/is-valid-email/index.js";
 export { isValidUrl } from "./validators/is-valid-url/index.js";
