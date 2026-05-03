@@ -151,6 +151,11 @@
     "limit": "1 kB"
   },
   {
+    "name": "wait-for-condition",
+    "path": "dist/async/wait-for-condition/index.js",
+    "limit": "1 kB"
+  },
+  {
     "name": "once",
     "path": "dist/functions/once/index.js",
     "limit": "1 kB"

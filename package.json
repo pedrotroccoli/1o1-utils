@@ -227,6 +227,10 @@
       "import": "./dist/async/with-timeout/index.js",
       "types": "./dist/async/with-timeout/index.d.ts"
     },
+    "./wait-for-condition": {
+      "import": "./dist/async/wait-for-condition/index.js",
+      "types": "./dist/async/wait-for-condition/index.d.ts"
+    },
     "./once": {
       "import": "./dist/functions/once/index.js",
       "types": "./dist/functions/once/index.d.ts"
