@@ -557,19 +557,23 @@ starlight-toc a[aria-current="true"] {
    so they survive sidebar reordering. Add a new block when adding a category.
    ======================================== */
 
-/* Base icon style for group labels */
-nav.sidebar .top-level > li > details > summary .group-label::before {
-  content: "";
-  display: inline-block;
-  width: 1em;
-  height: 1em;
-  margin-right: 0.5rem;             /* 8px */
-  vertical-align: -0.125rem;        /* 2px */
-  background-color: currentColor;
-  -webkit-mask-size: contain;
-  mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
+/* Base icon style for group labels — only renders when :has() resolves a
+   matching mask-image rule below. Browsers without :has() support skip the
+   icon entirely instead of rendering a blank white square. */
+@supports selector(:has(*)) {
+  nav.sidebar .top-level > li > details > summary .group-label::before {
+    content: "";
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    margin-right: 0.5rem;             /* 8px */
+    vertical-align: -0.125rem;        /* 2px */
+    background-color: currentColor;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+  }
 }
 
 /* Base icon style for sidebar links */
