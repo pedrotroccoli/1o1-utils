@@ -94,6 +94,14 @@ export default function Playground({
   height = "360px",
 }: PlaygroundProps) {
   const pinnedExample = utilityId ? EXAMPLES_BY_ID[utilityId] : undefined;
+  const initial =
+    defaultId && EXAMPLES_BY_ID[defaultId] ? defaultId : EXAMPLES[0].id;
+  const [exampleId, setExampleId] = useState(initial);
+  const example = useMemo(
+    () => EXAMPLES_BY_ID[exampleId] ?? EXAMPLES[0],
+    [exampleId]
+  );
+  const grouped = useMemo(() => groupByCategory(EXAMPLES), []);
 
   if (pinnedExample) {
     return (
@@ -105,14 +113,6 @@ export default function Playground({
       </div>
     );
   }
-
-  const initial = defaultId && EXAMPLES_BY_ID[defaultId] ? defaultId : EXAMPLES[0].id;
-  const [exampleId, setExampleId] = useState(initial);
-  const example = useMemo(
-    () => EXAMPLES_BY_ID[exampleId] ?? EXAMPLES[0],
-    [exampleId]
-  );
-  const grouped = useMemo(() => groupByCategory(EXAMPLES), []);
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
@@ -133,7 +133,7 @@ export default function Playground({
             borderRadius: "6px",
             border: "1px solid var(--sl-color-gray-5)",
             background: "var(--sl-color-bg)",
-            color: "var(--sl-color-text)",
+            color: "var(--sl-color-white)",
             fontFamily: "inherit",
           }}
         >
