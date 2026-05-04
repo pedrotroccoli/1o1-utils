@@ -761,13 +761,15 @@ console.log("Click the button in the preview to copy.");
     category: "Browser",
     code: `import { bindKey } from "1o1-utils";
 
+const MAX_LINES = 20;
 const root = document.getElementById("root");
 root.innerHTML =
   '<p style="font-family:system-ui">Click here, then press <b>g i</b> or <b>ctrl+k</b>.</p><pre id="log"></pre>';
 const log = document.getElementById("log");
 
 const append = (msg) => {
-  log.textContent = msg + "\\n" + log.textContent;
+  const lines = [msg, ...log.textContent.split("\\n")].filter(Boolean);
+  log.textContent = lines.slice(0, MAX_LINES).join("\\n");
 };
 
 bindKey("g i", () => append("→ go to inbox (g i)"));
