@@ -3,7 +3,13 @@ title: randomInt
 description: Generate a cryptographically-secure random integer in a range
 ---
 
+import Playground from "../../../components/Playground.tsx";
+
 Generates a cryptographically-secure random integer in the inclusive range `[min, max]`. Uses `crypto.getRandomValues` with rejection sampling — no modulo bias and no `Math.random`. If `min` is greater than `max`, the bounds are swapped automatically.
+
+## Try it
+
+<Playground client:only="react" utilityId="random-int" />
 
 ## Import
 

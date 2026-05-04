@@ -1,6 +1,7 @@
 import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
 import starlightTypeDoc from "starlight-typedoc";
+import react from "@astrojs/react";
 
 export default defineConfig({
   site: "https://pedrotroccoli.github.io",
@@ -9,6 +10,7 @@ export default defineConfig({
     prefetchAll: true,
   },
   integrations: [
+    react(),
     starlight({
       title: "1o1-utils",
       logo: {
@@ -50,6 +52,7 @@ export default defineConfig({
           items: [
             { label: "Why 1o1-utils", link: "/why-1o1-utils/" },
             { label: "Getting Started", link: "/getting-started/" },
+            { label: "Playground", link: "/playground/" },
             { label: "Benchmarks", link: "/benchmarks/" },
             { label: "Contributing", link: "/contributing/" },
           ],
@@ -82,6 +85,10 @@ export default defineConfig({
         {
           label: "Async",
           autogenerate: { directory: "async" },
+        },
+        {
+          label: "Browser",
+          autogenerate: { directory: "browser" },
         },
         {
           label: "Comparisons",

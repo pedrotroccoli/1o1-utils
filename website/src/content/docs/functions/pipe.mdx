@@ -3,7 +3,13 @@ title: pipe
 description: Compose functions left-to-right into a single function
 ---
 
+import Playground from "../../../components/Playground.tsx";
+
 Composes functions left-to-right. The first function receives the initial arguments; each subsequent function receives the previous function's return value. Aligned with the [TC39 pipe operator proposal](https://github.com/tc39/proposal-pipeline-operator).
+
+## Try it
+
+<Playground client:only="react" utilityId="pipe" />
 
 ## Import
 

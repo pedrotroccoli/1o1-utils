@@ -3,7 +3,13 @@ title: secondsToTimeFormat
 description: Format seconds as a zero-padded MM:SS or H:MM:SS time string
 ---
 
+import Playground from "../../../components/Playground.tsx";
+
 Converts a non-negative number of seconds into a zero-padded time-format string. Uses `MM:SS` when under one hour and `H:MM:SS` (or `HH:MM:SS` with `padHours: true`) otherwise. Hours are not capped at 24, and non-integer seconds are floored.
+
+## Try it
+
+<Playground client:only="react" utilityId="seconds-to-time-format" />
 
 ## Import
 

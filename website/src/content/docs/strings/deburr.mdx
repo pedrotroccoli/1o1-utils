@@ -1,0 +1,65 @@
+---
+title: deburr
+description: Remove diacritics from a string while preserving case and non-accented characters
+---
+
+import Playground from "../../../components/Playground.tsx";
+
+Removes combining diacritical marks (accents, tildes, cedillas, etc.) from a string while preserving case and non-accented characters. Useful for search, comparison, deduplication, and slug generation in languages that use combining marks (Portuguese, Spanish, French, Vietnamese, etc.).
+
+## Try it
+
+<Playground client:only="react" utilityId="deburr" />
+
+## Import
+
+```ts
+import { deburr } from "1o1-utils";
+```
+
+```ts
+import { deburr } from "1o1-utils/deburr";
+```
+
+## Signature
+
+```ts
+function deburr({ str }: DeburrParams): string
+```
+
+## Parameters
+
+| Name  | Type     | Required | Description           |
+| ----- | -------- | -------- | --------------------- |
+| `str` | `string` | Yes      | The string to deburr  |
+
+## Returns
+
+`string` — The string with combining diacritical marks removed.
+
+## Examples
+
+```ts
+deburr({ str: "café" });           // => "cafe"
+deburr({ str: "São Paulo" });      // => "Sao Paulo"
+deburr({ str: "résumé" });         // => "resume"
+deburr({ str: "naïve façade" });   // => "naive facade"
+deburr({ str: "Tiếng Việt" });     // => "Tieng Viet"
+```
+
+## Edge Cases
+
+- Throws if `str` is not a string.
+- Returns the empty string for an empty string input.
+- Characters that do not decompose under NFD are left untouched (e.g. German `ß`, Turkish `ı`/`İ`, Polish `ł`). Pair with locale-aware transliteration if you need broader coverage.
+- Combining marks outside the U+0300–U+036F range are not stripped.
+
+## Also known as
+
+remove accents, strip accents, normalize, ascii fold, transliterate, latinize
+
+## Prompt suggestion
+
+```text
+I'm using 1o1-utils (npm: https://www.npmjs.com/package/1o1-utils, GitHub: https://github.com/pedrotroccoli/1o1-utils, LLM context: https://pedrotroccoli.github.io/1o1-utils/llms.txt). Show me how to use deburr to make a search box accent-insensitive.
+```

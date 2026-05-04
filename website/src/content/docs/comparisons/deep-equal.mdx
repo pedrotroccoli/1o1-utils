@@ -3,7 +3,13 @@ title: deepEqual
 description: Recursively compare two values for structural equality across nested objects, arrays, and built-ins
 ---
 
+import Playground from "../../../components/Playground.tsx";
+
 Recursively compares two values for structural equality. Handles primitives, plain objects, class instances (same prototype), arrays, `Date`, `RegExp`, `Map`, `Set`, `ArrayBuffer`, and typed arrays. Circular references are tracked with a `WeakMap` pair-cache; on cycle, the pair is assumed equal. Functions, `Error` instances, and other unsupported objects fall back to reference equality.
+
+## Try it
+
+<Playground client:only="react" utilityId="deep-equal" />
 
 ## Import
 

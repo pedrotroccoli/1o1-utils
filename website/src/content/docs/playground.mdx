@@ -1,0 +1,18 @@
+---
+title: Playground
+description: Try 1o1-utils utilities live in your browser. No install needed.
+template: doc
+---
+
+import Playground from "../../components/Playground.tsx";
+
+Pick a utility, edit the code, see the output. Runs `1o1-utils` directly from
+npm — no install, no build step.
+
+<Playground client:only="react" />
+
+## Notes
+
+- The bundle is fetched on first load (~few seconds). Subsequent runs are cached.
+- Console output appears on the right. Errors include stack traces.
+- Want a utility that isn't here yet? [Open an issue](https://github.com/pedrotroccoli/1o1-utils/issues/new) or PR a new example.

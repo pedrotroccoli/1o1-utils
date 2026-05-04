@@ -3,7 +3,13 @@ title: normalizeEmail
 description: Normalize an email by trimming, lowercasing, and optionally stripping plus-addressing
 ---
 
+import Playground from "../../../components/Playground.tsx";
+
 Normalizes an email address by trimming whitespace, lowercasing, and optionally stripping plus-addressing (`+alias`). Useful for deduplicating emails since most providers route `user+tag@example.com` to the same mailbox as `user@example.com`.
+
+## Try it
+
+<Playground client:only="react" utilityId="normalize-email" />
 
 ## Import
 
