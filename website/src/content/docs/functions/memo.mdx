@@ -3,7 +3,13 @@ title: memo
 description: Memoize a function with optional TTL and custom cache key
 ---
 
+import Playground from "../../../components/Playground.tsx";
+
 Caches a function's return value per unique argument set so repeat calls skip the computation. Optionally expires entries after `ttl` milliseconds, and accepts a custom `key` resolver for control over cache identity.
+
+## Try it
+
+<Playground client:only="react" utilityId="memo" />
 
 ## Import
 

@@ -3,7 +3,13 @@ title: defaults
 description: Fill undefined properties with defaults from another object
 ---
 
+import Playground from "../../../components/Playground.tsx";
+
 Assigns default values from `source` to `target` for properties that are `undefined` or missing. Existing `null`, `0`, `""`, and `false` values in the target are preserved — only `undefined` triggers replacement.
+
+## Try it
+
+<Playground client:only="react" utilityId="defaults" />
 
 ## Import
 

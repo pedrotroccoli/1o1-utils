@@ -1,0 +1,100 @@
+---
+title: bindKey
+description: Bind a keyboard shortcut or key sequence to a handler with modifiers, sequences, and a per-element scope
+---
+
+import Playground from "../../../components/Playground.tsx";
+
+Binds a keyboard combo or sequence to a handler and returns an idempotent unbind function. Supports modifiers (`ctrl`, `alt`, `shift`, `meta`/`cmd`, `mod`), multi-step sequences (`g i`), per-element scoping, automatic input filtering, and configurable repeat / preventDefault behavior.
+
+Browser-only utility — does not work in Node.js or other non-DOM environments.
+
+## Try it
+
+<Playground client:only="react" utilityId="bind-key" />
+
+:::tip
+The Sandpack preview iframe needs focus. Click inside the preview pane (not the editor) before pressing the bound combo.
+:::
+
+## Import
+
+```ts
+import { bindKey } from "1o1-utils";
+```
+
+```ts
+import { bindKey } from "1o1-utils/bind-key";
+```
+
+## Signature
+
+```ts
+function bindKey(
+  combo: string,
+  handler: (event: KeyboardEvent) => void,
+  options?: BindKeyOptions,
+): () => void
+```
+
+## Parameters
+
+| Name                       | Type                                  | Required | Description                                                                                                                                                                                                  |
+| -------------------------- | ------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `combo`                    | `string`                              | Yes      | Key combo (e.g. `"ctrl+k"`) or sequence (e.g. `"g i"`). Case-insensitive. `mod` aliases `meta` on macOS, `ctrl` elsewhere.                                                                                   |
+| `handler`                  | `(event: KeyboardEvent) => void`      | Yes      | Called with the final `KeyboardEvent` when the combo or full sequence matches.                                                                                                                               |
+| `options.target`           | `EventTarget`                         | No       | Element or `Document`/`Window` to attach to. Defaults to `window`.                                                                                                                                           |
+| `options.filterInputs`     | `boolean`                             | No       | Skip handler when focus is on an input-like element (default `true`). Combos with a non-shift modifier always fire regardless.                                                                               |
+| `options.sequenceTimeout`  | `number`                              | No       | Idle ms after which a sequence buffer resets. Default `1000`.                                                                                                                                                |
+| `options.preventDefault`   | `boolean`                             | No       | Call `event.preventDefault()` on a full match. Default `false`.                                                                                                                                              |
+| `options.ignoreRepeat`     | `boolean`                             | No       | Ignore auto-repeat events (`event.repeat === true`). Default `true`.                                                                                                                                         |
+
+## Returns
+
+`() => void` — Idempotent unbind function. Safe to call multiple times.
+
+## Examples
+
+```ts
+import { bindKey } from "1o1-utils/bind-key";
+
+const unbindSearch = bindKey("ctrl+k", (e) => {
+  e.preventDefault();
+  openSearch();
+});
+
+const unbindGotoInbox = bindKey("g i", () => goToInbox());
+const unbindEsc = bindKey("escape", () => closeModal());
+const unbindArrows = bindKey("ctrl+arrowleft", () => prevTab());
+
+// Cleanup on teardown
+unbindSearch();
+unbindGotoInbox();
+unbindEsc();
+unbindArrows();
+```
+
+```ts
+// React effect
+useEffect(() => bindKey("mod+s", saveDocument, { preventDefault: true }), []);
+```
+
+## Edge Cases
+
+- Throws if `combo` is empty or malformed.
+- Throws if `handler` is not a function.
+- The `mod` alias resolves to `meta` on macOS (`navigator.platform`) and `ctrl` elsewhere — keep cross-platform shortcuts portable.
+- Sequences reset after `sequenceTimeout` ms of inactivity.
+- Inputs (`input`, `textarea`, `select`, `contenteditable`) skip the handler unless the combo includes a non-shift modifier.
+- Auto-repeat (`event.repeat`) is ignored by default — pass `ignoreRepeat: false` to fire on every repeat.
+- Returns a no-op unbinder if `window`/`document` are missing (e.g. SSR).
+
+## Also known as
+
+keyboard shortcut, hotkey, key binding, keypress, keymap, accelerator, shortcut, mousetrap
+
+## Prompt suggestion
+
+```text
+I'm using 1o1-utils (npm: https://www.npmjs.com/package/1o1-utils, GitHub: https://github.com/pedrotroccoli/1o1-utils, LLM context: https://pedrotroccoli.github.io/1o1-utils/llms.txt). Show me how to use bindKey to wire ctrl+k to open a command palette in a React app.
+```

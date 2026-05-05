@@ -3,7 +3,13 @@ title: mapKeys
 description: Transform object keys via an iteratee function
 ---
 
+import Playground from "../../../components/Playground.tsx";
+
 Creates a new object with the same values as `obj`, but with each key replaced by `String(iteratee(value, key, obj))`. Only own enumerable string keys are visited. Prototype-pollution keys (`__proto__`, `constructor`, `prototype`) returned by the iteratee are silently skipped. When two keys collide, the last write wins.
+
+## Try it
+
+<Playground client:only="react" utilityId="map-keys" />
 
 ## Import
 

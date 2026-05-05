@@ -3,7 +3,13 @@ title: shallowEqual
 description: Compare two values by their top-level entries using Object.is
 ---
 
+import Playground from "../../../components/Playground.tsx";
+
 Compares two values by their top-level entries. Returns `true` when both values are strictly the same, or when they are arrays or plain objects with identical own-enumerable entries at the first level. Nested values are compared by reference, not structurally — use `deepEqual` for recursive comparison.
+
+## Try it
+
+<Playground client:only="react" utilityId="shallow-equal" />
 
 ## Import
 

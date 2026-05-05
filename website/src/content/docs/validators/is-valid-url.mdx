@@ -3,7 +3,13 @@ title: isValidUrl
 description: Check if a string is a parseable URL using the WHATWG URL API
 ---
 
+import Playground from "../../../components/Playground.tsx";
+
 Validates whether a value is a well-formed URL string. Delegates parsing to the WHATWG `URL` API — the same parser used by browsers and Node — so any scheme accepted by `new URL(input)` is considered valid (including `http`, `https`, `ftp`, `file`, and custom schemes).
+
+## Try it
+
+<Playground client:only="react" utilityId="is-valid-url" />
 
 ## Import
 

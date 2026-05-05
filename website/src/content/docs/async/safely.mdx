@@ -3,7 +3,13 @@ title: safely
 description: Wrap a function so it returns a [error, result] tuple instead of throwing
 ---
 
+import Playground from "../../../components/Playground.tsx";
+
 Wraps a function so it returns a `[error, result]` tuple instead of throwing. Auto-detects sync and async functions: sync calls return a tuple, async calls return a `Promise` of a tuple. Eliminates verbose `try/catch` blocks and anticipates the [TC39 Safe Assignment Operator](https://github.com/arthurfiorette/proposal-safe-assignment-operator) proposal.
+
+## Try it
+
+<Playground client:only="react" utilityId="safely" />
 
 On success the tuple is `[undefined, value]`. On error it is `[error, undefined]`.
 

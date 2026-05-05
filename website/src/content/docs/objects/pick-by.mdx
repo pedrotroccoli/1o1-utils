@@ -1,0 +1,72 @@
+---
+title: pickBy
+description: Create an object with only the entries that match a predicate
+---
+
+import Playground from "../../../components/Playground.tsx";
+
+Creates a new object containing only the entries for which the predicate returns truthy. The predicate receives `(value, key)` for each own enumerable string property.
+
+## Try it
+
+<Playground client:only="react" utilityId="pick-by" />
+
+## Import
+
+```ts
+import { pickBy } from "1o1-utils";
+```
+
+```ts
+import { pickBy } from "1o1-utils/pick-by";
+```
+
+## Signature
+
+```ts
+function pickBy<T extends Record<string, unknown>>({
+  obj,
+  predicate,
+}: PickByParams<T>): Partial<T>
+```
+
+## Parameters
+
+| Name        | Type                              | Required | Description                                                          |
+| ----------- | --------------------------------- | -------- | -------------------------------------------------------------------- |
+| `obj`       | `Record<string, unknown>`         | Yes      | The source object                                                    |
+| `predicate` | `(value, key) => boolean`         | Yes      | Called per entry; the entry is kept when the function returns truthy |
+
+## Returns
+
+`Partial<T>` — A new object with only the entries the predicate kept.
+
+## Examples
+
+```ts
+pickBy({ obj: { a: 1, b: null, c: 3 }, predicate: (v) => v !== null });
+// => { a: 1, c: 3 }
+
+pickBy({
+  obj: { name: "Ada", email: "", phone: "1234" },
+  predicate: (v) => typeof v === "string" && v.length > 0,
+});
+// => { name: "Ada", phone: "1234" }
+```
+
+## Edge Cases
+
+- Throws if `obj` is not an object or is `null`.
+- Throws if `predicate` is not a function.
+- Prototype-pollution keys (`__proto__`, `constructor`, `prototype`) are skipped.
+- Inherited keys are ignored — only own enumerable string keys are visited.
+
+## Also known as
+
+filter object, conditional pick, object filter, predicate pick
+
+## Prompt suggestion
+
+```text
+I'm using 1o1-utils (npm: https://www.npmjs.com/package/1o1-utils, GitHub: https://github.com/pedrotroccoli/1o1-utils, LLM context: https://pedrotroccoli.github.io/1o1-utils/llms.txt). Show me how to use pickBy to drop nullable fields from an API response before saving to state.
+```

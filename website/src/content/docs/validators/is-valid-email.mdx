@@ -3,7 +3,13 @@ title: isValidEmail
 description: Check if a string is a well-formed email address using the HTML5 living-standard pattern
 ---
 
+import Playground from "../../../components/Playground.tsx";
+
 Validates whether a string is a well-formed email address. Uses the HTML5 living-standard email pattern (the same one browsers use for `<input type="email">`) plus RFC 5321 length limits (local part ≤64, total ≤254). Pragmatic over RFC 5322 strict — accepts the addresses people actually use.
+
+## Try it
+
+<Playground client:only="react" utilityId="is-valid-email" />
 
 ## Import
 

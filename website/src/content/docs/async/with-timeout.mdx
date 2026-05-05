@@ -3,7 +3,13 @@ title: withTimeout
 description: Race a promise against a timeout with AbortSignal support
 ---
 
+import Playground from "../../../components/Playground.tsx";
+
 Wraps a promise with a timeout. Rejects with a `TimeoutError` if the promise does not settle within the given duration. Supports an optional `AbortSignal` to cancel externally.
+
+## Try it
+
+<Playground client:only="react" utilityId="with-timeout" />
 
 ## Import
 

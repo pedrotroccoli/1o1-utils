@@ -149,7 +149,75 @@ Add the new utility to both files at the root of the repository:
 
 These files are symlinked into `website/public/` and served on the docs site for AI tool discoverability.
 
-### 7. Create a changeset
+### 7. Add a playground example
+
+The docs site ships an interactive playground (`/playground/`) plus a per-utility `## Try it` block embedded on every utility page. Both are powered by the same Sandpack-based component. Adding a new utility means contributing one example.
+
+#### 7a. Register the example
+
+Edit `website/src/content/examples/index.ts` and append an `Example` entry to the `EXAMPLES` array:
+
+```ts
+{
+  id: "my-util",          // kebab-case, must match the doc page slug
+  label: "myUtil",        // shown in the playground selector
+  category: "Arrays",     // Arrays | Objects | Numbers | Strings | Async | Validators | Comparisons | Functions
+  code: `import { myUtil } from "1o1-utils/my-util";
+
+const result = myUtil({ /* params */ });
+
+console.log(result);
+`,
+},
+```
+
+Guidelines for the snippet:
+
+- Use the **published API** (object-param form), not internals.
+- Keep it under ~15 lines so it fits the editor without scrolling.
+- Print output via `console.log` — the playground console panel renders it.
+- Avoid `import` from the bare `1o1-utils` entry; use the per-utility subpath (`1o1-utils/my-util`) so users see the tree-shakeable import.
+- Use `await` at the top level for async utilities (Sandpack's `vanilla-ts` template supports it).
+
+#### 7b. Embed the playground in the doc page
+
+Add the import + a `## Try it` section near the top of `website/src/content/docs/<category>/<my-util>.mdx`, right after the frontmatter and the one-line summary:
+
+```mdx
+---
+title: myUtil
+description: Brief description
+---
+
+import Playground from "../../../components/Playground.tsx";
+
+Brief one-paragraph summary of what the utility does.
+
+## Try it
+
+<Playground client:only="react" utilityId="my-util" />
+
+## Import
+...
+```
+
+The `utilityId` value **must** match the `id` in `EXAMPLES`. The path `../../../components/Playground.tsx` is correct for any `docs/<category>/<file>.mdx` page.
+
+#### 7c. Verify locally
+
+```bash
+pnpm docs:dev
+```
+
+Open `http://localhost:4321/1o1-utils/<category>/<my-util>/` and confirm the playground:
+
+1. Loads (Sandpack fetches `1o1-utils` from the CDN — first load takes a few seconds).
+2. Runs the snippet without throwing.
+3. Prints the expected output to the console panel.
+
+Also check `/playground/` — your example should appear in the selector under its category.
+
+### 8. Create a changeset
 
 ```bash
 pnpm changeset
@@ -239,6 +307,9 @@ Each utility must stay under its size limit (1-2 kB gzipped). Run `pnpm size` to
 - [ ] Export entry added to `package.json`
 - [ ] Size-limit entry added to `.size-limit.json`
 - [ ] Utility added to `llms.txt` and `llms-full.txt`
+- [ ] Playground example added to `website/src/content/examples/index.ts`
+- [ ] `## Try it` block with `<Playground utilityId="..." />` embedded in the docs page
+- [ ] Playground verified locally via `pnpm docs:dev`
 - [ ] `@keywords` added to JSDoc
 - [ ] `@see` RFC/standard reference added (if applicable)
 - [ ] "Also known as" section added to docs page
