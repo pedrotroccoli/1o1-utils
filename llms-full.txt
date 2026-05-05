@@ -812,6 +812,50 @@ Handles Unicode normalization (NFD) to strip accents. Removes leading/trailing h
 
 ---
 
+### stringStrength
+
+Evaluate the strength of a string via Shannon entropy and character pool diversity. Useful for passwords, tokens, API keys, or any string where complexity matters — generic alternative to password-rule validators.
+
+Import: import { stringStrength } from "1o1-utils/string-strength";
+
+Signature:
+function stringStrength({ str }: StringStrengthParams): StringStrengthResult
+
+Parameters:
+- str (string, required): The string to evaluate
+
+Returns: { entropy: number; effectiveEntropy: number; score: 0|1|2|3|4|5; level: "very-weak"|"weak"|"fair"|"good"|"strong"|"very-strong"; pools: ("lowercase"|"uppercase"|"digit"|"symbol"|"unicode")[]; poolCount: number }
+
+- entropy: per-character Shannon entropy `H = -Σ p(x) * log2(p(x))` over Unicode code points
+- effectiveEntropy: `H × length` in bits — the value used to derive the score
+- score: 0 to 5
+- level: human-readable label matching the score
+- pools: detected character pools, in fixed order: lowercase, uppercase, digit, symbol, unicode
+- poolCount: pools.length
+
+Score thresholds (effective entropy E in bits):
+- 0 / very-weak:  E === 0
+- 1 / weak:       0 < E < 12
+- 2 / fair:       12 ≤ E < 24
+- 3 / good:       24 ≤ E < 36
+- 4 / strong:     36 ≤ E < 60
+- 5 / very-strong: E ≥ 60
+
+Example:
+stringStrength({ str: "aaaaaa" });
+// => { entropy: 0, effectiveEntropy: 0, score: 0, level: "very-weak", pools: ["lowercase"], poolCount: 1 }
+stringStrength({ str: "abc123" });
+// => { entropy: ~2.585, effectiveEntropy: ~15.51, score: 2, level: "fair", pools: ["lowercase", "digit"], poolCount: 2 }
+stringStrength({ str: "Tr0ub4dor&3" });
+// => { entropy: ~3.277, effectiveEntropy: ~36.05, score: 4, level: "strong", pools: ["lowercase", "uppercase", "digit", "symbol"], poolCount: 4 }
+stringStrength({ str: "correct-horse-battery-staple" });
+// => { entropy: ~3.495, effectiveEntropy: ~97.86, score: 5, level: "very-strong", pools: ["lowercase", "symbol"], poolCount: 2 }
+
+Throws: Error if str is not a string.
+Iterates with `[...str]` so emoji and CJK characters count as one code point. Empty string returns score 0 with empty pools.
+
+---
+
 ### transformCase
 
 Convert a string between common case styles: camelCase, kebab-case, snake_case, PascalCase, and Title Case.

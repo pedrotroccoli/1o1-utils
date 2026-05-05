@@ -107,7 +107,11 @@
 		"hh-mm-ss",
 		"mm-ss",
 		"duration",
-		"clock-format"
+		"clock-format",
+		"string-strength",
+		"entropy",
+		"shannon",
+		"password-strength"
 	],
 	"author": "Pedro Troccoli <contact@pedrotroccoli.com>",
 	"license": "MIT",
@@ -345,6 +349,10 @@
 		"./time-format-to-seconds": {
 			"import": "./dist/formatters/time-format-to-seconds/index.js",
 			"types": "./dist/formatters/time-format-to-seconds/index.d.ts"
+		},
+		"./string-strength": {
+			"import": "./dist/strings/string-strength/index.js",
+			"types": "./dist/strings/string-strength/index.d.ts"
 		}
 	},
 	"scripts": {
