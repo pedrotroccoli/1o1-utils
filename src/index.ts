@@ -52,6 +52,7 @@ export { deburr } from "./strings/deburr/index.js";
 export { escapeRegExp } from "./strings/escape-reg-exp/index.js";
 export { normalizeEmail } from "./strings/normalize-email/index.js";
 export { slugify } from "./strings/slugify/index.js";
+export { stringStrength } from "./strings/string-strength/index.js";
 export { transformCase } from "./strings/transform-case/index.js";
 export { truncate } from "./strings/truncate/index.js";
 export { isValidEmail } from "./validators/is-valid-email/index.js";
