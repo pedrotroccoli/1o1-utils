@@ -565,6 +565,37 @@ Uses a stack-based (non-recursive) algorithm. Arrays and non-plain-object values
 
 ---
 
+### flatten
+
+Flattens nested structures. For arrays, deep-flattens to a configurable depth (mirrors `Array.prototype.flat`). For plain objects, produces a flat record with dot-notation keys.
+
+Import: import { flatten } from "1o1-utils/flatten";
+
+Signature:
+function flatten({ value, depth }: FlattenArrayParams): unknown[];
+function flatten({ value }: FlattenObjectParams): Record<string, unknown>;
+
+Parameters:
+- value (unknown[] | Record<string, unknown>, required): The array or plain object to flatten
+- depth (number, optional): Max recursion depth for arrays. Defaults to Infinity. Ignored for objects.
+
+Returns: unknown[] when value is an array, Record<string, unknown> when value is a plain object.
+
+Example:
+flatten({ value: [1, [2, [3, [4]]]] });
+// => [1, 2, 3, 4]
+
+flatten({ value: [1, [2, [3]]], depth: 1 });
+// => [1, 2, [3]]
+
+flatten({ value: { a: { b: 1, c: { d: 2 } }, e: 3 } });
+// => { 'a.b': 1, 'a.c.d': 2, e: 3 }
+
+Throws: Error if value is null, primitive, or anything other than an array or plain object. Error if a circular reference is detected during object flattening.
+Only plain objects are descended into (includes `Object.create(null)`). Arrays inside objects, Date, RegExp, Map, Set, and class instances are treated as leaves. Empty nested objects are kept as `{}` leaves. Skips unsafe key segments (`__proto__`, `constructor`, `prototype`). Leaf values are shared by reference with the input — does not deep-clone leaves.
+
+---
+
 ### get
 
 Read a nested value from an object using a dot-notation path. Returns a default value (or undefined) when the path does not resolve. Never throws.
@@ -708,6 +739,33 @@ set({ obj: {}, path: "items.0.name", value: "x", objectify: true });
 
 Throws: Error if obj is not an object. Error if path is not a string. Error if path is empty.
 Does not mutate the input. Creates missing intermediate containers; arrays for numeric segments by default.
+
+---
+
+### unflatten
+
+Build a nested object from a flat record whose keys use dot notation. The inverse of `flatten` for objects. Optionally reconstructs arrays when key segments are all-numeric.
+
+Import: import { unflatten } from "1o1-utils/unflatten";
+
+Signature:
+function unflatten({ obj, arrays }: UnflattenParams): Record<string, unknown>
+
+Parameters:
+- obj (Record<string, unknown>, required): A flat record whose keys may contain `.` separators
+- arrays (boolean, optional): When true, all-numeric segments reconstruct as arrays (default: false)
+
+Returns: Record<string, unknown> — A new nested object.
+
+Example:
+unflatten({ obj: { 'a.b': 1, 'a.c.d': 2, e: 3 } });
+// => { a: { b: 1, c: { d: 2 } }, e: 3 }
+
+unflatten({ obj: { 'users.0.name': 'Ana', 'users.1.name': 'Bob' }, arrays: true });
+// => { users: [{ name: 'Ana' }, { name: 'Bob' }] }
+
+Throws: Error if obj is not a plain object.
+For conflicting keys (e.g. `'a': 1` and `'a.b': 2`), last write wins. The input object is never mutated — input values that nested keys descend into are shallow-cloned. With `arrays: true`, numeric segments longer than 7 digits fall back to object keys (sparse-array DoS guard). Skips unsafe key segments (`__proto__`, `constructor`, `prototype`) — protects against prototype pollution. Leaf values are shared by reference with the input — does not deep-clone leaves.
 
 ---
 

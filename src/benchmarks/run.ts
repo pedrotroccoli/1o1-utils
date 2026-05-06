@@ -248,6 +248,16 @@ const SUITE_META: Record<string, { slug: string; description: string }> = {
     description:
       "Parses a `MM:SS` or `[H]H:MM:SS` time string into total seconds. Compared against a native inline `split` + `parseInt` baseline that skips validation and range checks.",
   },
+  flatten: {
+    slug: "flatten",
+    description:
+      "Deep-flattens an array (mirrors `Array.prototype.flat` with configurable depth) or converts a nested plain object into a flat record with dot-notation keys. Compared against `lodash.flattenDeep` and native `Array.prototype.flat` for arrays, and `radash.crush` for objects.",
+  },
+  unflatten: {
+    slug: "unflatten",
+    description:
+      "Builds a nested object from a flat record of dot-notation keys — the inverse of `flatten` for objects. The optional `arrays` flag reconstructs arrays from all-numeric segments. Compared against `radash.construct`.",
+  },
 };
 
 function getSizes(rows: TaskRow[]): string[] {

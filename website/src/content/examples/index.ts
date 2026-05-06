@@ -307,6 +307,21 @@ console.log(defaultsDeep({ target: config, source: defaults_ }));
 `,
   },
   {
+    id: "flatten",
+    label: "flatten",
+    category: "Objects",
+    code: `import { flatten } from "1o1-utils";
+
+// Arrays — deep flatten
+console.log(flatten({ value: [1, [2, [3, [4]]]] }));
+// [1, 2, 3, 4]
+
+// Objects — dot-notation keys
+console.log(flatten({ value: { a: { b: 1, c: { d: 2 } }, e: 3 } }));
+// { 'a.b': 1, 'a.c.d': 2, e: 3 }
+`,
+  },
+  {
     id: "get",
     label: "get",
     category: "Objects",
@@ -424,6 +439,22 @@ const data = { user: { profile: { name: "Ada" } } };
 
 console.log(set({ obj: data, path: "user.profile.name", value: "Bob" }));
 console.log(set({ obj: data, path: "user.profile.email", value: "bob@x.dev" }));
+`,
+  },
+  {
+    id: "unflatten",
+    label: "unflatten",
+    category: "Objects",
+    code: `import { unflatten } from "1o1-utils";
+
+console.log(unflatten({ obj: { "a.b": 1, "a.c.d": 2, e: 3 } }));
+// { a: { b: 1, c: { d: 2 } }, e: 3 }
+
+console.log(unflatten({
+  obj: { "users.0.name": "Ana", "users.1.name": "Bob" },
+  arrays: true,
+}));
+// { users: [{ name: "Ana" }, { name: "Bob" }] }
 `,
   },
 

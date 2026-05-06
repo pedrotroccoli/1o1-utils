@@ -61,6 +61,11 @@
     "limit": "2 kB"
   },
   {
+    "name": "flatten",
+    "path": "dist/objects/flatten/index.js",
+    "limit": "1 kB"
+  },
+  {
     "name": "get",
     "path": "dist/objects/get/index.js",
     "limit": "1 kB"
@@ -93,6 +98,11 @@
   {
     "name": "set",
     "path": "dist/objects/set/index.js",
+    "limit": "1 kB"
+  },
+  {
+    "name": "unflatten",
+    "path": "dist/objects/unflatten/index.js",
     "limit": "1 kB"
   },
   {
