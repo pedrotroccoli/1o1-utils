@@ -1,0 +1,67 @@
+---
+title: unflatten
+description: Build a nested object from a flat record of dot-notation keys
+---
+
+import Playground from "../../../components/Playground.tsx";
+
+Builds a nested object from a flat record whose keys use dot notation. The inverse of `flatten` for objects. Optionally reconstructs arrays when key segments are all-numeric.
+
+## Try it
+
+<Playground client:only="react" utilityId="unflatten" />
+
+## Import
+
+```ts
+import { unflatten } from "1o1-utils";
+```
+
+```ts
+import { unflatten } from "1o1-utils/unflatten";
+```
+
+## Signature
+
+```ts
+function unflatten({ obj, arrays }: UnflattenParams): Record<string, unknown>
+```
+
+## Parameters
+
+| Name     | Type                      | Required | Description                                                                                              |
+| -------- | ------------------------- | -------- | -------------------------------------------------------------------------------------------------------- |
+| `obj`    | `Record<string, unknown>` | Yes      | A flat record whose keys may contain `.` separators                                                      |
+| `arrays` | `boolean`                 | No       | When `true`, all-numeric segments reconstruct as arrays (e.g. `'a.0'`, `'a.1'` → `[...]`). Default `false`. |
+
+## Returns
+
+`Record<string, unknown>` — A new nested object.
+
+## Examples
+
+```ts
+unflatten({ obj: { 'a.b': 1, 'a.c.d': 2, e: 3 } });
+// => { a: { b: 1, c: { d: 2 } }, e: 3 }
+
+// Array reconstruction
+unflatten({ obj: { 'users.0.name': 'Ana', 'users.1.name': 'Bob' }, arrays: true });
+// => { users: [{ name: 'Ana' }, { name: 'Bob' }] }
+```
+
+## Edge Cases
+
+- Throws if `obj` is not a plain object.
+- For conflicting keys (e.g. `'a': 1` and `'a.b': 2`), last write wins.
+- Numeric segments stay as object string keys unless `arrays: true`.
+- Unsafe key segments (`__proto__`, `constructor`, `prototype`) are skipped — protects against prototype pollution.
+
+## Also known as
+
+construct, expand, nest, deep set, dot notation, inverse flatten
+
+## Prompt suggestion
+
+```text
+I'm using 1o1-utils (npm: https://www.npmjs.com/package/1o1-utils, GitHub: https://github.com/pedrotroccoli/1o1-utils, LLM context: https://pedrotroccoli.github.io/1o1-utils/llms.txt). Show me how to use unflatten to convert a flat env-style config back into a nested object
+```
