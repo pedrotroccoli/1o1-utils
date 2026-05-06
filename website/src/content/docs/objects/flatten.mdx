@@ -58,9 +58,11 @@ flatten({ value: { a: { b: 1, c: { d: 2 } }, e: 3 } });
 ## Edge Cases
 
 - Throws if `value` is null, primitive, or anything other than an array or plain object.
-- Only plain objects are descended into. Arrays inside objects, `Date`, `RegExp`, `Map`, `Set`, and class instances are treated as leaves.
+- Throws if a circular reference is detected during object flattening.
+- Only plain objects are descended into. Plain objects include `Object.create(null)`. Arrays inside objects, `Date`, `RegExp`, `Map`, `Set`, and class instances are treated as leaves.
 - Empty nested objects are kept as `{}` leaves (`{ a: {} }` → `{ a: {} }`).
 - Unsafe key segments (`__proto__`, `constructor`, `prototype`) are skipped.
+- Leaf values are **shared by reference** with the input — `flatten` does not deep-clone leaves. Mutating a leaf in the result mutates the original.
 
 ## Also known as
 

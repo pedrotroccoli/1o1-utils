@@ -98,8 +98,50 @@ describe("flatten", () => {
 
     it("should ignore unsafe keys", () => {
       const malicious = JSON.parse('{"__proto__": {"polluted": true}}');
-      flatten({ value: malicious });
+      const result = flatten({ value: malicious });
+      expect(result).to.deep.equal({});
       expect(({} as Record<string, unknown>).polluted).to.equal(undefined);
+    });
+
+    it("should ignore nested unsafe key segments", () => {
+      const malicious = JSON.parse(
+        '{"a": {"__proto__": {"polluted": true}, "b": 1}}',
+      );
+      const result = flatten({ value: malicious });
+      expect(result).to.deep.equal({ "a.b": 1 });
+    });
+
+    it("should descend into Object.create(null) prototype-less objects", () => {
+      const inner = Object.create(null) as Record<string, unknown>;
+      inner.x = 1;
+      const result = flatten({ value: { a: inner } });
+      expect(result).to.deep.equal({ "a.x": 1 });
+    });
+
+    it("should throw on direct circular reference", () => {
+      const o: Record<string, unknown> = {};
+      o.self = o;
+      expect(() => flatten({ value: o })).to.throw(
+        "Circular reference detected while flattening object",
+      );
+    });
+
+    it("should throw on indirect circular reference", () => {
+      const a: Record<string, unknown> = {};
+      const b: Record<string, unknown> = { a };
+      a.b = b;
+      expect(() => flatten({ value: a })).to.throw(
+        "Circular reference detected while flattening object",
+      );
+    });
+
+    it("should share leaf references with the input (no deep clone)", () => {
+      const arr = [1, 2, 3];
+      const result = flatten({ value: { a: { b: arr } } }) as Record<
+        string,
+        unknown
+      >;
+      expect(result["a.b"]).to.equal(arr);
     });
 
     it("should not mutate the input object", () => {

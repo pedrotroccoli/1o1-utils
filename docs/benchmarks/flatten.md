@@ -8,12 +8,12 @@ Deep-flattens an array (mirrors `Array.prototype.flat` with configurable depth) 
 
 | Size | 1o1-utils | native | lodash | radash | Fastest |
 | ------ | ------ | ------ | ------ | ------ | ------ |
-| deep array | 250ns · 4.0M ops/s | 250ns · 4.0M ops/s | 250ns · 4.0M ops/s | — | lodash · on par vs lodash |
-| nested object | 1.0µs · 1000.0K ops/s | — | — | 5.5µs · 183.2K ops/s | 1o1-utils |
+| deep array | 292ns · 3.4M ops/s | 292ns · 3.4M ops/s | 291ns · 3.4M ops/s | — | lodash · on par vs lodash |
+| nested object | 1.5µs · 648.5K ops/s | — | — | 6.3µs · 160.0K ops/s | 1o1-utils |
 
 ```mermaid
 xychart-beta horizontal
   title "flatten — ops/s at nested object items"
   x-axis ["1o1-utils", "radash"]
-  bar [1000000, 183217]
+  bar [648508, 160000]
 ```

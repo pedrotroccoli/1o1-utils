@@ -7,13 +7,15 @@ import type {
 const UNSAFE_KEYS = new Set(["__proto__", "constructor", "prototype"]);
 
 function isPlainObject(value: unknown): value is Record<string, unknown> {
-  return (
-    typeof value === "object" && value !== null && value.constructor === Object
-  );
+  if (typeof value !== "object" || value === null) return false;
+  const proto = Object.getPrototypeOf(value);
+  return proto === null || proto === Object.prototype;
 }
 
 function flattenObject(obj: Record<string, unknown>): Record<string, unknown> {
   const result: Record<string, unknown> = {};
+  const seen = new WeakSet<object>();
+  seen.add(obj);
   const stack: [Record<string, unknown>, string][] = [[obj, ""]];
 
   while (stack.length > 0) {
@@ -30,17 +32,18 @@ function flattenObject(obj: Record<string, unknown>): Record<string, unknown> {
       const value = current[key];
       const newKey = hasPrefix ? `${prefix}.${key}` : key;
 
-      if (
-        value !== null &&
-        typeof value === "object" &&
-        (value as object).constructor === Object
-      ) {
-        const sub = value as Record<string, unknown>;
-        const subKeys = Object.keys(sub);
+      if (isPlainObject(value)) {
+        if (seen.has(value)) {
+          throw new Error(
+            "Circular reference detected while flattening object",
+          );
+        }
+        const subKeys = Object.keys(value);
         if (subKeys.length === 0) {
           result[newKey] = {};
         } else {
-          stack.push([sub, newKey]);
+          seen.add(value);
+          stack.push([value, newKey]);
         }
       } else {
         result[newKey] = value;
@@ -58,6 +61,9 @@ function flattenObject(obj: Record<string, unknown>): Record<string, unknown> {
  * - Plain object input: produces a flat record with dot-notation keys.
  *   Only plain objects are descended into; arrays, Date, RegExp, Map, Set,
  *   and class instances are treated as leaves.
+ *
+ * Leaf values (and array values inside objects) are shared by reference with
+ * the input — `flatten` does not deep-clone leaves.
  *
  * @param params - The parameters object
  * @param params.value - The array or plain object to flatten
@@ -81,6 +87,7 @@ function flattenObject(obj: Record<string, unknown>): Record<string, unknown> {
  *
  * @throws Error if `value` is null, primitive, or anything other than an
  *   array or plain object.
+ * @throws Error if a circular reference is detected during object flattening.
  */
 function flatten(params: FlattenArrayParams): unknown[];
 function flatten(params: FlattenObjectParams): Record<string, unknown>;
