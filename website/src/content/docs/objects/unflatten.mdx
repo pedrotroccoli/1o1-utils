@@ -52,9 +52,11 @@ unflatten({ obj: { 'users.0.name': 'Ana', 'users.1.name': 'Bob' }, arrays: true 
 ## Edge Cases
 
 - Throws if `obj` is not a plain object.
-- For conflicting keys (e.g. `'a': 1` and `'a.b': 2`), last write wins.
+- For conflicting keys (e.g. `'a': 1` and `'a.b': 2`), last write wins. The input object is **never** mutated, even when a value at one key is itself an object that a later nested key descends into — `unflatten` shallow-clones any value it has to descend into.
 - Numeric segments stay as object string keys unless `arrays: true`.
+- With `arrays: true`, numeric segments longer than 7 digits fall back to object keys (sparse-array DoS guard).
 - Unsafe key segments (`__proto__`, `constructor`, `prototype`) are skipped — protects against prototype pollution.
+- Leaf values are **shared by reference** with the input — `unflatten` does not deep-clone leaves.
 
 ## Also known as
 

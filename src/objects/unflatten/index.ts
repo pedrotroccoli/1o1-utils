@@ -1,15 +1,17 @@
 import type { UnflattenParams } from "./types.js";
 
 const UNSAFE_KEYS = new Set(["__proto__", "constructor", "prototype"]);
+const MAX_NUMERIC_SEGMENT_LEN = 7;
 
 function isPlainObject(value: unknown): value is Record<string, unknown> {
-  return (
-    typeof value === "object" && value !== null && value.constructor === Object
-  );
+  if (typeof value !== "object" || value === null) return false;
+  const proto = Object.getPrototypeOf(value);
+  return proto === null || proto === Object.prototype;
 }
 
-function isNumericSlice(str: string, start: number, end: number): boolean {
-  if (end <= start) return false;
+function isSafeNumericSlice(str: string, start: number, end: number): boolean {
+  const span = end - start;
+  if (span <= 0 || span > MAX_NUMERIC_SEGMENT_LEN) return false;
   for (let i = start; i < end; i++) {
     const c = str.charCodeAt(i);
     if (c < 48 || c > 57) return false;
@@ -25,7 +27,10 @@ function isNumericSlice(str: string, start: number, end: number): boolean {
  * @param params.obj - A flat record whose keys may contain `.` separators
  * @param params.arrays - When `true`, segments that are all-numeric reconstruct
  *   as arrays (e.g. `'a.0'`, `'a.1'` → `{ a: [...] }`). Defaults to `false`.
- * @returns A new nested object
+ *   Numeric segments longer than 7 digits fall back to object keys to prevent
+ *   sparse-array DoS via crafted input.
+ * @returns A new nested object. Leaf values are shared by reference with the
+ *   input — `unflatten` does not deep-clone leaf objects.
  *
  * @example
  * ```ts
@@ -49,6 +54,9 @@ function unflatten({
   }
 
   const result: Record<string, unknown> = {};
+  const internal = new WeakSet<object>();
+  internal.add(result);
+
   const keys = Object.keys(obj);
 
   for (let k = 0; k < keys.length; k++) {
@@ -80,12 +88,25 @@ function unflatten({
 
       const existing = current[seg];
       let container: Record<string, unknown>;
-      if (existing !== null && typeof existing === "object") {
+      if (
+        existing !== null &&
+        typeof existing === "object" &&
+        internal.has(existing as object)
+      ) {
         container = existing as Record<string, unknown>;
+      } else if (existing !== null && typeof existing === "object") {
+        container = (
+          Array.isArray(existing)
+            ? [...(existing as unknown[])]
+            : { ...(existing as Record<string, unknown>) }
+        ) as Record<string, unknown>;
+        internal.add(container);
+        current[seg] = container;
       } else {
         container = (
-          arrays && isNumericSlice(fullKey, nextStart, nextEnd) ? [] : {}
+          arrays && isSafeNumericSlice(fullKey, nextStart, nextEnd) ? [] : {}
         ) as Record<string, unknown>;
+        internal.add(container);
         current[seg] = container;
       }
 
