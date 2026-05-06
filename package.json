@@ -107,7 +107,13 @@
 		"hh-mm-ss",
 		"mm-ss",
 		"duration",
-		"clock-format"
+		"clock-format",
+		"flatten",
+		"unflatten",
+		"crush",
+		"construct",
+		"flatten-object",
+		"dot-notation"
 	],
 	"author": "Pedro Troccoli <contact@pedrotroccoli.com>",
 	"license": "MIT",
@@ -166,6 +172,10 @@
 			"import": "./dist/objects/defaults-deep/index.js",
 			"types": "./dist/objects/defaults-deep/index.d.ts"
 		},
+		"./flatten": {
+			"import": "./dist/objects/flatten/index.js",
+			"types": "./dist/objects/flatten/index.d.ts"
+		},
 		"./get": {
 			"import": "./dist/objects/get/index.js",
 			"types": "./dist/objects/get/index.d.ts"
@@ -181,6 +191,10 @@
 		"./set": {
 			"import": "./dist/objects/set/index.js",
 			"types": "./dist/objects/set/index.d.ts"
+		},
+		"./unflatten": {
+			"import": "./dist/objects/unflatten/index.js",
+			"types": "./dist/objects/unflatten/index.d.ts"
 		},
 		"./sort-by": {
 			"import": "./dist/arrays/sort-by/index.js",
