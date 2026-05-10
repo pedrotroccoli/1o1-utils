@@ -14,12 +14,12 @@ const DIGITS = "0123456789";
 const SYMBOLS = "!@#$%^&*()-_=+[]{};:,.<>?/";
 const HEX = "0123456789abcdef";
 
-const POOLS: Record<Exclude<Charset, "custom">, string> = {
-  all: LOWER + UPPER + DIGITS + SYMBOLS,
-  alphanumeric: LOWER + UPPER + DIGITS,
-  alpha: LOWER + UPPER,
-  numeric: DIGITS,
-  hex: HEX,
+const POOL_CHARS: Record<Exclude<Charset, "custom">, readonly string[]> = {
+  all: [...(LOWER + UPPER + DIGITS + SYMBOLS)],
+  alphanumeric: [...(LOWER + UPPER + DIGITS)],
+  alpha: [...(LOWER + UPPER)],
+  numeric: [...DIGITS],
+  hex: [...HEX],
 };
 
 const VALID_CHARSETS = new Set<Charset>([
@@ -103,7 +103,7 @@ function generateString(params: GenerateStringParams): GenerateStringResult {
     );
   }
 
-  let poolChars: string[];
+  let poolChars: readonly string[];
 
   if (charset === "custom") {
     if (typeof chars !== "string") {
@@ -151,7 +151,7 @@ function generateString(params: GenerateStringParams): GenerateStringResult {
         "The 'minChars' parameter is only valid when charset is 'custom'",
       );
     }
-    poolChars = [...POOLS[charset]];
+    poolChars = POOL_CHARS[charset];
   }
 
   if (length === 0) return "";
