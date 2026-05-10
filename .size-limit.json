@@ -3,7 +3,7 @@
     "name": "Total (tree-shaken + gzipped)",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "10 kB"
+    "limit": "11 kB"
   },
   {
     "name": "array-to-hash",
@@ -139,6 +139,11 @@
     "name": "retry",
     "path": "dist/async/retry/index.js",
     "limit": "2 kB"
+  },
+  {
+    "name": "parallel",
+    "path": "dist/async/parallel/index.js",
+    "limit": "1 kB"
   },
   {
     "name": "safely",
