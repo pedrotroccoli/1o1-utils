@@ -66,7 +66,11 @@ async function parallel<T, R>({
       if (i >= items.length) return;
       if (signal?.aborted) {
         results[i] = { status: "rejected", reason: signal.reason };
-        continue;
+        while (next < items.length) {
+          const j = next++;
+          results[j] = { status: "rejected", reason: signal.reason };
+        }
+        return;
       }
       try {
         const value = await fn(items[i] as T, i);

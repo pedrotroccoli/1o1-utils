@@ -186,6 +186,29 @@ describe("parallel", () => {
     expect((rejected[0] as { reason: Error }).reason.message).to.equal("stop");
   });
 
+  it("should short-circuit pending indices on abort without iterating each", async () => {
+    const controller = new AbortController();
+    const items = Array.from({ length: 1000 }, (_, i) => i);
+    let fnCalls = 0;
+
+    setTimeout(() => controller.abort(new Error("stop")), 5);
+
+    const results = await parallel({
+      items,
+      concurrency: 2,
+      signal: controller.signal,
+      fn: async (n) => {
+        fnCalls++;
+        await tick(10);
+        return n;
+      },
+    });
+
+    expect(results).to.have.lengthOf(1000);
+    expect(results.every((r) => r !== undefined)).to.equal(true);
+    expect(fnCalls).to.be.lessThan(10);
+  });
+
   it("should throw if signal is already aborted", async () => {
     const controller = new AbortController();
     controller.abort(new Error("already"));
