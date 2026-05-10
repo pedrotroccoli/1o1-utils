@@ -5,6 +5,8 @@ import type {
 } from "./types.js";
 
 const TWO_POW_32 = 0x1_0000_0000;
+const MAX_LENGTH = 1_000_000;
+const CRYPTO_BUFFER_LIMIT = 16384;
 
 const LOWER = "abcdefghijklmnopqrstuvwxyz";
 const UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -35,17 +37,18 @@ const VALID_CHARSETS = new Set<Charset>([
  * sampling — no modulo bias, no `Math.random`, zero dependencies.
  *
  * @param params - The parameters object
- * @param params.length - The desired length of the output string (integer, ≥ 0)
+ * @param params.length - The desired length of the output string. Integer in `[0, 1_000_000]`.
  * @param params.charset - The character pool to draw from. One of `all`
  * (default), `alphanumeric`, `alpha`, `numeric`, `hex`, or `custom`.
  * @param params.chars - Required when `charset === "custom"`. Pool of
- * characters to draw from.
+ * characters to draw from. Iterated by Unicode code point, so emoji and
+ * non-BMP characters count as one symbol.
  * @param params.dedupe - When `charset === "custom"`, collapse `chars` to its
  * unique code points (preserves first-seen order). Defaults to `false`.
  * @param params.minChars - When `charset === "custom"`, minimum number of
- * characters required in `chars` (counted after `dedupe` is applied). Must be
- * an integer ≥ 1. Defaults to `1`.
- * @returns A random string of the requested length
+ * code points required in `chars` (counted after `dedupe` is applied). Must
+ * be an integer ≥ 1. Defaults to `1`.
+ * @returns A random string of the requested length (in code points)
  *
  * @example
  * ```ts
@@ -67,11 +70,12 @@ const VALID_CHARSETS = new Set<Charset>([
  *
  * @keywords random, string, secure, crypto, token, password, nanoid, id, generate
  *
- * @throws Error if `length` is not a finite non-negative integer
- * @throws Error if `charset` is provided but not one of the allowed values
+ * @throws Error if `length` is not an integer in `[0, 1_000_000]`
+ * @throws Error if `charset` is not one of the allowed values
+ * @throws Error if `chars`/`dedupe`/`minChars` are passed with a non-`custom` charset
  * @throws Error if `charset === "custom"` and `chars` is missing, not a string, or empty
  * @throws Error if `minChars` is not an integer ≥ 1
- * @throws Error if `dedupe` is provided and is not a boolean
+ * @throws Error if `dedupe` is not a boolean
  * @throws Error if the effective `chars` length is below `minChars`
  */
 function generateString(params: GenerateStringParams): GenerateStringResult {
@@ -89,6 +93,9 @@ function generateString(params: GenerateStringParams): GenerateStringResult {
   if (length < 0) {
     throw new Error("The 'length' parameter must be ≥ 0");
   }
+  if (length > MAX_LENGTH) {
+    throw new Error(`The 'length' parameter must not exceed ${MAX_LENGTH}`);
+  }
 
   if (!VALID_CHARSETS.has(charset)) {
     throw new Error(
@@ -96,7 +103,7 @@ function generateString(params: GenerateStringParams): GenerateStringResult {
     );
   }
 
-  let pool: string;
+  let poolChars: string[];
 
   if (charset === "custom") {
     if (typeof chars !== "string") {
@@ -110,42 +117,59 @@ function generateString(params: GenerateStringParams): GenerateStringResult {
     if (dedupe !== undefined && typeof dedupe !== "boolean") {
       throw new Error("The 'dedupe' parameter must be a boolean");
     }
+    if (minChars !== undefined) {
+      if (typeof minChars !== "number") {
+        throw new Error("The 'minChars' parameter must be a number");
+      }
+      if (!Number.isInteger(minChars) || minChars < 1) {
+        throw new Error("The 'minChars' parameter must be an integer ≥ 1");
+      }
+    }
 
     const minCharsValue = minChars ?? 1;
-    if (typeof minCharsValue !== "number") {
-      throw new Error("The 'minChars' parameter must be a number");
-    }
-    if (!Number.isInteger(minCharsValue) || minCharsValue < 1) {
-      throw new Error("The 'minChars' parameter must be an integer ≥ 1");
-    }
+    const codePoints = [...chars];
+    poolChars = dedupe ? Array.from(new Set(codePoints)) : codePoints;
 
-    pool = dedupe ? Array.from(new Set(chars)).join("") : chars;
-
-    if (pool.length < minCharsValue) {
+    if (poolChars.length < minCharsValue) {
       throw new Error(
         `The 'chars' parameter must contain at least ${minCharsValue} character(s)`,
       );
     }
   } else {
-    pool = POOLS[charset];
+    if (chars !== undefined) {
+      throw new Error(
+        "The 'chars' parameter is only valid when charset is 'custom'",
+      );
+    }
+    if (dedupe !== undefined) {
+      throw new Error(
+        "The 'dedupe' parameter is only valid when charset is 'custom'",
+      );
+    }
+    if (minChars !== undefined) {
+      throw new Error(
+        "The 'minChars' parameter is only valid when charset is 'custom'",
+      );
+    }
+    poolChars = [...POOLS[charset]];
   }
 
   if (length === 0) return "";
-  if (pool.length === 1) return pool.repeat(length);
+  if (poolChars.length === 1) return poolChars[0].repeat(length);
 
-  const poolSize = pool.length;
+  const poolSize = poolChars.length;
   const limit = Math.floor(TWO_POW_32 / poolSize) * poolSize;
-  const buf = new Uint32Array(length);
+  const bufSize = Math.min(length, CRYPTO_BUFFER_LIMIT);
+  const buf = new Uint32Array(bufSize);
   const out = new Array<string>(length);
 
   let filled = 0;
   while (filled < length) {
-    const view = filled === 0 ? buf : buf.subarray(0, length - filled);
-    crypto.getRandomValues(view);
-    for (let i = 0; i < view.length && filled < length; i++) {
-      const v = view[i];
+    crypto.getRandomValues(buf);
+    for (let i = 0; i < buf.length && filled < length; i++) {
+      const v = buf[i];
       if (v < limit) {
-        out[filled++] = pool[v % poolSize];
+        out[filled++] = poolChars[v % poolSize];
       }
     }
   }

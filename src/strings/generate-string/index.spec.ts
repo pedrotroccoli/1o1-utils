@@ -177,6 +177,12 @@ describe("generateString", () => {
         generateString({ length: Number.POSITIVE_INFINITY }),
       ).to.throw("The 'length' parameter must be an integer");
     });
+
+    it("should throw if length exceeds the maximum (1_000_000)", () => {
+      expect(() => generateString({ length: 1_000_001 })).to.throw(
+        "The 'length' parameter must not exceed 1000000",
+      );
+    });
   });
 
   describe("invalid charset", () => {
@@ -185,6 +191,64 @@ describe("generateString", () => {
         // @ts-expect-error - testing invalid input
         generateString({ length: 16, charset: "ascii" }),
       ).to.throw("The 'charset' parameter must be one of");
+    });
+
+    it("should throw if chars is passed with a non-custom charset", () => {
+      expect(() =>
+        generateString({ length: 16, charset: "hex", chars: "abc" }),
+      ).to.throw("'chars' parameter is only valid when charset is 'custom'");
+    });
+
+    it("should throw if dedupe is passed with a non-custom charset", () => {
+      expect(() =>
+        generateString({ length: 16, charset: "hex", dedupe: true }),
+      ).to.throw("'dedupe' parameter is only valid when charset is 'custom'");
+    });
+
+    it("should throw if minChars is passed with a non-custom charset", () => {
+      expect(() =>
+        generateString({ length: 16, charset: "hex", minChars: 2 }),
+      ).to.throw("'minChars' parameter is only valid when charset is 'custom'");
+    });
+  });
+
+  describe("unicode in custom charset", () => {
+    it("should treat emoji as one code point in the pool", () => {
+      const result = generateString({
+        length: 32,
+        charset: "custom",
+        chars: "🙂🚀🎉",
+      });
+      const points = [...result];
+      expect(points).to.have.lengthOf(32);
+      for (const p of points) {
+        expect(["🙂", "🚀", "🎉"]).to.include(p);
+      }
+    });
+
+    it("should dedupe emoji code points correctly", () => {
+      const result = generateString({
+        length: 16,
+        charset: "custom",
+        chars: "🙂🙂🚀",
+        dedupe: true,
+      });
+      const unique = new Set([...result]);
+      for (const p of unique) {
+        expect(["🙂", "🚀"]).to.include(p);
+      }
+    });
+
+    it("should count minChars against unique code points for emoji", () => {
+      expect(() =>
+        generateString({
+          length: 16,
+          charset: "custom",
+          chars: "🙂🙂🙂",
+          dedupe: true,
+          minChars: 2,
+        }),
+      ).to.throw("at least 2");
     });
   });
 
