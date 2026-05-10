@@ -117,7 +117,13 @@
 		"string-strength",
 		"entropy",
 		"shannon",
-		"password-strength"
+		"password-strength",
+		"generate-string",
+		"random-string",
+		"secure-random",
+		"token",
+		"nanoid-alternative",
+		"crypto-random"
 	],
 	"author": "Pedro Troccoli <contact@pedrotroccoli.com>",
 	"license": "MIT",
@@ -367,6 +373,10 @@
 		"./string-strength": {
 			"import": "./dist/strings/string-strength/index.js",
 			"types": "./dist/strings/string-strength/index.d.ts"
+		},
+		"./generate-string": {
+			"import": "./dist/strings/generate-string/index.js",
+			"types": "./dist/strings/generate-string/index.d.ts"
 		}
 	},
 	"scripts": {
