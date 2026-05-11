@@ -17,7 +17,10 @@ function getDecimalSeparator(locale: string): string {
 }
 
 function safeQuote(input: string): string {
-  return JSON.stringify(input.length > 64 ? `${input.slice(0, 64)}…` : input);
+  const points = Array.from(input);
+  return JSON.stringify(
+    points.length > 64 ? `${points.slice(0, 64).join("")}…` : input,
+  );
 }
 
 /**
@@ -84,4 +87,9 @@ const toNumber: ToNumber = ({
   return negative ? -result : result;
 };
 
-export { toNumber };
+/** @internal — exposed for tests; do not use outside this package. */
+const __separatorCache = separatorCache;
+/** @internal — exposed for tests; do not use outside this package. */
+const __SEPARATOR_CACHE_MAX = SEPARATOR_CACHE_MAX;
+
+export { __SEPARATOR_CACHE_MAX, __separatorCache, toNumber };
