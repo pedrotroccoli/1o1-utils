@@ -448,6 +448,8 @@ toNumber({ value: "-1,234.56" });                     // -1234.56
 
 Throws: TypeError if `value` is not a string. Error if `value` contains no digits or the cleaned string cannot be parsed (e.g. multiple decimal separators).
 
+Limitations: ASCII digits only — non-ASCII digit scripts (Arabic-Indic, Devanagari, etc.) are stripped. Scientific notation is not supported (`"1e5"` parses as `15`, not `100000`). The locale separator cache is FIFO-bounded to 32 entries.
+
 ---
 
 ## Objects
