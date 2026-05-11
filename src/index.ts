@@ -12,6 +12,7 @@ export { unique } from "./arrays/unique/index.js";
 export { unzip } from "./arrays/unzip/index.js";
 export { zip } from "./arrays/zip/index.js";
 export { debounce } from "./async/debounce/index.js";
+export { parallel } from "./async/parallel/index.js";
 export { retry } from "./async/retry/index.js";
 export { safely } from "./async/safely/index.js";
 export { sleep } from "./async/sleep/index.js";

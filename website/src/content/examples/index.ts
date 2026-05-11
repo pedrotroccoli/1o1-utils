@@ -587,6 +587,27 @@ console.log(await retry({ fn: flaky, attempts: 5, delay: 50 }));
 `,
   },
   {
+    id: "parallel",
+    label: "parallel",
+    category: "Async",
+    code: `import { parallel } from "1o1-utils";
+
+const items = [1, 2, 3, 4, 5, 6, 7, 8];
+
+const results = await parallel({
+  items,
+  concurrency: 3,
+  fn: async (n) => {
+    await new Promise((r) => setTimeout(r, 100));
+    return n * 10;
+  },
+});
+
+console.log(results.map((r) => r.status === "fulfilled" ? r.value : r.reason));
+// [10, 20, 30, 40, 50, 60, 70, 80] — at most 3 in flight at a time
+`,
+  },
+  {
     id: "safely",
     label: "safely",
     category: "Async",

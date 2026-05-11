@@ -29,6 +29,9 @@
 		"truncate",
 		"retry",
 		"sleep",
+		"parallel",
+		"concurrency",
+		"semaphore",
 		"once",
 		"pipe",
 		"compose",
@@ -237,6 +240,10 @@
 		"./retry": {
 			"import": "./dist/async/retry/index.js",
 			"types": "./dist/async/retry/index.d.ts"
+		},
+		"./parallel": {
+			"import": "./dist/async/parallel/index.js",
+			"types": "./dist/async/parallel/index.d.ts"
 		},
 		"./safely": {
 			"import": "./dist/async/safely/index.js",
