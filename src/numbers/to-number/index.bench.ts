@@ -52,12 +52,20 @@ bench
   .add("1o1-utils (br-currency)", () => {
     toNumber(brCurrency);
   })
-  .add("numeral (br-currency)", () => {
-    numeral.locale("pt-br");
-    const v = numeral(brCurrency.value).value();
-    numeral.locale("en");
-    return v;
-  })
+  .add(
+    "numeral (br-currency)",
+    () => {
+      numeral(brCurrency.value).value();
+    },
+    {
+      beforeAll: () => {
+        numeral.locale("pt-br");
+      },
+      afterAll: () => {
+        numeral.locale("en");
+      },
+    },
+  )
   .add("parse-decimal-number (br-currency)", () => {
     parseDecimalNumber(brCurrency.value, brOpts);
   });
