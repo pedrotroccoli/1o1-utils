@@ -31,6 +31,7 @@ export { pipe } from "./functions/pipe/index.js";
 export { clamp } from "./numbers/clamp/index.js";
 export { inRange } from "./numbers/in-range/index.js";
 export { randomInt } from "./numbers/random-int/index.js";
+export { toNumber } from "./numbers/to-number/index.js";
 export { cloneDeep } from "./objects/clone-deep/index.js";
 export { compact } from "./objects/compact/index.js";
 export { deepMerge } from "./objects/deep-merge/index.js";
