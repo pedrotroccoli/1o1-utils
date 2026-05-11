@@ -31,6 +31,7 @@
 - [clamp](https://pedrotroccoli.github.io/1o1-utils/numbers/clamp/): Restrict a number to an inclusive range, with automatic bound swap when `min > max`
 - [inRange](https://pedrotroccoli.github.io/1o1-utils/numbers/in-range/): Check if a number falls within `[start, end)` (start inclusive, end exclusive)
 - [randomInt](https://pedrotroccoli.github.io/1o1-utils/numbers/random-int/): Generate a cryptographically-secure random integer in an inclusive range using `crypto.getRandomValues` and rejection sampling
+- [toNumber](https://pedrotroccoli.github.io/1o1-utils/numbers/to-number/): Extract a numeric value from a string, respecting locale decimal/group separators (defaults to `en-US`)
 
 ## Objects
 

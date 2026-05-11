@@ -1,0 +1,78 @@
+---
+title: toNumber
+description: Extract a numeric value from a string, respecting locale decimal and group separators
+---
+
+import Playground from "../../../components/Playground.tsx";
+
+Extracts a numeric value from a string by stripping non-digit characters, respecting the locale's decimal and group separators. Uses `Intl.NumberFormat` to determine the separators for the given locale.
+
+## Try it
+
+<Playground client:only="react" utilityId="to-number" />
+
+## Import
+
+```ts
+import { toNumber } from "1o1-utils";
+```
+
+```ts
+import { toNumber } from "1o1-utils/to-number";
+```
+
+## Signature
+
+```ts
+function toNumber(params: { value: string; locale?: string }): number
+```
+
+## Parameters
+
+| Name   | Type     | Required | Description                                                              |
+| ------ | -------- | -------- | ------------------------------------------------------------------------ |
+| value  | `string` | Yes      | The string to parse                                                      |
+| locale | `string` | No       | BCP 47 locale tag controlling decimal/group separators. Defaults `en-US` |
+
+## Returns
+
+`number` — The numeric value parsed from `value`.
+
+## Examples
+
+```ts
+toNumber({ value: "R$ 1.500,00", locale: "pt-BR" }); // 1500
+toNumber({ value: "12,5", locale: "pt-BR" });        // 12.5
+toNumber({ value: "12.5" });                          // 12.5
+toNumber({ value: "123abc456" });                     // 123456
+```
+
+```ts
+// Negative values via leading "-" or Unicode "−"
+toNumber({ value: "-1,234.56" }); // -1234.56
+toNumber({ value: "−42" });       // -42
+```
+
+```ts
+// Thousands separators are stripped per locale
+toNumber({ value: "1,234,567.89", locale: "en-US" }); // 1234567.89
+toNumber({ value: "1.234.567,89", locale: "pt-BR" }); // 1234567.89
+```
+
+## Edge Cases
+
+- Throws `TypeError` if `value` is not a string.
+- Throws if `value` contains no digits (empty string, `"abc"`, `"R$ ,"`).
+- Throws if the cleaned value cannot be parsed (e.g. multiple decimal separators like `"1.2.3"` in `en-US`).
+- A `-` appearing after the first digit is treated as a separator, not a sign (`"12-34"` → `1234`).
+- Locales with non-breaking space group separators (e.g. `fr-FR`) work as expected — any unrecognized character is simply stripped.
+
+## Also known as
+
+parseNumber, numeric extract, strip non-digits, currency parse, locale-aware number parse
+
+## Prompt suggestion
+
+```text
+I'm using 1o1-utils (npm: https://www.npmjs.com/package/1o1-utils, GitHub: https://github.com/pedrotroccoli/1o1-utils, LLM context: https://pedrotroccoli.github.io/1o1-utils/llms.txt). Show me how to use toNumber to parse a Brazilian currency string like "R$ 1.500,00" into a number.
+```

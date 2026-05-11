@@ -232,6 +232,18 @@ for (let i = 0; i < 5; i++) {
 }
 `,
   },
+  {
+    id: "to-number",
+    label: "toNumber",
+    category: "Numbers",
+    code: `import { toNumber } from "1o1-utils";
+
+console.log(toNumber({ value: "R$ 1.500,00", locale: "pt-BR" })); // 1500
+console.log(toNumber({ value: "12.5" })); // 12.5
+console.log(toNumber({ value: "123abc456" })); // 123456
+console.log(toNumber({ value: "-1,234.56" })); // -1234.56
+`,
+  },
 
   // ============ Objects ============
   {
