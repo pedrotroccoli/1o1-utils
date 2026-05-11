@@ -1,0 +1,103 @@
+---
+title: isMobile
+description: Detect a mobile device via User-Agent Client Hints, a userAgent regex fallback, and an optional viewport-width check
+---
+
+import Playground from "../../../components/Playground.tsx";
+
+Detects whether the current device is a mobile device (phone or tablet).
+
+User-agent resolution order:
+
+1. Explicit `userAgent` argument — useful for SSR (pass the request header) or unit tests.
+2. `navigator.userAgentData.mobile` from User-Agent Client Hints, when the browser exposes it.
+3. Regex against `navigator.userAgent`.
+
+Pass `maxWidth` to additionally treat narrow viewports as mobile. The function returns `true` when **either** the user agent matches **or** the viewport width is `<= maxWidth`.
+
+SSR-safe: returns `false` when no `navigator` / `innerWidth` is available and no explicit `userAgent` / `width` was passed.
+
+## Try it
+
+<Playground client:only="react" utilityId="is-mobile" />
+
+## Import
+
+```ts
+import { isMobile } from "1o1-utils";
+```
+
+```ts
+import { isMobile } from "1o1-utils/is-mobile";
+```
+
+## Signature
+
+```ts
+function isMobile(params?: IsMobileParams): boolean
+```
+
+## Parameters
+
+| Name        | Type     | Required | Description                                                                                                                                   |
+| ----------- | -------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| `userAgent` | `string` | No       | Explicit user agent string. When provided, takes precedence over `globalThis.navigator`.                                                      |
+| `maxWidth`  | `number` | No       | Enables viewport-based detection. When set, a viewport width `<= maxWidth` is also treated as mobile (OR'd with the user-agent check).        |
+| `width`     | `number` | No       | Explicit viewport width in pixels. Falls back to `globalThis.innerWidth` when omitted. Only used when `maxWidth` is set.                       |
+
+## Returns
+
+`boolean` — `true` on mobile devices, `false` otherwise.
+
+## Examples
+
+```ts
+import { isMobile } from "1o1-utils/is-mobile";
+
+if (isMobile()) {
+  showInstallAppBanner();
+}
+```
+
+```ts
+// SSR — pass the request user agent header
+import { isMobile } from "1o1-utils/is-mobile";
+
+export function loader({ request }: { request: Request }) {
+  const mobile = isMobile({ userAgent: request.headers.get("user-agent") ?? undefined });
+  return { mobile };
+}
+```
+
+```ts
+// Viewport-aware: catch a desktop browser resized to phone width
+import { isMobile } from "1o1-utils/is-mobile";
+
+if (isMobile({ maxWidth: 768 })) {
+  renderMobileNav();
+} else {
+  renderDesktopNav();
+}
+```
+
+## Edge Cases
+
+- Returns `false` when called outside a browser without an explicit `userAgent` (Node, SSR).
+- Modern iPadOS "request desktop site" reports a macOS user agent and returns `false` for the UA check — set `maxWidth` to catch narrow viewports anyway.
+- Empty `userAgent` strings return `false`.
+- `navigator.userAgentData.mobile` is authoritative when exposed and skips the regex.
+- The viewport check is skipped silently when `maxWidth` is unset, or when no `width` / `globalThis.innerWidth` is available (SSR without explicit `width`).
+
+:::tip
+For responsive layout decisions prefer CSS media queries or `window.matchMedia` — user-agent sniffing is best for SSR hints, analytics, and platform-specific copy.
+:::
+
+## Also known as
+
+is mobile, mobile, device, user agent, phone, tablet, iphone, ipad, android, responsive
+
+## Prompt suggestion
+
+```text
+I'm using 1o1-utils (npm: https://www.npmjs.com/package/1o1-utils, GitHub: https://github.com/pedrotroccoli/1o1-utils, LLM context: https://pedrotroccoli.github.io/1o1-utils/llms.txt). Show me how to use isMobile to render different copy on mobile vs desktop, including the SSR case.
+```
