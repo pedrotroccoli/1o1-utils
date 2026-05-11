@@ -117,7 +117,13 @@
 		"string-strength",
 		"entropy",
 		"shannon",
-		"password-strength"
+		"password-strength",
+		"is-mobile",
+		"mobile",
+		"device",
+		"user-agent",
+		"phone",
+		"tablet"
 	],
 	"author": "Pedro Troccoli <contact@pedrotroccoli.com>",
 	"license": "MIT",
@@ -367,6 +373,10 @@
 		"./string-strength": {
 			"import": "./dist/strings/string-strength/index.js",
 			"types": "./dist/strings/string-strength/index.d.ts"
+		},
+		"./is-mobile": {
+			"import": "./dist/browser/is-mobile/index.js",
+			"types": "./dist/browser/is-mobile/index.d.ts"
 		}
 	},
 	"scripts": {
@@ -414,12 +424,16 @@
 		"@types/lodash": "^4.17.24",
 		"@types/mocha": "^10.0.10",
 		"@types/mousetrap": "^1.6.15",
+		"bowser": "^2.14.1",
 		"c8": "^11.0.0",
 		"chai": "^6.2.2",
 		"es-toolkit": "^1.45.1",
 		"fast-check": "^4.7.0",
 		"happy-dom": "^20.9.0",
+		"is-mobile": "^5.0.0",
+		"ismobilejs": "^1.1.1",
 		"lodash": "^4.18.1",
+		"mobile-detect": "^1.4.5",
 		"mocha": "^11.7.5",
 		"mousetrap": "^1.6.5",
 		"radash": "^12.1.1",
@@ -427,6 +441,7 @@
 		"tinybench": "^6.0.0",
 		"ts-node": "^10.9.2",
 		"tsx": "^4.20.4",
-		"typescript": "^6.0.3"
+		"typescript": "^6.0.3",
+		"ua-parser-js": "^2.0.9"
 	}
 }
