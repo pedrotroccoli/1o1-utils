@@ -1,5 +1,6 @@
-import type { ToNumberParams, ToNumberResult } from "./types.js";
+import type { ToNumber, ToNumberParams, ToNumberResult } from "./types.js";
 
+const SEPARATOR_CACHE_MAX = 32;
 const separatorCache = new Map<string, string>();
 
 function getDecimalSeparator(locale: string): string {
@@ -7,8 +8,16 @@ function getDecimalSeparator(locale: string): string {
   if (cached !== undefined) return cached;
   const parts = new Intl.NumberFormat(locale).formatToParts(12345.6);
   const decimal = parts.find((p) => p.type === "decimal")?.value ?? ".";
+  if (separatorCache.size >= SEPARATOR_CACHE_MAX) {
+    const oldest = separatorCache.keys().next().value;
+    if (oldest !== undefined) separatorCache.delete(oldest);
+  }
   separatorCache.set(locale, decimal);
   return decimal;
+}
+
+function safeQuote(input: string): string {
+  return JSON.stringify(input.length > 64 ? `${input.slice(0, 64)}…` : input);
 }
 
 /**
@@ -16,7 +25,10 @@ function getDecimalSeparator(locale: string): string {
  * respecting the locale's decimal and group separators.
  *
  * Uses `Intl.NumberFormat` to determine the separators for the given locale.
- * Characters other than digits, the decimal separator, and a leading sign are removed.
+ * Characters other than ASCII digits (`0`–`9`), the decimal separator, and a
+ * leading sign are removed. Non-ASCII digit scripts (Arabic-Indic, Devanagari,
+ * etc.) and scientific notation (`1e5`) are not supported — see edge cases in
+ * the docs.
  *
  * @param params - The parameters object
  * @param params.value - The string to parse
@@ -36,14 +48,17 @@ function getDecimalSeparator(locale: string): string {
  * @throws TypeError if `value` is not a string
  * @throws Error if `value` contains no digits or cannot be parsed as a number
  */
-function toNumber({ value, locale = "en-US" }: ToNumberParams): ToNumberResult {
+const toNumber: ToNumber = ({
+  value,
+  locale = "en-US",
+}: ToNumberParams): ToNumberResult => {
   if (typeof value !== "string") {
     throw new TypeError("The 'value' parameter must be a string");
   }
 
   const decimalSep = getDecimalSeparator(locale);
 
-  const firstDigitIdx = value.search(/\d/);
+  const firstDigitIdx = value.search(/[0-9]/);
   const negative =
     firstDigitIdx > 0 && /[-−]/.test(value.slice(0, firstDigitIdx));
 
@@ -55,18 +70,18 @@ function toNumber({ value, locale = "en-US" }: ToNumberParams): ToNumberResult {
 
   if (cleaned === "" || cleaned === ".") {
     throw new Error(
-      `The 'value' parameter must contain at least one digit (got: "${value}")`,
+      `The 'value' parameter must contain at least one digit (got: ${safeQuote(value)})`,
     );
   }
 
   const result = Number(cleaned);
   if (Number.isNaN(result)) {
     throw new Error(
-      `Failed to parse "${value}" as a number with locale "${locale}"`,
+      `Failed to parse ${safeQuote(value)} as a number with locale ${safeQuote(locale)}`,
     );
   }
 
   return negative ? -result : result;
-}
+};
 
 export { toNumber };

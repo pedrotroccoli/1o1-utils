@@ -93,4 +93,39 @@ describe("toNumber", () => {
   it("should throw when the cleaned value cannot be parsed", () => {
     expect(() => toNumber({ value: "1.2.3" })).to.throw("Failed to parse");
   });
+
+  it("should strip non-ASCII digit scripts (Arabic-Indic, Devanagari)", () => {
+    expect(() => toNumber({ value: "١٢٣" })).to.throw(
+      "must contain at least one digit",
+    );
+    expect(() => toNumber({ value: "१२३" })).to.throw(
+      "must contain at least one digit",
+    );
+  });
+
+  it("should treat scientific notation 'e' as a stripped character (documented limitation)", () => {
+    expect(toNumber({ value: "1e5" })).to.equal(15);
+  });
+
+  it("should truncate long error payloads to avoid log spam", () => {
+    const huge = "x".repeat(1000);
+    try {
+      toNumber({ value: huge });
+      expect.fail("expected throw");
+    } catch (err) {
+      expect((err as Error).message.length).to.be.lessThan(150);
+    }
+  });
+
+  it("should remain stable when many distinct locales are queried (FIFO cache eviction)", () => {
+    // Exercise the cache well past its capacity (32) without leaking memory.
+    // Use unique subtag variants to force distinct cache keys, but query the
+    // decimal separator from each so behavior stays predictable.
+    for (let i = 0; i < 100; i++) {
+      const locale = `en-US-x-test${i}`;
+      expect(toNumber({ value: "12.5", locale })).to.equal(12.5);
+    }
+    // After 100 inserts, the original "en-US" entry should still resolve correctly.
+    expect(toNumber({ value: "12.5" })).to.equal(12.5);
+  });
 });
