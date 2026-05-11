@@ -39,16 +39,17 @@ function isCircular({ value }: IsCircularParams): boolean
 
 What gets traversed:
 
-- Plain objects and class instances (own enumerable string keys)
+- Plain objects and class instances (all own keys: enumerable, non-enumerable, and `Symbol`)
 - Arrays
 - `Map` (both keys and values)
 - `Set`
 
 What is treated as a leaf (not traversed):
 
+- Functions (even when used as the root value)
 - `Date`, `RegExp`, `Error`
 - `ArrayBuffer` and typed arrays
-- Functions and primitives
+- Primitives
 
 ## Examples
 
@@ -76,6 +77,8 @@ isCircular({ value: map });               // => true
 - Primitives (`null`, `undefined`, numbers, strings, booleans) always return `false`.
 - Shared references that are not cyclic return `false` — only true back-edges in the traversal count.
 - Map cycles are detected for both keys and values.
+- Functions are always leaves — circular state attached to a function (`fn.self = fn`) is not detected.
+- Property getters are invoked during traversal (same behavior as iterating `Object.values`).
 
 ## Also known as
 

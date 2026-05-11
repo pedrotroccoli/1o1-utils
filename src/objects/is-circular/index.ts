@@ -2,6 +2,7 @@ import type { IsCircularParams } from "./types.js";
 
 function isLeaf(value: object): boolean {
   return (
+    typeof value === "function" ||
     value instanceof Date ||
     value instanceof RegExp ||
     value instanceof Error ||
@@ -10,26 +11,36 @@ function isLeaf(value: object): boolean {
   );
 }
 
-function collectChildren(obj: object): unknown[] {
-  if (Array.isArray(obj)) return obj;
-  if (obj instanceof Map) {
-    const out: unknown[] = [];
-    for (const [key, val] of obj) {
-      out.push(key, val);
-    }
-    return out;
+function* childrenOf(obj: object): Generator<unknown> {
+  if (Array.isArray(obj)) {
+    for (let i = 0; i < obj.length; i++) yield obj[i];
+    return;
   }
-  if (obj instanceof Set) return [...obj];
-  return Object.values(obj as Record<string, unknown>);
+  if (obj instanceof Map) {
+    for (const [key, val] of obj) {
+      yield key;
+      yield val;
+    }
+    return;
+  }
+  if (obj instanceof Set) {
+    for (const val of obj) yield val;
+    return;
+  }
+  const record = obj as Record<string | symbol, unknown>;
+  for (const key of Reflect.ownKeys(obj)) {
+    yield record[key];
+  }
 }
 
 /**
  * Detects whether a value contains a circular reference.
  *
  * Traverses plain objects, arrays, `Map` (keys and values), `Set`, and class
- * instances. Treats `Date`, `RegExp`, `Error`, `ArrayBuffer`, and typed arrays
- * as leaves (not traversed). Shared references that are not cyclic return
- * `false`.
+ * instances using every own property key (including non-enumerable and
+ * `Symbol` keys). Treats functions, `Date`, `RegExp`, `Error`, `ArrayBuffer`,
+ * and typed arrays as leaves (not traversed). Shared references that are not
+ * cyclic return `false`.
  *
  * @param params - The parameters object
  * @param params.value - The value to inspect
@@ -58,31 +69,26 @@ function isCircular({ value }: IsCircularParams): boolean {
   const ancestors = new WeakSet<object>();
   ancestors.add(root);
 
-  type Frame = { node: object; children: unknown[]; index: number };
-  const stack: Frame[] = [
-    { node: root, children: collectChildren(root), index: 0 },
-  ];
+  type Frame = { node: object; iter: Iterator<unknown> };
+  const stack: Frame[] = [{ node: root, iter: childrenOf(root) }];
 
   while (stack.length > 0) {
     const frame = stack[stack.length - 1];
-    if (frame.index >= frame.children.length) {
+    const next = frame.iter.next();
+    if (next.done) {
       ancestors.delete(frame.node);
       stack.pop();
       continue;
     }
 
-    const child = frame.children[frame.index++];
+    const child = next.value;
     if (child === null || typeof child !== "object") continue;
     const childObj = child as object;
     if (isLeaf(childObj)) continue;
     if (ancestors.has(childObj)) return true;
 
     ancestors.add(childObj);
-    stack.push({
-      node: childObj,
-      children: collectChildren(childObj),
-      index: 0,
-    });
+    stack.push({ node: childObj, iter: childrenOf(childObj) });
   }
 
   return false;

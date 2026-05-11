@@ -144,4 +144,22 @@ describe("isCircular", () => {
     }
     expect(isCircular({ value: new Foo() })).to.equal(false);
   });
+
+  it("should detect a cycle stored under a Symbol key", () => {
+    const sym = Symbol("ref");
+    const obj: Record<string | symbol, unknown> = { a: 1 };
+    obj[sym] = obj;
+    expect(isCircular({ value: obj })).to.equal(true);
+  });
+
+  it("should detect a cycle stored under a non-enumerable property", () => {
+    const obj: Record<string, unknown> = { a: 1 };
+    Object.defineProperty(obj, "hidden", {
+      value: obj,
+      enumerable: false,
+      configurable: true,
+      writable: true,
+    });
+    expect(isCircular({ value: obj })).to.equal(true);
+  });
 });
