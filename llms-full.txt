@@ -425,6 +425,33 @@ Backed by `crypto.getRandomValues`, suitable for tokens, IDs, and any context wh
 
 ---
 
+### toNumber
+
+Extract a numeric value from a string by stripping non-digit characters, respecting the locale's decimal and group separators. Uses `Intl.NumberFormat` to determine the separators for the given locale.
+
+Import: import { toNumber } from "1o1-utils/to-number";
+
+Signature:
+function toNumber({ value, locale }: ToNumberParams): number
+
+Parameters:
+- value (string, required): The string to parse
+- locale (string, optional): BCP 47 locale tag controlling decimal/group separators. Defaults to `"en-US"`
+
+Returns: number — The numeric value parsed from `value`.
+
+Example:
+toNumber({ value: "R$ 1.500,00", locale: "pt-BR" }); // 1500
+toNumber({ value: "12.5" });                          // 12.5
+toNumber({ value: "123abc456" });                     // 123456
+toNumber({ value: "-1,234.56" });                     // -1234.56
+
+Throws: TypeError if `value` is not a string. Error if `value` contains no digits or the cleaned string cannot be parsed (e.g. multiple decimal separators).
+
+Limitations: ASCII digits only — non-ASCII digit scripts (Arabic-Indic, Devanagari, etc.) are stripped. Scientific notation is not supported (`"1e5"` parses as `15`, not `100000`). The locale separator cache is FIFO-bounded to 32 entries.
+
+---
+
 ## Objects
 
 ### cloneDeep
