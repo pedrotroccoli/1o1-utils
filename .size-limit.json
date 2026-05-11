@@ -279,5 +279,10 @@
     "name": "to-number",
     "path": "dist/numbers/to-number/index.js",
     "limit": "1 kB"
+  },
+  {
+    "name": "generate-string",
+    "path": "dist/strings/generate-string/index.js",
+    "limit": "1 kB"
   }
 ]

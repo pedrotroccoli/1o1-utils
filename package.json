@@ -121,7 +121,13 @@
 		"to-number",
 		"parse-number",
 		"numeric-extract",
-		"currency-parse"
+		"currency-parse",
+		"generate-string",
+		"random-string",
+		"secure-random",
+		"token",
+		"nanoid-alternative",
+		"crypto-random"
 	],
 	"author": "Pedro Troccoli <contact@pedrotroccoli.com>",
 	"license": "MIT",
@@ -375,6 +381,10 @@
 		"./to-number": {
 			"import": "./dist/numbers/to-number/index.js",
 			"types": "./dist/numbers/to-number/index.d.ts"
+		},
+		"./generate-string": {
+			"import": "./dist/strings/generate-string/index.js",
+			"types": "./dist/strings/generate-string/index.d.ts"
 		}
 	},
 	"scripts": {

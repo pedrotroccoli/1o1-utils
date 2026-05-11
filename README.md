@@ -106,6 +106,7 @@ import { pick } from "1o1-utils/pick";
 | `capitalize` | Capitalize the first letter | `1o1-utils/capitalize` |
 | `deburr` | Strip diacritics (accent-fold) | `1o1-utils/deburr` |
 | `escapeRegExp` | Escape regex metacharacters | `1o1-utils/escape-reg-exp` |
+| `generateString` | Cryptographically-secure random string generator | `1o1-utils/generate-string` |
 | `normalizeEmail` | Trim, lowercase, optional plus-strip | `1o1-utils/normalize-email` |
 | `slugify` | Convert to a URL-friendly slug | `1o1-utils/slugify` |
 | `transformCase` | Change string casing (camel, snake, etc.) | `1o1-utils/transform-case` |
