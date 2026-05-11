@@ -38,6 +38,7 @@ export { defaults } from "./objects/defaults/index.js";
 export { defaultsDeep } from "./objects/defaults-deep/index.js";
 export { flatten } from "./objects/flatten/index.js";
 export { get } from "./objects/get/index.js";
+export { isCircular } from "./objects/is-circular/index.js";
 export { isEmpty } from "./objects/is-empty/index.js";
 export { mapKeys } from "./objects/map-keys/index.js";
 export { mapValues } from "./objects/map-values/index.js";

@@ -208,6 +208,10 @@
 			"import": "./dist/numbers/in-range/index.js",
 			"types": "./dist/numbers/in-range/index.d.ts"
 		},
+		"./is-circular": {
+			"import": "./dist/objects/is-circular/index.js",
+			"types": "./dist/objects/is-circular/index.d.ts"
+		},
 		"./is-empty": {
 			"import": "./dist/objects/is-empty/index.js",
 			"types": "./dist/objects/is-empty/index.d.ts"
