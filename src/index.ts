@@ -50,6 +50,7 @@ export { unflatten } from "./objects/unflatten/index.js";
 export { capitalize } from "./strings/capitalize/index.js";
 export { deburr } from "./strings/deburr/index.js";
 export { escapeRegExp } from "./strings/escape-reg-exp/index.js";
+export { generateString } from "./strings/generate-string/index.js";
 export { normalizeEmail } from "./strings/normalize-email/index.js";
 export { slugify } from "./strings/slugify/index.js";
 export { stringStrength } from "./strings/string-strength/index.js";

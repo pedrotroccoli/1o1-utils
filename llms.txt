@@ -53,6 +53,7 @@
 
 - [capitalize](https://pedrotroccoli.github.io/1o1-utils/strings/capitalize/): Capitalize the first character of a string
 - [escapeRegExp](https://pedrotroccoli.github.io/1o1-utils/strings/escape-reg-exp/): Escape regex metacharacters so a string can be safely interpolated into a `RegExp`
+- [generateString](https://pedrotroccoli.github.io/1o1-utils/strings/generate-string/): Generate a cryptographically-secure random string with configurable length and charset (passwords, tokens, IDs)
 - [normalizeEmail](https://pedrotroccoli.github.io/1o1-utils/strings/normalize-email/): Normalize an email address by trimming, lowercasing, and optionally stripping plus-addressing (`+alias`)
 - [slugify](https://pedrotroccoli.github.io/1o1-utils/strings/slugify/): Convert a string to a URL-friendly slug with accent handling
 - [stringStrength](https://pedrotroccoli.github.io/1o1-utils/strings/string-strength/): Score string strength via Shannon entropy and character pool diversity (passwords, tokens, API keys)

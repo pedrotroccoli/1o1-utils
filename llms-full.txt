@@ -819,6 +819,44 @@ Escapes the 12 ECMAScript regex specials: . * + ? ^ $ { } ( ) | [ ] \
 
 ---
 
+### generateString
+
+Generate a cryptographically-secure random string with configurable length and charset. Uses native `crypto.getRandomValues` with rejection sampling — no modulo bias, no `Math.random`, zero dependencies. Useful for passwords, tokens, API keys, and ID generation.
+
+Import: import { generateString } from "1o1-utils/generate-string";
+
+Signature:
+function generateString(params: GenerateStringParams): string
+
+Parameters:
+- length (number, required): Length of the output string. Non-negative integer.
+- charset ("all" | "alphanumeric" | "alpha" | "numeric" | "hex" | "custom", optional, default "all"): Character pool to draw from.
+- chars (string, required when charset is "custom"): Pool of characters to draw from.
+- dedupe (boolean, optional, default false): When charset is "custom", collapse `chars` to unique code points (preserves first-seen order).
+- minChars (number, optional, default 1): When charset is "custom", minimum chars required in `chars` (counted after dedupe). Integer ≥ 1.
+
+Charsets:
+- all: a-z + A-Z + 0-9 + !@#$%^&*()-_=+[]{};:,.<>?/
+- alphanumeric: a-z + A-Z + 0-9
+- alpha: a-z + A-Z
+- numeric: 0-9
+- hex: 0-9 + a-f
+- custom: user-provided via chars
+
+Returns: string
+
+Example:
+generateString({ length: 16 });                                    // => 'aB3$kL9mNx2&pQ7w'
+generateString({ length: 32, charset: "alphanumeric" });           // => 'aB3kL9mNx2pQ7wRt4jH6vY8cF1dG5eS0'
+generateString({ length: 12, charset: "hex" });                    // => 'a3f1b9c2d4e7'
+generateString({ length: 8, charset: "numeric" });                 // => '48291637'
+generateString({ length: 10, charset: "custom", chars: "ABC123" }); // => 'A1B3C2A1B3'
+
+Throws: Error if length is not a finite non-negative integer; if charset is unknown; if charset is "custom" and `chars` is missing, not a string, or empty; if `chars` length is below `minChars`.
+length: 0 returns "". A single-char pool returns the char repeated `length` times.
+
+---
+
 ### normalizeEmail
 
 Normalize an email address by trimming whitespace, lowercasing, and optionally stripping plus-addressing (`+alias`). Useful for deduplicating emails since most providers route `user+tag@example.com` to the same mailbox as `user@example.com`.
