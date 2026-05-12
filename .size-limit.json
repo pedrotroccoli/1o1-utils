@@ -3,7 +3,7 @@
     "name": "Total (tree-shaken + gzipped)",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "11 kB"
+    "limit": "12 kB"
   },
   {
     "name": "array-to-hash",
@@ -288,6 +288,11 @@
   {
     "name": "generate-string",
     "path": "dist/strings/generate-string/index.js",
+    "limit": "1 kB"
+  },
+  {
+    "name": "is-mobile",
+    "path": "dist/browser/is-mobile/index.js",
     "limit": "1 kB"
   }
 ]

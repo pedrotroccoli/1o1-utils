@@ -1307,6 +1307,33 @@ Throws: Error if text is not a string. Error if no clipboard mechanism is availa
 
 ---
 
+### isMobile
+
+Detect a mobile device (phone or tablet). User-agent resolution order: explicit `userAgent` argument, `navigator.userAgentData.mobile` from User-Agent Client Hints, then a regex against `navigator.userAgent`. Pass `maxWidth` to additionally treat narrow viewports as mobile — the function then returns `true` when either the user agent matches OR the viewport width is `<= maxWidth`. SSR-safe — returns `false` when no `navigator`/`innerWidth` is available and no explicit `userAgent`/`width` was passed.
+
+Import: import { isMobile } from "1o1-utils/is-mobile";
+
+Signature:
+function isMobile(params?: IsMobileParams): boolean
+
+Parameters:
+- params (IsMobileParams, optional):
+  - userAgent (string, optional): Explicit user agent string. When provided, takes precedence over `globalThis.navigator`. Useful for SSR (pass `req.headers["user-agent"]`) or unit tests.
+  - maxWidth (number, optional): Enables viewport-based detection. When set, a viewport width `<= maxWidth` is also treated as mobile (combined with the UA check via logical OR).
+  - width (number, optional): Explicit viewport width in pixels. When omitted, falls back to `globalThis.innerWidth`. Only used when `maxWidth` is set.
+
+Returns: boolean — `true` on mobile devices, `false` otherwise.
+
+Example:
+isMobile();                                         // UA auto-detect
+isMobile({ maxWidth: 768 });                        // UA OR viewport <= 768
+isMobile({ userAgent: req.headers["user-agent"] }); // SSR with request UA
+isMobile({ maxWidth: 768, width: 375 });            // SSR with explicit width
+
+Notes: Tablets (iPad, Android tablets) match the UA check. Modern iPadOS defaults to "request desktop site" and reports a macOS user agent — those cases fail the UA check but a narrow viewport with `maxWidth` set will still flag them as mobile. For pure responsive layout decisions, prefer CSS media queries or `window.matchMedia`; this utility is best for SSR hints, analytics, or platform-specific copy.
+
+---
+
 ## Comparisons
 
 ### deepEqual

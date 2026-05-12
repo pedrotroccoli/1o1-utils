@@ -845,6 +845,26 @@ bindKey("ctrl+k", (e) => {
 console.log("Bound: 'g i' and 'ctrl+k'. Focus the preview to test.");
 `,
   },
+  {
+    id: "is-mobile",
+    label: "isMobile",
+    category: "Browser",
+    code: `import { isMobile } from "1o1-utils";
+
+console.log("this device:", isMobile());
+console.log("viewport-aware:", isMobile({ maxWidth: 768 }));
+
+console.log("iPhone UA:", isMobile({
+  userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) Mobile/15E148 Safari/604.1",
+}));
+
+console.log("desktop UA + narrow viewport:", isMobile({
+  userAgent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) Chrome/120.0.0.0 Safari/537.36",
+  maxWidth: 768,
+  width: 400,
+}));
+`,
+  },
 
   // ============ Validators ============
   {
