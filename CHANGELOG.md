@@ -1,5 +1,16 @@
 # 1o1-utils
 
+## 1.10.0
+
+### Minor Changes
+
+- 5522769: Add `flatten` and `unflatten` utilities under `objects/`. `flatten` deep-flattens arrays (mirroring `Array.prototype.flat` with a configurable `depth`) or converts a nested plain object into a flat record with dot-notation keys. `unflatten` is the inverse for objects, with an optional `arrays` flag that reconstructs arrays from all-numeric segments. Both protect against prototype pollution by skipping `__proto__`, `constructor`, and `prototype` segments. Closes #73 and #82.
+- Add `generateString` utility under `strings/`: cryptographically-secure random string generator built on `crypto.getRandomValues` with rejection sampling (no modulo bias, no `Math.random`). Built-in presets `all` (default), `alphanumeric`, `alpha`, `numeric`, `hex`, plus `custom` with optional `dedupe` and `minChars`. Throws on invalid `length`, unknown `charset`, missing/empty `chars` when `charset: "custom"`, or `chars.length < minChars`. Closes #70.
+- 4e942d8: Add `isMobile` utility for browser: detect a mobile device (phone or tablet). User-agent resolution via explicit `userAgent` argument, `navigator.userAgentData.mobile` (User-Agent Client Hints), then a regex against `navigator.userAgent`. Optional viewport-width check via `maxWidth` (combined with the UA check via logical OR), using either an explicit `width` argument or `globalThis.innerWidth`. SSR-safe — returns `false` when no `navigator`/`innerWidth` is available and no explicit override was passed.
+- Add `parallel` utility under `async/`: worker-pool semaphore that runs an async `fn` over `items` with a `concurrency` cap. Results preserve input order and follow `Promise.allSettled` shape — `fn` errors never reject the call. Supports `AbortSignal`: in-flight tasks complete normally, unstarted indices resolve as rejected with `signal.reason`. Zero dependencies. Closes #83.
+- ae62578: Add `stringStrength` utility for strings: scores password/token/API-key strength via Shannon entropy and character pool diversity. Returns per-char `entropy`, `effectiveEntropy`, a 0–5 `score` with matching `level` (`very-weak`–`very-strong`), and the detected character `pools` (`lowercase`, `uppercase`, `digit`, `symbol`, `unicode`).
+- dec34b1: Add `toNumber` utility for numbers: extracts a numeric value from a string, respecting the locale's decimal and group separators (via `Intl.NumberFormat`). Defaults to `"en-US"`. Strips currency symbols, whitespace, and arbitrary non-digit characters; supports negative values via a leading `-` (or Unicode `−`). Throws when the input contains no digits or cannot be parsed.
+
 ## 1.9.0
 
 ### Minor Changes
