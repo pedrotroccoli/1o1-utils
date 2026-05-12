@@ -1,16 +1,16 @@
 import Bowser from "bowser";
 import kaiIsMobile from "is-mobile";
 import isMobileJsModule from "ismobilejs";
+import MobileDetect from "mobile-detect";
+import { Bench } from "tinybench";
+import { UAParser } from "ua-parser-js";
+import { isMobile } from "./index.js";
 
 const isMobileJs = (
   typeof isMobileJsModule === "function"
     ? isMobileJsModule
     : (isMobileJsModule as { default: typeof isMobileJsModule }).default
 ) as (ua: string) => { any: boolean };
-import MobileDetect from "mobile-detect";
-import { Bench } from "tinybench";
-import { UAParser } from "ua-parser-js";
-import { isMobile } from "./index.js";
 
 const MOBILE_RE =
   /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini|mobile|silk|symbian|series60|kaios/i;
