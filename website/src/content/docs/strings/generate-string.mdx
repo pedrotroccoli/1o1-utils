@@ -1,0 +1,101 @@
+---
+title: generateString
+description: Cryptographically-secure random string generator with configurable length and charset (passwords, tokens, IDs)
+---
+
+Generates a cryptographically-secure random string of the requested length from a chosen character pool. Uses native `crypto.getRandomValues` with rejection sampling — no modulo bias, no `Math.random`, zero dependencies.
+
+## Import
+
+```ts
+import { generateString } from "1o1-utils";
+```
+
+```ts
+import { generateString } from "1o1-utils/generate-string";
+```
+
+## Signature
+
+```ts
+function generateString(params: GenerateStringParams): string
+```
+
+## Parameters
+
+| Name       | Type                                                                          | Required           | Description                                                                                                |
+| ---------- | ----------------------------------------------------------------------------- | ------------------ | ---------------------------------------------------------------------------------------------------------- |
+| length     | `number`                                                                      | Yes                | Length of the output string. Must be a non-negative integer.                                               |
+| charset    | `"all" \| "alphanumeric" \| "alpha" \| "numeric" \| "hex" \| "custom"`        | No (default `all`) | Which character pool to draw from.                                                                         |
+| chars      | `string`                                                                      | When `charset` = `custom` | Pool of characters to draw from.                                                                      |
+| dedupe     | `boolean`                                                                     | No (default `false`) | When `charset` = `custom`, collapse `chars` to unique code points (preserves first-seen order).         |
+| minChars   | `number`                                                                      | No (default `1`)     | When `charset` = `custom`, minimum chars required in `chars` (counted after `dedupe`). Integer ≥ 1.     |
+
+## Charsets
+
+| Charset        | Pool                                                          |
+| -------------- | ------------------------------------------------------------- |
+| `all`          | `a–z` + `A–Z` + `0–9` + `!@#$%^&*()-_=+[]{};:,.<>?/`          |
+| `alphanumeric` | `a–z` + `A–Z` + `0–9`                                        |
+| `alpha`        | `a–z` + `A–Z`                                                |
+| `numeric`      | `0–9`                                                         |
+| `hex`          | `0–9` + `a–f`                                                 |
+| `custom`       | User-provided via `chars`                                     |
+
+## Examples
+
+```ts
+generateString({ length: 16 });
+// => 'aB3$kL9mNx2&pQ7w'
+
+generateString({ length: 32, charset: "alphanumeric" });
+// => 'aB3kL9mNx2pQ7wRt4jH6vY8cF1dG5eS0'
+
+generateString({ length: 12, charset: "hex" });
+// => 'a3f1b9c2d4e7'
+
+generateString({ length: 8, charset: "numeric" });
+// => '48291637'
+
+generateString({ length: 10, charset: "custom", chars: "ABC123" });
+// => 'A1B3C2A1B3'
+
+generateString({
+  length: 10,
+  charset: "custom",
+  chars: "aabbcc",
+  dedupe: true,
+});
+// pool is "abc" → e.g. 'bacaacbcab'
+
+generateString({
+  length: 16,
+  charset: "custom",
+  chars: "ABC",
+  minChars: 3,
+});
+// passes — pool has exactly 3 chars
+```
+
+## Edge Cases
+
+- `length: 0` returns `""`.
+- A single-char pool returns the char repeated `length` times.
+- Throws if `length` is not a finite non-negative integer.
+- Throws if `charset` is unknown.
+- Throws if `charset === "custom"` and `chars` is missing, not a string, or empty.
+- Throws if `chars` (or its dedupe'd form) is shorter than `minChars`.
+
+## Security
+
+Built on `crypto.getRandomValues` (browser and Node ≥ 19) with rejection sampling to avoid modulo bias. Suitable for passwords, tokens, API keys, and ID generation. Not suitable for cryptographic key derivation — use a KDF (e.g. PBKDF2, Argon2) for that.
+
+## Also known as
+
+random string, secure token, nanoid alternative, password generator, token generator
+
+## Prompt suggestion
+
+```text
+I'm using 1o1-utils (npm: https://www.npmjs.com/package/1o1-utils, GitHub: https://github.com/pedrotroccoli/1o1-utils, LLM context: https://pedrotroccoli.github.io/1o1-utils/llms.txt). Show me how to use generateString to issue 32-char alphanumeric session tokens.
+```
