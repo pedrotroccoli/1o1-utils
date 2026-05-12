@@ -1,0 +1,92 @@
+---
+title: parallel
+description: Run an async mapper over items with a concurrency cap
+---
+
+import Playground from "../../../components/Playground.tsx";
+
+Runs an async mapper over an array with a concurrency limit (worker-pool semaphore). Results preserve input order and follow the `Promise.allSettled` shape — `fn` errors never reject the call.
+
+## Try it
+
+<Playground client:only="react" utilityId="parallel" />
+
+## Import
+
+```ts
+import { parallel } from "1o1-utils";
+```
+
+```ts
+import { parallel } from "1o1-utils/parallel";
+```
+
+## Signature
+
+```ts
+async function parallel<T, R>({
+  items,
+  concurrency,
+  fn,
+  signal,
+}: ParallelParams<T, R>): Promise<Array<ParallelSettledResult<R>>>
+```
+
+## Parameters
+
+| Name        | Type                                       | Required | Description                                              |
+| ----------- | ------------------------------------------ | -------- | -------------------------------------------------------- |
+| items       | `readonly T[]`                             | Yes      | Items to process                                         |
+| concurrency | `number`                                   | Yes      | Max in-flight tasks (positive integer)                   |
+| fn          | `(item: T, index: number) => Promise<R> \| R` | Yes   | Mapper invoked per item; may be sync or async            |
+| signal      | `AbortSignal`                              | No       | Cancels pending work; in-flight tasks finish normally    |
+
+## Returns
+
+`Promise<Array<{ status: "fulfilled"; value: R } | { status: "rejected"; reason: unknown }>>` — entries in input order.
+
+## Examples
+
+```ts
+const results = await parallel({
+  items: urls,
+  concurrency: 3,
+  fn: async (url) => (await fetch(url)).json(),
+});
+
+for (const r of results) {
+  if (r.status === "fulfilled") console.log(r.value);
+  else console.error(r.reason);
+}
+
+// With AbortSignal
+const controller = new AbortController();
+setTimeout(() => controller.abort(), 5000);
+
+await parallel({
+  items,
+  concurrency: 5,
+  signal: controller.signal,
+  fn: doWork,
+});
+```
+
+## Edge Cases
+
+- Empty `items` resolves to `[]`.
+- `concurrency >= items.length` runs everything in parallel.
+- `concurrency: 1` runs serially.
+- Errors thrown by `fn` are captured as `{ status: "rejected", reason }` — the call itself never rejects from them.
+- Throws if `signal` is already aborted at call time.
+- Once `signal` aborts, unstarted indices resolve as rejected with `signal.reason`; in-flight tasks complete and their results are recorded.
+- Throws if `items` is not an array, `concurrency` is not a positive integer, `fn` is not a function, or `signal` is not an `AbortSignal`.
+
+## Also known as
+
+concurrency limit, semaphore, worker pool, async map, throttle parallel
+
+## Prompt suggestion
+
+```text
+I'm using 1o1-utils (npm: https://www.npmjs.com/package/1o1-utils, GitHub: https://github.com/pedrotroccoli/1o1-utils, LLM context: https://pedrotroccoli.github.io/1o1-utils/llms.txt). Show me how to use parallel to fetch 100 URLs with a concurrency cap of 5
+```

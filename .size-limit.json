@@ -3,7 +3,7 @@
     "name": "Total (tree-shaken + gzipped)",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "11 kB"
+    "limit": "12 kB"
   },
   {
     "name": "array-to-hash",
@@ -141,6 +141,11 @@
     "limit": "2 kB"
   },
   {
+    "name": "parallel",
+    "path": "dist/async/parallel/index.js",
+    "limit": "1 kB"
+  },
+  {
     "name": "safely",
     "path": "dist/async/safely/index.js",
     "limit": "1 kB"
@@ -273,6 +278,16 @@
   {
     "name": "string-strength",
     "path": "dist/strings/string-strength/index.js",
+    "limit": "1 kB"
+  },
+  {
+    "name": "to-number",
+    "path": "dist/numbers/to-number/index.js",
+    "limit": "1 kB"
+  },
+  {
+    "name": "generate-string",
+    "path": "dist/strings/generate-string/index.js",
     "limit": "1 kB"
   },
   {

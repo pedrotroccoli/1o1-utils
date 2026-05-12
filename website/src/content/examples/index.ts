@@ -232,6 +232,18 @@ for (let i = 0; i < 5; i++) {
 }
 `,
   },
+  {
+    id: "to-number",
+    label: "toNumber",
+    category: "Numbers",
+    code: `import { toNumber } from "1o1-utils";
+
+console.log(toNumber({ value: "R$ 1.500,00", locale: "pt-BR" })); // 1500
+console.log(toNumber({ value: "12.5" })); // 12.5
+console.log(toNumber({ value: "123abc456" })); // 123456
+console.log(toNumber({ value: "-1,234.56" })); // -1234.56
+`,
+  },
 
   // ============ Objects ============
   {
@@ -572,6 +584,27 @@ const flaky = async () => {
 };
 
 console.log(await retry({ fn: flaky, attempts: 5, delay: 50 }));
+`,
+  },
+  {
+    id: "parallel",
+    label: "parallel",
+    category: "Async",
+    code: `import { parallel } from "1o1-utils";
+
+const items = [1, 2, 3, 4, 5, 6, 7, 8];
+
+const results = await parallel({
+  items,
+  concurrency: 3,
+  fn: async (n) => {
+    await new Promise((r) => setTimeout(r, 100));
+    return n * 10;
+  },
+});
+
+console.log(results.map((r) => r.status === "fulfilled" ? r.value : r.reason));
+// [10, 20, 30, 40, 50, 60, 70, 80] — at most 3 in flight at a time
 `,
   },
   {

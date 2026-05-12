@@ -31,6 +31,7 @@
 - [clamp](https://pedrotroccoli.github.io/1o1-utils/numbers/clamp/): Restrict a number to an inclusive range, with automatic bound swap when `min > max`
 - [inRange](https://pedrotroccoli.github.io/1o1-utils/numbers/in-range/): Check if a number falls within `[start, end)` (start inclusive, end exclusive)
 - [randomInt](https://pedrotroccoli.github.io/1o1-utils/numbers/random-int/): Generate a cryptographically-secure random integer in an inclusive range using `crypto.getRandomValues` and rejection sampling
+- [toNumber](https://pedrotroccoli.github.io/1o1-utils/numbers/to-number/): Extract a numeric value from a string, respecting locale decimal/group separators (defaults to `en-US`)
 
 ## Objects
 
@@ -53,6 +54,7 @@
 
 - [capitalize](https://pedrotroccoli.github.io/1o1-utils/strings/capitalize/): Capitalize the first character of a string
 - [escapeRegExp](https://pedrotroccoli.github.io/1o1-utils/strings/escape-reg-exp/): Escape regex metacharacters so a string can be safely interpolated into a `RegExp`
+- [generateString](https://pedrotroccoli.github.io/1o1-utils/strings/generate-string/): Generate a cryptographically-secure random string with configurable length and charset (passwords, tokens, IDs)
 - [normalizeEmail](https://pedrotroccoli.github.io/1o1-utils/strings/normalize-email/): Normalize an email address by trimming, lowercasing, and optionally stripping plus-addressing (`+alias`)
 - [slugify](https://pedrotroccoli.github.io/1o1-utils/strings/slugify/): Convert a string to a URL-friendly slug with accent handling
 - [stringStrength](https://pedrotroccoli.github.io/1o1-utils/strings/string-strength/): Score string strength via Shannon entropy and character pool diversity (passwords, tokens, API keys)
@@ -62,6 +64,7 @@
 ## Async
 
 - [debounce](https://pedrotroccoli.github.io/1o1-utils/async/debounce/): Create a debounced function with cancel support
+- [parallel](https://pedrotroccoli.github.io/1o1-utils/async/parallel/): Run an async mapper over items with a concurrency cap (settle-all, AbortSignal-aware)
 - [retry](https://pedrotroccoli.github.io/1o1-utils/async/retry/): Retry async operations with fixed or exponential backoff
 - [safely](https://pedrotroccoli.github.io/1o1-utils/async/safely/): Wrap a function so it returns a [error, result] tuple instead of throwing
 - [sleep](https://pedrotroccoli.github.io/1o1-utils/async/sleep/): Promise-based delay

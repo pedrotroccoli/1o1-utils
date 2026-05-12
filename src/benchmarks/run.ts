@@ -258,6 +258,11 @@ const SUITE_META: Record<string, { slug: string; description: string }> = {
     description:
       "Builds a nested object from a flat record of dot-notation keys — the inverse of `flatten` for objects. The optional `arrays` flag reconstructs arrays from all-numeric segments. Compared against `radash.construct`.",
   },
+  toNumber: {
+    slug: "to-number",
+    description:
+      "Extracts a numeric value from a string, respecting the locale's decimal and group separators (via `Intl.NumberFormat`). Compared against `numeral.js` (locale-aware, global locale state) and `parse-decimal-number` (manual `{thousands, decimal}` opts).\n\n> **Note:** `parse-decimal-number` is faster on currency cases because it skips `Intl` and requires the caller to pass separators explicitly per call. 1o1-utils trades a small overhead for BCP-47 locale ergonomics and an internal separator cache.",
+  },
 };
 
 function getSizes(rows: TaskRow[]): string[] {

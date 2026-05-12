@@ -45,6 +45,9 @@ importers:
       '@types/mousetrap':
         specifier: ^1.6.15
         version: 1.6.15
+      '@types/numeral':
+        specifier: ^2.0.5
+        version: 2.0.5
       bowser:
         specifier: ^2.14.1
         version: 2.14.1
@@ -81,6 +84,12 @@ importers:
       mousetrap:
         specifier: ^1.6.5
         version: 1.6.5
+      numeral:
+        specifier: ^2.0.6
+        version: 2.0.6
+      parse-decimal-number:
+        specifier: ^1.0.0
+        version: 1.0.0
       radash:
         specifier: ^12.1.1
         version: 12.1.1
@@ -638,6 +647,9 @@ packages:
   '@types/node@24.3.0':
     resolution: {integrity: sha512-aPTXCrfwnDLj4VvXrm+UUCQjNEvJgNA8s5F1cvwQU+3KNltTOkBm1j30uNLyqqPNe7gE3KFzImYoZEfLhp4Yow==}
 
+  '@types/numeral@2.0.5':
+    resolution: {integrity: sha512-kH8I7OSSwQu9DS9JYdFWbuvhVzvFRoCPCkGxNwoGgaPeDfEPJlcxNvEOypZhQ3XXHsGbfIuYcxcJxKUfJHnRfw==}
+
   '@types/whatwg-mimetype@3.0.2':
     resolution: {integrity: sha512-c2AKvDT8ToxLIOUlN51gTiHXflsfIFisS4pO7pDPoKouJCESkhZnEy623gwP9laCy5lnLDAw1vAzu2vM2YLOrA==}
 
@@ -1066,6 +1078,9 @@ packages:
   nanospinner@1.2.2:
     resolution: {integrity: sha512-Zt/AmG6qRU3e+WnzGGLuMCEAO/dAu45stNbHY223tUxldaDAeE+FxSPsd9Q+j+paejmm0ZbrNVs5Sraqy3dRxA==}
 
+  numeral@2.0.6:
+    resolution: {integrity: sha512-qaKRmtYPZ5qdw4jWJD6bxEf1FJEqllJrwxCLIm0sQU/A7v2/czigzOb+C2uSiFsa9lBUzeH7M1oK+Q+OLxL3kA==}
+
   outdent@0.5.0:
     resolution: {integrity: sha512-/jHxFIzoMXdqPzTaCpFzAAWhpkSjZPF4Vsn6jAfNpmbH/ymsmd7Qc6VE9BGn0L6YMj6uwpQLxCECpus4ukKS9Q==}
 
@@ -1099,6 +1114,9 @@ packages:
 
   package-manager-detector@0.2.11:
     resolution: {integrity: sha512-BEnLolu+yuz22S56CU1SUKq3XC3PkwD5wv4ikR4MfGvnRVcmzXR9DwSlW2fEamyTPyXHomBJRzgapeuBvRNzJQ==}
+
+  parse-decimal-number@1.0.0:
+    resolution: {integrity: sha512-EwPYS1ZGFGan8TFZaQSlaoxEdNrdPR+3lO2Ie8ZW0wb9ZUWGXQwR4chzYfTc2qq4SsB8isGIlp5gPKENFMLIgw==}
 
   path-exists@4.0.0:
     resolution: {integrity: sha512-ak9Qy5Q7jYb2Wwcey5Fpvg2KoAc/ZIhLSLOSBmRmygPsGwkVVt0fZa0qrtMz+m6tJTAHfZQ8FnmB4MG4LWy7/w==}
@@ -1805,6 +1823,8 @@ snapshots:
     dependencies:
       undici-types: 7.10.0
 
+  '@types/numeral@2.0.5': {}
+
   '@types/whatwg-mimetype@3.0.2': {}
 
   '@types/ws@8.18.1':
@@ -2237,6 +2257,8 @@ snapshots:
     dependencies:
       picocolors: 1.1.1
 
+  numeral@2.0.6: {}
+
   outdent@0.5.0: {}
 
   p-filter@2.1.0:
@@ -2266,6 +2288,8 @@ snapshots:
   package-manager-detector@0.2.11:
     dependencies:
       quansync: 0.2.11
+
+  parse-decimal-number@1.0.0: {}
 
   path-exists@4.0.0: {}
 
