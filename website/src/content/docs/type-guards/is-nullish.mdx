@@ -1,0 +1,79 @@
+---
+title: isNullish
+description: Type-guard that narrows a value to null or undefined
+---
+
+import Playground from "../../../components/Playground.tsx";
+
+Type guard that returns `true` when the value is `null` or `undefined` and narrows the argument to `null | undefined` in the truthy branch. By symmetry, the `else` branch removes both from the type — handy for guarding optional/maybe values while preserving `0`, `""`, and `false`.
+
+For a non-narrowing equivalent that follows the named-object parameter convention, see [`isNil`](/comparisons/is-nil/).
+
+## Try it
+
+<Playground client:only="react" utilityId="is-nullish" />
+
+## Import
+
+```ts
+import { isNullish } from "1o1-utils";
+```
+
+```ts
+import { isNullish } from "1o1-utils/is-nullish";
+```
+
+## Signature
+
+```ts
+function isNullish(value: unknown): value is null | undefined
+```
+
+## Parameters
+
+| Name  | Type      | Required | Description         |
+| ----- | --------- | -------- | ------------------- |
+| value | `unknown` | Yes      | The value to check  |
+
+## Returns
+
+`boolean` (type predicate `value is null | undefined`) — `true` if the value is `null` or `undefined`, `false` otherwise.
+
+## Examples
+
+```ts
+const value: string | null | undefined = maybeString();
+if (isNullish(value)) {
+  // value is narrowed to null | undefined
+  return "missing";
+}
+// value is narrowed to string
+return value.toUpperCase();
+
+isNullish(null);       // => true
+isNullish(undefined);  // => true
+isNullish(0);          // => false
+isNullish("");         // => false
+isNullish(false);      // => false
+isNullish(Number.NaN); // => false
+```
+
+## Edge Cases
+
+- Falsy non-nullish values (`0`, `""`, `false`, `NaN`, `0n`) return `false`.
+- Equivalent to the loose-equality idiom `value == null`, using strict equality for clarity.
+- Same runtime behavior as [`isNil`](/comparisons/is-nil/); the difference is the type predicate, which narrows the caller's variable in both branches.
+
+## Convention note
+
+Type guards use a single positional argument rather than the library's named-object parameter convention so that TypeScript can narrow the caller's variable inside the `if`/`else` branches.
+
+## Also known as
+
+is nullish, type guard, null check, undefined check, nullish coalescing, optional check
+
+## Prompt suggestion
+
+```text
+I'm using 1o1-utils (npm: https://www.npmjs.com/package/1o1-utils, GitHub: https://github.com/pedrotroccoli/1o1-utils, LLM context: https://pedrotroccoli.github.io/1o1-utils/llms.txt). Show me how to use isNullish to early-return on null/undefined and let TypeScript narrow the remaining type in the rest of the function.
+```

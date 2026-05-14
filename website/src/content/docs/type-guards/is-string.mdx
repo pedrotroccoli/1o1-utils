@@ -1,0 +1,75 @@
+---
+title: isString
+description: Type-guard that narrows a value to string
+---
+
+import Playground from "../../../components/Playground.tsx";
+
+Type guard that returns `true` when the value is a primitive `string` and narrows the argument to `string` in the truthy branch. Matches `typeof value === "string"` semantics — boxed `String` objects return `false`.
+
+## Try it
+
+<Playground client:only="react" utilityId="is-string" />
+
+## Import
+
+```ts
+import { isString } from "1o1-utils";
+```
+
+```ts
+import { isString } from "1o1-utils/is-string";
+```
+
+## Signature
+
+```ts
+function isString(value: unknown): value is string
+```
+
+## Parameters
+
+| Name  | Type      | Required | Description         |
+| ----- | --------- | -------- | ------------------- |
+| value | `unknown` | Yes      | The value to check  |
+
+## Returns
+
+`boolean` (type predicate `value is string`) — `true` if the value is a primitive string, `false` otherwise. TypeScript uses the predicate to narrow the caller's variable.
+
+## Examples
+
+```ts
+const value: unknown = "hello";
+if (isString(value)) {
+  // value is narrowed to string
+  console.log(value.toUpperCase()); // "HELLO"
+}
+
+isString("");                  // => true
+isString("abc");               // => true
+isString(123);                 // => false
+isString(null);                // => false
+isString(undefined);           // => false
+isString(new String("boxed")); // => false
+```
+
+## Edge Cases
+
+- Boxed `String` objects (e.g. `new String("x")`) return `false` — they are objects, not strings.
+- Empty strings (`""`) are still strings — return `true`.
+- The check is `typeof value === "string"`; no coercion is performed.
+
+## Convention note
+
+Type guards use a single positional argument rather than the library's named-object parameter convention so that TypeScript can narrow the caller's variable inside the `if`/`else` branches. With a destructured parameter, the predicate would narrow only the local property, not the caller's identifier.
+
+## Also known as
+
+is string, type guard, string check, narrow string, typeof string
+
+## Prompt suggestion
+
+```text
+I'm using 1o1-utils (npm: https://www.npmjs.com/package/1o1-utils, GitHub: https://github.com/pedrotroccoli/1o1-utils, LLM context: https://pedrotroccoli.github.io/1o1-utils/llms.txt). Show me how to use isString to narrow an `unknown` value to a string so I can safely call string methods.
+```

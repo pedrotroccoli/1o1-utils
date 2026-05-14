@@ -900,6 +900,65 @@ console.log(isValidUrl({ url: "ftp://files.example.com" }));
 console.log(isValidUrl({ url: "ftp://files.example.com", protocols: ["http", "https"] }));
 `,
   },
+
+  // ============ Type Guards ============
+  {
+    id: "is-string",
+    label: "isString",
+    category: "Type Guards",
+    code: `import { isString } from "1o1-utils";
+
+const value: unknown = "hello";
+
+if (isString(value)) {
+  // value is narrowed to string
+  console.log(value.toUpperCase()); // "HELLO"
+}
+
+console.log(isString(""));        // true
+console.log(isString(42));        // false
+console.log(isString(null));      // false
+`,
+  },
+  {
+    id: "is-number",
+    label: "isNumber",
+    category: "Type Guards",
+    code: `import { isNumber } from "1o1-utils";
+
+const value: unknown = 3.14;
+
+if (isNumber(value)) {
+  // value is narrowed to number
+  console.log(value.toFixed(1)); // "3.1"
+}
+
+console.log(isNumber(0));            // true
+console.log(isNumber(Number.NaN));   // true (matches typeof === "number")
+console.log(isNumber("1"));          // false
+console.log(isNumber(1n));           // false
+`,
+  },
+  {
+    id: "is-nullish",
+    label: "isNullish",
+    category: "Type Guards",
+    code: `import { isNullish } from "1o1-utils";
+
+function greet(name: string | null | undefined) {
+  if (isNullish(name)) {
+    return "Hello, stranger";
+  }
+  // name is narrowed to string here
+  return \`Hello, \${name.toUpperCase()}\`;
+}
+
+console.log(greet(undefined));     // "Hello, stranger"
+console.log(greet("Ada"));         // "Hello, ADA"
+console.log(isNullish(0));         // false (zero is not nullish)
+console.log(isNullish(""));        // false
+`,
+  },
 ];
 
 export const EXAMPLES_BY_ID: Record<string, Example> = Object.fromEntries(

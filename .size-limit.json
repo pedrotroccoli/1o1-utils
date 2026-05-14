@@ -294,5 +294,20 @@
     "name": "is-mobile",
     "path": "dist/browser/is-mobile/index.js",
     "limit": "1 kB"
+  },
+  {
+    "name": "is-string",
+    "path": "dist/type-guards/is-string/index.js",
+    "limit": "1 kB"
+  },
+  {
+    "name": "is-number",
+    "path": "dist/type-guards/is-number/index.js",
+    "limit": "1 kB"
+  },
+  {
+    "name": "is-nullish",
+    "path": "dist/type-guards/is-nullish/index.js",
+    "limit": "1 kB"
   }
 ]
