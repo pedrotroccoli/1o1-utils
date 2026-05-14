@@ -1,10 +1,5 @@
+import { isPlainObject } from "../../_internal/is-plain-object.js";
 import type { DefaultsDeepParams, DefaultsDeepResult } from "./types.js";
-
-function isPlainObject(value: unknown): value is Record<string, unknown> {
-  return (
-    typeof value === "object" && value !== null && value.constructor === Object
-  );
-}
 
 /**
  * Recursively assigns default values from `source` to `target`. For each

@@ -1,6 +1,5 @@
+import { UNSAFE_KEYS } from "../../_internal/unsafe-keys.js";
 import type { OmitByParams } from "./types.js";
-
-const UNSAFE_KEYS = new Set(["__proto__", "constructor", "prototype"]);
 
 /**
  * Creates an object excluding entries for which the predicate returns truthy.
