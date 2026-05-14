@@ -1,10 +1,5 @@
+import { isPlainObject } from "../../_internal/is-plain-object.js";
 import type { MapValuesParams, MapValuesResult } from "./types.js";
-
-function isPlainObject(value: unknown): value is Record<string, unknown> {
-  return (
-    typeof value === "object" && value !== null && value.constructor === Object
-  );
-}
 
 /**
  * Creates a new object with the same keys as `obj`, but with each value

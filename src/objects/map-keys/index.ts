@@ -1,12 +1,6 @@
+import { isPlainObject } from "../../_internal/is-plain-object.js";
+import { UNSAFE_KEYS } from "../../_internal/unsafe-keys.js";
 import type { MapKeysParams, MapKeysResult } from "./types.js";
-
-const UNSAFE_KEYS = new Set(["__proto__", "constructor", "prototype"]);
-
-function isPlainObject(value: unknown): value is Record<string, unknown> {
-  return (
-    typeof value === "object" && value !== null && value.constructor === Object
-  );
-}
 
 /**
  * Creates a new object with the same values as `obj`, but with each key

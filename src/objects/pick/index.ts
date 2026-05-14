@@ -1,19 +1,6 @@
+import { safeAssign } from "../../_internal/safe-assign.js";
+import { UNSAFE_KEYS } from "../../_internal/unsafe-keys.js";
 import type { PickParams } from "./types.js";
-
-const UNSAFE_KEYS = new Set(["__proto__", "constructor", "prototype"]);
-
-function safeAssign(
-  tgt: Record<string, unknown>,
-  key: string,
-  value: unknown,
-): void {
-  Object.defineProperty(tgt, key, {
-    value,
-    writable: true,
-    enumerable: true,
-    configurable: true,
-  });
-}
 
 function pickNested(
   source: Record<string, unknown>,
