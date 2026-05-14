@@ -93,6 +93,12 @@
 - [once](https://pedrotroccoli.github.io/1o1-utils/functions/once/): Create a function that runs only once and caches its result
 - [pipe](https://pedrotroccoli.github.io/1o1-utils/functions/pipe/): Compose functions left-to-right into a single function
 
+## Type Guards
+
+- [isNullish](https://pedrotroccoli.github.io/1o1-utils/type-guards/is-nullish/): Type-guard that checks if a value is `null` or `undefined`, narrowing the type in both branches
+- [isNumber](https://pedrotroccoli.github.io/1o1-utils/type-guards/is-number/): Type-guard that checks if a value is a primitive `number` (includes `NaN`/`Infinity`; excludes `bigint` and boxed `Number`)
+- [isString](https://pedrotroccoli.github.io/1o1-utils/type-guards/is-string/): Type-guard that checks if a value is a primitive `string` (excludes boxed `String` objects)
+
 ## Validators
 
 - [isValidUrl](https://pedrotroccoli.github.io/1o1-utils/validators/is-valid-url/): Check if a string is a parseable URL using the WHATWG `URL` API, with optional protocol allowlist

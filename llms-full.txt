@@ -1576,3 +1576,96 @@ isValidUrl({ url: "ftp://example.com",   protocols: ["http", "https"] }); // => 
 isValidUrl({ url: "https://example.com", protocols: "https" });           // => true
 
 Non-string inputs (including null, undefined, numbers, and objects) return false. Empty strings return false without invoking the parser. When protocols is omitted and URL.canParse is available, URL.canParse is used to avoid the cost of throwing on invalid input; otherwise a try/catch around new URL(input) is used. protocols: [] rejects every input — no scheme can match an empty allowlist. Protocol names are lowercased and any trailing colon is stripped before comparison, so ["HTTPS"], ["https"], and ["https:"] all match https://.... Protocol-relative URLs (//example.com) and bare authority strings are not accepted — a scheme is required, matching URL constructor behavior.
+
+---
+
+## Type Guards
+
+Type guards use positional arguments rather than the named-object parameter convention so that TypeScript can narrow the caller's variable inside the `if`/`else` branches.
+
+### isString
+
+Type guard that checks whether a value is a primitive `string`. Narrows the argument to `string` in the truthy branch. Matches `typeof value === "string"` semantics: boxed `String` objects (e.g. `new String("x")`) return `false`.
+
+Import: import { isString } from "1o1-utils/is-string";
+
+Signature:
+function isString(value: unknown): value is string
+
+Parameters:
+- value (unknown, required): The value to check
+
+Returns: boolean — `true` if the value is a primitive string, `false` otherwise. The return type is the type predicate `value is string`, which TypeScript uses to narrow the caller variable.
+
+Example:
+const value: unknown = "hello";
+if (isString(value)) {
+  // value is narrowed to string
+  console.log(value.toUpperCase()); // "HELLO"
+}
+
+isString("");                  // => true
+isString("abc");               // => true
+isString(123);                 // => false
+isString(null);                // => false
+isString(undefined);           // => false
+isString(new String("boxed")); // => false
+
+### isNumber
+
+Type guard that checks whether a value is a primitive `number`. Narrows the argument to `number` in the truthy branch. Matches `typeof value === "number"` semantics: `NaN`, `Infinity`, and `-Infinity` return `true`; `bigint` values and boxed `Number` objects return `false`. Use `Number.isFinite` or `Number.isInteger` afterwards if you need to rule out `NaN`/`Infinity` or restrict to integers.
+
+Import: import { isNumber } from "1o1-utils/is-number";
+
+Signature:
+function isNumber(value: unknown): value is number
+
+Parameters:
+- value (unknown, required): The value to check
+
+Returns: boolean — `true` if the value is a primitive number, `false` otherwise. The return type is the type predicate `value is number`.
+
+Example:
+const value: unknown = 42;
+if (isNumber(value)) {
+  // value is narrowed to number
+  console.log(value.toFixed(2)); // "42.00"
+}
+
+isNumber(0);                  // => true
+isNumber(-1.5);               // => true
+isNumber(Number.NaN);         // => true
+isNumber("1");                // => false
+isNumber(1n);                 // => false
+isNumber(new Number(1));      // => false
+isNumber(null);               // => false
+
+### isNullish
+
+Type guard that checks whether a value is `null` or `undefined`. Narrows the argument to `null | undefined` in the truthy branch — and, by symmetry, removes both from the type in the `else` branch. For a non-narrowing equivalent that follows the named-object parameter convention, see `isNil`.
+
+Import: import { isNullish } from "1o1-utils/is-nullish";
+
+Signature:
+function isNullish(value: unknown): value is null | undefined
+
+Parameters:
+- value (unknown, required): The value to check
+
+Returns: boolean — `true` if the value is `null` or `undefined`, `false` otherwise. The return type is the type predicate `value is null | undefined`.
+
+Example:
+const value: string | null | undefined = maybeString();
+if (isNullish(value)) {
+  // value is narrowed to null | undefined
+  return "missing";
+}
+// value is narrowed to string
+return value.toUpperCase();
+
+isNullish(null);       // => true
+isNullish(undefined);  // => true
+isNullish(0);          // => false
+isNullish("");         // => false
+isNullish(false);      // => false
+isNullish(Number.NaN); // => false

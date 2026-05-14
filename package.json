@@ -136,7 +136,14 @@
 		"device",
 		"user-agent",
 		"phone",
-		"tablet"
+		"tablet",
+		"is-string",
+		"is-number",
+		"is-nullish",
+		"type-guard",
+		"type-guards",
+		"type-predicate",
+		"narrow-type"
 	],
 	"author": "Pedro Troccoli <contact@pedrotroccoli.com>",
 	"license": "MIT",
@@ -402,6 +409,18 @@
 		"./is-mobile": {
 			"import": "./dist/browser/is-mobile/index.js",
 			"types": "./dist/browser/is-mobile/index.d.ts"
+		},
+		"./is-string": {
+			"import": "./dist/type-guards/is-string/index.js",
+			"types": "./dist/type-guards/is-string/index.d.ts"
+		},
+		"./is-number": {
+			"import": "./dist/type-guards/is-number/index.js",
+			"types": "./dist/type-guards/is-number/index.d.ts"
+		},
+		"./is-nullish": {
+			"import": "./dist/type-guards/is-nullish/index.js",
+			"types": "./dist/type-guards/is-nullish/index.d.ts"
 		}
 	},
 	"scripts": {
