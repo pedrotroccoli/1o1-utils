@@ -183,6 +183,11 @@ const SUITE_META: Record<string, { slug: string; description: string }> = {
     description:
       "Compares two values by their top-level entries using `Object.is`. Compared against `lodash.isEqual` (deep) and a native `Object.keys` based implementation.",
   },
+  deepEqual: {
+    slug: "deep-equal",
+    description:
+      "Deep structural equality check. Handles plain objects, arrays, dates, regexes, Maps, Sets, and typed arrays. Compared against `lodash.isEqual` and `dequal`.",
+  },
   isValidUrl: {
     slug: "is-valid-url",
     description:
