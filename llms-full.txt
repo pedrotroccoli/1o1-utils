@@ -653,6 +653,45 @@ Returns defaultValue (or undefined) for missing paths, null or primitive interme
 
 ---
 
+### isCircular
+
+Detect whether a value contains a circular reference. Useful as a guard before JSON.stringify, deep cloning, or deep equality checks that would otherwise loop forever.
+
+Import: import { isCircular } from "1o1-utils/is-circular";
+
+Signature:
+function isCircular({ value }: IsCircularParams): boolean
+
+Parameters:
+- value (unknown, required): The value to inspect
+
+Returns: boolean
+
+What gets traversed: plain objects and class instances (all own keys including non-enumerable and Symbol), arrays, Map (both keys and values), Set.
+What is treated as a leaf: functions (even at the root), Date, RegExp, Error, ArrayBuffer, typed arrays, primitives.
+
+Example:
+const obj: any = { a: 1 };
+obj.self = obj;
+isCircular({ value: obj });               // => true
+
+isCircular({ value: { a: { b: 1 } } });   // => false
+isCircular({ value: [1, [2, [3]]] });     // => false
+
+const a: any = {};
+const b: any = {};
+a.b = b;
+b.a = a;
+isCircular({ value: a });                 // => true
+
+const map = new Map();
+map.set("self", map);
+isCircular({ value: map });               // => true
+
+Shared (non-circular) references return false — only true back-edges in the traversal count as cycles. Property getters are invoked during traversal.
+
+---
+
 ### isEmpty
 
 Check whether a given value is considered empty. Supports strings, arrays, plain objects, Maps, and Sets.
