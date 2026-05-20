@@ -57,6 +57,9 @@ importers:
       chai:
         specifier: ^6.2.2
         version: 6.2.2
+      dequal:
+        specifier: ^2.0.3
+        version: 2.0.3
       es-toolkit:
         specifier: ^1.45.1
         version: 1.46.1
@@ -779,6 +782,10 @@ packages:
   decamelize@4.0.0:
     resolution: {integrity: sha512-9iE1PgSik9HeIIw2JO94IidnE3eBoQrFJ3w7sFuzSX4DpmZ3v5sZpUiV5Swcf6mQEF+Y0ru8Neo+p+nyh2J+hQ==}
     engines: {node: '>=10'}
+
+  dequal@2.0.3:
+    resolution: {integrity: sha512-0je+qPKHEMohvfRTCEo3CrPG6cAzAYgmzKyxRiYSSDkS6eGJdyVJm7WaYA5ECaAD9wLB2T4EEeymA5aFVcYXCA==}
+    engines: {node: '>=6'}
 
   detect-europe-js@0.1.2:
     resolution: {integrity: sha512-lgdERlL3u0aUdHocoouzT10d9I89VVhk0qNRmll7mXdGfJT1/wqZ2ZLA4oJAjeACPY5fT1wsbq2AT+GkuInsow==}
@@ -1931,6 +1938,8 @@ snapshots:
       supports-color: 8.1.1
 
   decamelize@4.0.0: {}
+
+  dequal@2.0.3: {}
 
   detect-europe-js@0.1.2: {}
 
