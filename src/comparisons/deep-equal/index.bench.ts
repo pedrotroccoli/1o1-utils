@@ -1,3 +1,4 @@
+import { dequal } from "dequal";
 import lodashIsEqual from "lodash/isEqual.js";
 import { Bench } from "tinybench";
 import { deepEqual } from "./index.js";
@@ -37,58 +38,79 @@ const bench = new Bench({ name: "deepEqual", time: 1000 });
 
 bench
   .add("1o1-utils (small nested object)", () => {
-    deepEqual({ a: smallA, b: smallB });
+    deepEqual(smallA, smallB);
   })
   .add("lodash (small nested object)", () => {
     lodashIsEqual(smallA, smallB);
+  })
+  .add("dequal (small nested object)", () => {
+    dequal(smallA, smallB);
   });
 
 bench
   .add("1o1-utils (deeply nested object)", () => {
-    deepEqual({ a: nestedA, b: nestedB });
+    deepEqual(nestedA, nestedB);
   })
   .add("lodash (deeply nested object)", () => {
     lodashIsEqual(nestedA, nestedB);
+  })
+  .add("dequal (deeply nested object)", () => {
+    dequal(nestedA, nestedB);
   });
 
 bench
   .add("1o1-utils (large array of objects)", () => {
-    deepEqual({ a: largeArrA, b: largeArrB });
+    deepEqual(largeArrA, largeArrB);
   })
   .add("lodash (large array of objects)", () => {
     lodashIsEqual(largeArrA, largeArrB);
+  })
+  .add("dequal (large array of objects)", () => {
+    dequal(largeArrA, largeArrB);
   });
 
 bench
   .add("1o1-utils (mismatch early)", () => {
-    deepEqual({ a: mismatchA, b: mismatchB });
+    deepEqual(mismatchA, mismatchB);
   })
   .add("lodash (mismatch early)", () => {
     lodashIsEqual(mismatchA, mismatchB);
+  })
+  .add("dequal (mismatch early)", () => {
+    dequal(mismatchA, mismatchB);
   });
 
 bench
   .add("1o1-utils (same ref)", () => {
-    deepEqual({ a: nestedA, b: nestedA });
+    deepEqual(nestedA, nestedA);
   })
   .add("lodash (same ref)", () => {
     lodashIsEqual(nestedA, nestedA);
+  })
+  .add("dequal (same ref)", () => {
+    dequal(nestedA, nestedA);
   });
 
 bench
   .add("1o1-utils (Map)", () => {
-    deepEqual({ a: mapA, b: mapB });
+    deepEqual(mapA, mapB);
   })
   .add("lodash (Map)", () => {
     lodashIsEqual(mapA, mapB);
+  })
+  .add("dequal (Map)", () => {
+    dequal(mapA, mapB);
   });
 
 bench
   .add("1o1-utils (Set)", () => {
-    deepEqual({ a: setA, b: setB });
+    deepEqual(setA, setB);
   })
   .add("lodash (Set)", () => {
     lodashIsEqual(setA, setB);
+  })
+  .add("dequal (Set)", () => {
+    dequal(setA, setB);
   });
 
 export { bench };
