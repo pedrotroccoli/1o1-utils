@@ -346,6 +346,26 @@ console.log(get({ obj: data, path: "user.profile.missing", defaultValue: "fallba
 `,
   },
   {
+    id: "is-circular",
+    label: "isCircular",
+    category: "Objects",
+    code: `import { isCircular } from "1o1-utils";
+
+const obj: any = { a: 1 };
+obj.self = obj;
+console.log(isCircular({ value: obj })); // true
+
+console.log(isCircular({ value: { a: { b: 1 } } })); // false
+console.log(isCircular({ value: [1, [2, [3]]] })); // false
+
+const a: any = {};
+const b: any = {};
+a.b = b;
+b.a = a;
+console.log(isCircular({ value: a })); // true
+`,
+  },
+  {
     id: "is-empty",
     label: "isEmpty",
     category: "Objects",

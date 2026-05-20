@@ -1,0 +1,91 @@
+---
+title: isCircular
+description: Detect circular references in objects, arrays, Maps, and Sets
+---
+
+import Playground from "../../../components/Playground.tsx";
+
+Detects whether a value contains a circular reference. Useful as a guard before `JSON.stringify`, deep cloning, or deep equality checks that would otherwise loop forever.
+
+## Try it
+
+<Playground client:only="react" utilityId="is-circular" />
+
+## Import
+
+```ts
+import { isCircular } from "1o1-utils";
+```
+
+```ts
+import { isCircular } from "1o1-utils/is-circular";
+```
+
+## Signature
+
+```ts
+function isCircular({ value }: IsCircularParams): boolean
+```
+
+## Parameters
+
+| Name    | Type      | Required | Description          |
+| ------- | --------- | -------- | -------------------- |
+| `value` | `unknown` | Yes      | The value to inspect |
+
+## Returns
+
+`boolean` — `true` if the reachable graph contains a cycle, `false` otherwise.
+
+What gets traversed:
+
+- Plain objects and class instances (all own keys: enumerable, non-enumerable, and `Symbol`)
+- Arrays
+- `Map` (both keys and values)
+- `Set`
+
+What is treated as a leaf (not traversed):
+
+- Functions (even when used as the root value)
+- `Date`, `RegExp`, `Error`
+- `ArrayBuffer` and typed arrays
+- Primitives
+
+## Examples
+
+```ts
+const obj: any = { a: 1 };
+obj.self = obj;
+isCircular({ value: obj });               // => true
+
+isCircular({ value: { a: { b: 1 } } });   // => false
+isCircular({ value: [1, [2, [3]]] });     // => false
+
+const a: any = {};
+const b: any = {};
+a.b = b;
+b.a = a;
+isCircular({ value: a });                 // => true
+
+const map = new Map();
+map.set("self", map);
+isCircular({ value: map });               // => true
+```
+
+## Edge Cases
+
+- Primitives (`null`, `undefined`, numbers, strings, booleans) always return `false`.
+- Shared references that are not cyclic return `false` — only true back-edges in the traversal count.
+- Map cycles are detected for both keys and values.
+- Functions are always leaves — circular state attached to a function (`fn.self = fn`) is not detected.
+- Property getters are invoked during traversal (same behavior as iterating `Object.values`).
+
+## Also known as
+
+circular reference, cycle detection, infinite loop, recursive reference
+
+## Prompt suggestion
+
+```text
+I'm using 1o1-utils (npm: https://www.npmjs.com/package/1o1-utils, GitHub: https://github.com/pedrotroccoli/1o1-utils, LLM context: https://pedrotroccoli.github.io/1o1-utils/llms.txt). Show me how to use isCircular to guard a JSON.stringify call against circular references.
+```

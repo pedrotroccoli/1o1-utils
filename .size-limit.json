@@ -71,6 +71,11 @@
     "limit": "1 kB"
   },
   {
+    "name": "is-circular",
+    "path": "dist/objects/is-circular/index.js",
+    "limit": "1 kB"
+  },
+  {
     "name": "is-empty",
     "path": "dist/objects/is-empty/index.js",
     "limit": "1 kB"

@@ -42,6 +42,7 @@
 - [defaultsDeep](https://pedrotroccoli.github.io/1o1-utils/objects/defaults-deep/): Recursively fill `undefined` properties with defaults from another object
 - [flatten](https://pedrotroccoli.github.io/1o1-utils/objects/flatten/): Deep-flatten an array, or convert a nested object to dot-notation keys
 - [get](https://pedrotroccoli.github.io/1o1-utils/objects/get/): Read a nested value from an object via dot notation with a default fallback
+- [isCircular](https://pedrotroccoli.github.io/1o1-utils/objects/is-circular/): Detect circular references in objects, arrays, Maps, and Sets
 - [isEmpty](https://pedrotroccoli.github.io/1o1-utils/objects/is-empty/): Check if a value is empty (strings, arrays, objects, Maps, Sets)
 - [mapKeys](https://pedrotroccoli.github.io/1o1-utils/objects/map-keys/): Transform an object's keys via an iteratee function
 - [mapValues](https://pedrotroccoli.github.io/1o1-utils/objects/map-values/): Transform an object's values via an iteratee function

@@ -90,6 +90,7 @@ import { pick } from "1o1-utils/pick";
 | `defaults` | Fill `undefined` keys with defaults | `1o1-utils/defaults` |
 | `defaultsDeep` | Recursive `defaults` | `1o1-utils/defaults-deep` |
 | `get` | Read a nested value via dot notation | `1o1-utils/get` |
+| `isCircular` | Detect circular references in objects/arrays/Maps/Sets | `1o1-utils/is-circular` |
 | `isEmpty` | Check if a value is empty | `1o1-utils/is-empty` |
 | `mapKeys` | Transform object keys via an iteratee | `1o1-utils/map-keys` |
 | `mapValues` | Transform object values via an iteratee | `1o1-utils/map-values` |
