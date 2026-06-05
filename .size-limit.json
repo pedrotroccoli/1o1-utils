@@ -1,6 +1,6 @@
 [
   {
-    "name": "Total (tree-shaken + gzipped)",
+    "name": "Total (tree-shaken + brotli)",
     "path": "dist/index.js",
     "import": "*",
     "limit": "12 kB"

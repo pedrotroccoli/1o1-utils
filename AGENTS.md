@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-1o1-utils is a lightweight, tree-shakeable TypeScript utility library with zero dependencies. Each utility is independently importable. The library must stay under 5 kB gzipped total, with individual utilities at 1-2 kB.
+1o1-utils is a lightweight, tree-shakeable TypeScript utility library with zero dependencies. Each utility is independently importable. The full library must stay under the 12 kB total limit (currently ~11.6 kB brotli, enforced in `.size-limit.json`), with individual utilities at 1-2 kB.
 
 ## Commands
 
