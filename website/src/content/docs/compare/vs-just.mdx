@@ -9,7 +9,7 @@ description: Comparing 1o1-utils and just — both micro-module utility librarie
 
 | | 1o1-utils | just |
 |---|---|---|
-| Bundle size | ~2 kB total (gzip), 139–366 B per util | similar per-function sizes |
+| Bundle size | ~13 kB full (gzip), from ~80 B per util | similar per-function sizes |
 | Dependencies | 0 | 0 per package |
 | TypeScript | **Native, strict, full inference** | `.d.ts` files, less strict |
 | Distribution | **Single package, tree-shakeable** | Dozens of separate packages |
@@ -51,8 +51,8 @@ import { debounce } from "1o1-utils/debounce";
 | `just-capitalize` | `capitalize({ str })` | |
 | `just-truncate` | `truncate({ str, length, suffix })` | |
 | `just-camel-case` / `just-kebab-case` | `transformCase({ str, to })` | One function |
-| `just-debounce-it` | `debounce({ fn, wait })` | |
-| `just-throttle` | `throttle({ fn, wait })` | |
+| `just-debounce-it` | `debounce({ fn, ms })` | |
+| `just-throttle` | `throttle({ fn, ms })` | |
 
 ## Side by side
 
@@ -75,7 +75,7 @@ import { debounce } from "1o1-utils/debounce";
 
 const pages = chunk({ array: items, size: 10 });
 const picked = pick({ obj: user, keys: ["id", "name"] });
-const search = debounce({ fn, wait: 300 });
+const search = debounce({ fn, ms: 300 });
 ```
 
 ## When should you still use just?

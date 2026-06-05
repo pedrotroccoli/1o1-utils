@@ -10,7 +10,7 @@ import { Card, CardGrid } from "@astrojs/starlight/components";
     Pure TypeScript. No transitive dependencies. No supply chain risk.
   </Card>
   <Card title="Ultra lightweight" icon="seti:json">
-    2.1 kB total gzipped. Individual utilities weigh 139–366 bytes.
+    ~13 kB gzipped for the entire library. Most individual utilities weigh under 500 bytes.
   </Card>
   <Card title="Ultra simple" icon="pencil">
     Named object params. One function, one job. No config, no magic.
@@ -37,38 +37,80 @@ No transitive dependencies means no supply chain risk, no version conflicts, no 
 
 ## Ultra lightweight
 
-The **entire library** is **2.1 kB gzipped**. For comparison, lodash is 70 kB and radash is 12 kB.
-
-Each utility is a self-contained module you can import individually:
+The **entire library** — all 59 utilities, tree-shaken — is **~13 kB gzipped**. For comparison, lodash is ~24 kB and radash is ~12 kB. But you rarely ship the whole thing: each utility is a self-contained module you import individually, and tree-shaking drops the rest.
 
 ```ts
-import { chunk } from "1o1-utils/chunk";   // 199 B
-import { pick } from "1o1-utils/pick";     // 320 B
-import { sleep } from "1o1-utils/sleep";   // 139 B
+import { chunk } from "1o1-utils/chunk";   // 253 B
+import { pick } from "1o1-utils/pick";     // 498 B
+import { sleep } from "1o1-utils/sleep";   // 176 B
 ```
 
 ### Bundle sizes (gzipped)
 
+Per-utility gzipped size for all 59 utilities. The **Total** is the whole tree-shaken library, not the sum of the rows — shared internals are counted once.
+
 | Utility | Size |
 |---------|------|
-| sleep | 139 B |
-| slugify | 147 B |
-| isEmpty | 164 B |
-| capitalize | 169 B |
-| truncate | 170 B |
-| arrayToHash | 173 B |
-| unique | 173 B |
-| groupBy | 180 B |
-| debounce | 198 B |
-| chunk | 199 B |
-| deepMerge | 248 B |
-| throttle | 258 B |
-| pick | 320 B |
-| retry | 321 B |
-| transformCase | 330 B |
-| sortBy | 350 B |
-| omit | 366 B |
-| **Total** | **2.1 kB** |
+| isNil | 77 B |
+| once | 169 B |
+| escapeRegExp | 170 B |
+| sleep | 176 B |
+| get | 189 B |
+| clamp | 195 B |
+| capitalize | 210 B |
+| isEmpty | 212 B |
+| truncate | 214 B |
+| arrayToHash | 215 B |
+| pipe | 217 B |
+| shuffle | 217 B |
+| slugify | 218 B |
+| unique | 219 B |
+| safely | 220 B |
+| partition | 221 B |
+| groupBy | 222 B |
+| times | 235 B |
+| debounce | 249 B |
+| chunk | 253 B |
+| mapValues | 255 B |
+| range | 261 B |
+| defaults | 271 B |
+| secondsToTimeFormat | 272 B |
+| isValidUrl | 280 B |
+| replace | 283 B |
+| diff | 288 B |
+| mapKeys | 302 B |
+| throttle | 309 B |
+| deepMerge | 310 B |
+| zip | 316 B |
+| unzip | 318 B |
+| defaultsDeep | 322 B |
+| isValidEmail | 326 B |
+| isMobile | 329 B |
+| compact | 336 B |
+| timeFormatToSeconds | 343 B |
+| shallowEqual | 352 B |
+| retry | 379 B |
+| sortBy | 423 B |
+| isCircular | 428 B |
+| omit | 432 B |
+| set | 437 B |
+| randomInt | 445 B |
+| parallel | 449 B |
+| withTimeout | 475 B |
+| pick | 498 B |
+| flatten | 512 B |
+| stringStrength | 521 B |
+| unflatten | 582 B |
+| waitForCondition | 588 B |
+| toNumber | 604 B |
+| cloneDeep | 611 B |
+| copyToClipboard | 615 B |
+| transformCase | 649 B |
+| deepEqual | 821 B |
+| generateString | 869 B |
+| bindKey | 1.21 kB |
+| isValidPhone | 1.55 kB |
+| **Whole library (tree-shaken)** | **~13 kB** |
 
 Every utility stays under strict size limits enforced in CI. If a PR makes a utility heavier, the build fails.
 
@@ -111,7 +153,7 @@ _.get(obj, "a.b.c");
 // What does this do? Read it out loud.
 arrayToHash({ array: users, key: "id" });
 unique({ array: items, key: "sku" });
-pick({ obj, keys: ["a.b.c"] });
+get({ obj, path: "a.b.c" });
 ```
 
 Names follow plain English — `arrayToHash`, not `keyBy`. `unique`, not `uniqBy`. `deepMerge`, not `merge` (which might or might not be deep). `isEmpty`, not `empty` (is it a verb or an adjective?).

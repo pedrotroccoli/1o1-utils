@@ -9,7 +9,7 @@ Looking for a **lodash alternative** that's dramatically smaller, faster, and fu
 
 | | 1o1-utils | lodash |
 |---|---|---|
-| Bundle size (gzip) | **~2 kB total** | ~24 kB (full), 70 kB unminified |
+| Bundle size (gzip) | **~13 kB full / from ~80 B per utility** | ~24 kB (full) |
 | Dependencies | **0** | 0 (runtime) |
 | TypeScript | **Native, strict** | `@types/lodash` required |
 | Tree-shaking | **Full** | Partial (needs `lodash-es`) |
@@ -48,8 +48,8 @@ Benchmarks run on the same machine, same dataset. Full methodology on the [Bench
 | `_.capitalize(str)` | `capitalize({ str })` | |
 | `_.truncate(str, opts)` | `truncate({ str, length, suffix })` | Flat params |
 | `_.camelCase` / `_.snakeCase` / `_.kebabCase` | `transformCase({ str, to })` | One function |
-| `_.debounce(fn, ms)` | `debounce({ fn, wait })` | |
-| `_.throttle(fn, ms)` | `throttle({ fn, wait })` | |
+| `_.debounce(fn, ms)` | `debounce({ fn, ms })` | |
+| `_.throttle(fn, ms)` | `throttle({ fn, ms })` | |
 
 ## Side by side
 
@@ -78,14 +78,14 @@ const merged = deepMerge({ target: defaults, source: overrides });
 
 ## When should you still use lodash?
 
-1o1-utils covers **18 commonly-used utilities**. Lodash has 200+. Stick with lodash if you need:
+1o1-utils covers **59 commonly-used utilities**. Lodash has 200+. Stick with lodash if you need:
 - Collection helpers like `_.flow`, `_.memoize`, `_.curry`, `_.partial`
 - Function composition / FP suite (`lodash/fp`)
 - Deep-string path accessors (`_.get(obj, "a.b.c")`)
 - Number utilities (`_.random`, `_.clamp`)
 - Legacy ES5 environments
 
-If you only use lodash for chunk, groupBy, pick, omit, debounce — you're carrying 24 kB for 2 kB of value. Switch.
+If you only use lodash for chunk, groupBy, pick, omit, debounce, those five tree-shake to roughly 1.5 kB gzipped with 1o1-utils — instead of dragging in a 24 kB dependency. Switch.
 
 ## Migration checklist
 

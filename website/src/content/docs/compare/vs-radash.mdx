@@ -9,12 +9,12 @@ Both [radash](https://github.com/sodiray/radash) and 1o1-utils are **modern, Typ
 
 | | 1o1-utils | radash |
 |---|---|---|
-| Bundle size (gzip) | **~2 kB total** | ~12 kB |
+| Bundle size (gzip) | **~13 kB full / from ~80 B per utility** | ~12 kB |
 | Dependencies | 0 | 0 |
 | TypeScript | Native, strict | Native |
 | Tree-shaking | Full | Full |
 | Named parameters | **Yes** | No (positional) |
-| Scope | 18 focused utilities | 90+ utilities |
+| Scope | 59 focused utilities | 90+ utilities |
 | Benchmarks in CI | **Yes** | No |
 
 ## Performance
@@ -47,8 +47,8 @@ Full methodology on the [Benchmarks page](/1o1-utils/benchmarks/).
 | `set(obj, path, val)` | `set({ obj, path, value })` | Immutable |
 | `capitalize(str)` | `capitalize({ str })` | |
 | `camel` / `snake` / `dash` | `transformCase({ str, to })` | One function |
-| `debounce({ delay }, fn)` | `debounce({ fn, wait })` | |
-| `throttle({ interval }, fn)` | `throttle({ fn, wait })` | |
+| `debounce({ delay }, fn)` | `debounce({ fn, ms })` | |
+| `throttle({ interval }, fn)` | `throttle({ fn, ms })` | |
 | `retry({ times }, fn)` | `retry({ fn, attempts })` | |
 | `sleep(ms)` | `sleep({ ms })` | |
 
@@ -79,17 +79,17 @@ const uniqueUsers = unique({ array: users, key: "id" });
 
 ## When should you choose radash?
 
-- You want **broader coverage** — radash has ~90 utilities vs 18 in 1o1-utils
+- You want **broader coverage** — radash has ~90 utilities vs 59 in 1o1-utils
 - You need FP-flavored helpers (`flat`, `iterate`, `chain`, `series`, `parallel`, `tryit`)
 - You prefer positional args and already know the radash API
 
 ## When should you choose 1o1-utils?
 
-- **Smaller bundle** — 2 kB vs 12 kB (6× smaller)
+- **Pay-per-import** — every utility tree-shakes from its own subpath, so you ship from ~80 B per utility, not a whole bundle
 - **Benchmarked in CI** — every utility has size-limit + performance guards
 - **Named parameters** — code reads like English, no need to check signatures
-- **Focused scope** — 18 utilities you actually use, no bloat
-- You want **individual imports** (`1o1-utils/chunk` → 199 B) without bundler magic
+- **Zero dependencies** — nothing transitive, no supply-chain surface
+- You want **individual imports** (`1o1-utils/chunk` → 253 B gzipped) without bundler magic
 
 ## FAQ
 

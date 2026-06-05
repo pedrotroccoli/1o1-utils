@@ -9,12 +9,12 @@ description: Comparing 1o1-utils and es-toolkit — modern TypeScript utility li
 
 | | 1o1-utils | es-toolkit |
 |---|---|---|
-| Bundle size (gzip) | **~2 kB total** | ~6 kB |
+| Bundle size (gzip) | **~13 kB full / from ~80 B per utility** | ~6 kB |
 | Dependencies | 0 | 0 |
 | TypeScript | Native, strict | Native |
 | Tree-shaking | Full | Full |
 | Named parameters | **Yes** | No (lodash-style positional) |
-| Scope | 18 focused utilities | 200+ utilities |
+| Scope | 59 focused utilities | 200+ utilities |
 | Maintained by | Pedro Troccoli | Toss (fintech) |
 
 ## API equivalence
@@ -33,8 +33,8 @@ description: Comparing 1o1-utils and es-toolkit — modern TypeScript utility li
 | `pick(obj, keys)` | `pick({ obj, keys })` | |
 | `capitalize(str)` | `capitalize({ str })` | |
 | `camelCase` / `snakeCase` / `kebabCase` | `transformCase({ str, to })` | One function |
-| `debounce(fn, ms)` | `debounce({ fn, wait })` | |
-| `throttle(fn, ms)` | `throttle({ fn, wait })` | |
+| `debounce(fn, ms)` | `debounce({ fn, ms })` | |
+| `throttle(fn, ms)` | `throttle({ fn, ms })` | |
 
 ## Side by side
 
@@ -58,7 +58,7 @@ import { debounce } from "1o1-utils/debounce";
 const pages = chunk({ array: items, size: 10 });
 const byId = arrayToHash({ array: users, key: "id" });
 const picked = pick({ obj: user, keys: ["id", "name"] });
-const search = debounce({ fn, wait: 300 });
+const search = debounce({ fn, ms: 300 });
 ```
 
 ## When should you choose es-toolkit?
@@ -70,11 +70,11 @@ const search = debounce({ fn, wait: 300 });
 
 ## When should you choose 1o1-utils?
 
-- **3× smaller bundle** (2 kB vs 6 kB)
+- **Pay-per-import** — each utility tree-shakes from its own subpath, from ~80 B gzipped, so you only ship what you call
 - **Named parameters** — self-documenting call sites, no signature guessing
 - **Benchmarked in CI** with strict size limits
-- Focused on **the 18 utilities 90% of apps actually use** — no bloat
-- You want per-utility imports with predictable tiny sizes (`1o1-utils/chunk` → 199 B)
+- **Zero dependencies** — nothing transitive, no supply-chain surface
+- You want per-utility imports with predictable tiny sizes (`1o1-utils/chunk` → 253 B gzipped)
 
 ## FAQ
 
