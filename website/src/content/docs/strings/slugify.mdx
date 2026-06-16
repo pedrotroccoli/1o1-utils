@@ -5,7 +5,7 @@ description: Convert a string to a URL-friendly slug
 
 import Playground from "../../../components/Playground.tsx";
 
-Converts a string to a URL-friendly slug by lowercasing, stripping accents, and replacing non-alphanumeric characters with hyphens.
+Converts a string to a URL-friendly slug by lowercasing, stripping accents, and replacing non-alphanumeric characters with a configurable separator (default `-`).
 
 ## Try it
 
@@ -24,18 +24,19 @@ import { slugify } from "1o1-utils/slugify";
 ## Signature
 
 ```ts
-function slugify({ str }: SlugifyParams): string
+function slugify({ str, separator }: SlugifyParams): string
 ```
 
 ## Parameters
 
-| Name | Type     | Required | Description            |
-| ---- | -------- | -------- | ---------------------- |
-| str  | `string` | Yes      | The string to slugify  |
+| Name      | Type     | Required | Description                                             |
+| --------- | -------- | -------- | ------------------------------------------------------- |
+| str       | `string` | Yes      | The string to slugify                                   |
+| separator | `string` | No       | The separator to use between words (default `-`)        |
 
 ## Returns
 
-`string` — A lowercase, hyphen-separated slug.
+`string` — A lowercase slug with non-alphanumeric runs replaced by `separator`.
 
 ## Examples
 
@@ -48,18 +49,26 @@ slugify({ str: "Café au lait" });
 
 slugify({ str: "  --Multiple   Spaces--  " });
 // => "multiple-spaces"
+
+slugify({ str: "Hello World!", separator: "_" });
+// => "hello_world"
+
+slugify({ str: "Hello World!", separator: "" });
+// => "helloworld"
 ```
 
 ## Edge Cases
 
 - Throws if `str` is not a string.
+- Throws if `separator` is not a string.
 - Handles Unicode normalization (NFD) to strip accents.
-- Removes leading/trailing hyphens.
-- Collapses multiple non-alphanumeric characters into a single hyphen.
+- Removes leading/trailing separators (the separator is regex-escaped, so any string is safe).
+- Collapses multiple non-alphanumeric characters into a single separator.
+- An empty `separator` skips trimming and concatenates the alphanumeric runs.
 
 ## Also known as
 
-url slug, url friendly, permalink, dash case url
+url slug, url friendly, permalink, dash case url, snake case slug
 
 ## Prompt suggestion
 

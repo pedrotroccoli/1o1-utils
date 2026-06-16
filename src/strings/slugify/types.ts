@@ -1,5 +1,6 @@
 interface SlugifyParams {
   str: string;
+  separator?: string;
 }
 
 type SlugifyResult = string;

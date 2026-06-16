@@ -57,4 +57,53 @@ describe("slugify", () => {
       "The 'str' parameter must be a string",
     );
   });
+
+  it("should use a custom separator", () => {
+    const result = slugify({ str: "Hello World!", separator: "_" });
+
+    expect(result).to.equal("hello_world");
+  });
+
+  it("should support an empty separator", () => {
+    const result = slugify({ str: "Hello World!", separator: "" });
+
+    expect(result).to.equal("helloworld");
+  });
+
+  it("should trim leading and trailing custom separators", () => {
+    const result = slugify({ str: "  Hello World!  ", separator: "_" });
+
+    expect(result).to.equal("hello_world");
+  });
+
+  it("should collapse runs into a single custom separator", () => {
+    const result = slugify({ str: "  multiple   spaces  ", separator: "_" });
+
+    expect(result).to.equal("multiple_spaces");
+  });
+
+  it("should handle multi-character separators", () => {
+    const result = slugify({ str: "Hello World Foo", separator: "--" });
+
+    expect(result).to.equal("hello--world--foo");
+  });
+
+  it("should escape regex-special separators when trimming", () => {
+    const result = slugify({ str: "  Hello World!  ", separator: "." });
+
+    expect(result).to.equal("hello.world");
+  });
+
+  it("should return an empty string when input collapses to separators only", () => {
+    const result = slugify({ str: "!@#$%^&*()", separator: "_" });
+
+    expect(result).to.equal("");
+  });
+
+  it("should throw an error if separator is not a string", () => {
+    expect(() =>
+      // @ts-expect-error - we want to test the error case
+      slugify({ str: "Hello World!", separator: 123 }),
+    ).to.throw("The 'separator' parameter must be a string");
+  });
 });
