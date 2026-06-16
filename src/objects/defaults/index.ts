@@ -1,10 +1,5 @@
+import { isPlainObject } from "../../_internal/is-plain-object.js";
 import type { DefaultsParams, DefaultsResult } from "./types.js";
-
-function isPlainObject(value: unknown): value is Record<string, unknown> {
-  return (
-    typeof value === "object" && value !== null && value.constructor === Object
-  );
-}
 
 /**
  * Assigns default values from `source` to `target` for properties that are

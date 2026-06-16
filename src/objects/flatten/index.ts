@@ -1,16 +1,10 @@
+import { isPlainObject } from "../../_internal/is-plain-object.js";
+import { UNSAFE_KEYS } from "../../_internal/unsafe-keys.js";
 import type {
   FlattenArrayParams,
   FlattenObjectParams,
   FlattenParams,
 } from "./types.js";
-
-const UNSAFE_KEYS = new Set(["__proto__", "constructor", "prototype"]);
-
-function isPlainObject(value: unknown): value is Record<string, unknown> {
-  if (typeof value !== "object" || value === null) return false;
-  const proto = Object.getPrototypeOf(value);
-  return proto === null || proto === Object.prototype;
-}
 
 function flattenObject(obj: Record<string, unknown>): Record<string, unknown> {
   const result: Record<string, unknown> = {};

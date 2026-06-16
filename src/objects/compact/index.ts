@@ -1,6 +1,5 @@
+import { UNSAFE_KEYS } from "../../_internal/unsafe-keys.js";
 import type { CompactParams } from "./types.js";
-
-const UNSAFE_KEYS = new Set(["__proto__", "constructor", "prototype"]);
 
 /**
  * Creates a new object with all falsy values removed.

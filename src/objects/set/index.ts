@@ -1,13 +1,5 @@
+import { isNumericSegment } from "../../_internal/is-numeric-segment.js";
 import type { SetParams } from "./types.js";
-
-function isNumericSegment(seg: string): boolean {
-  if (seg.length === 0) return false;
-  for (let i = 0; i < seg.length; i++) {
-    const c = seg.charCodeAt(i);
-    if (c < 48 || c > 57) return false;
-  }
-  return true;
-}
 
 /**
  * Sets a nested value on an object using dot-notation path.

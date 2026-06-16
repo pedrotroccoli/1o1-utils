@@ -1,6 +1,5 @@
+import { UNSAFE_KEYS } from "../../_internal/unsafe-keys.js";
 import type { PickByParams } from "./types.js";
-
-const UNSAFE_KEYS = new Set(["__proto__", "constructor", "prototype"]);
 
 /**
  * Creates an object with only the entries for which the predicate returns truthy.

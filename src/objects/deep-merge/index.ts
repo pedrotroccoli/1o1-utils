@@ -1,10 +1,5 @@
+import { isPlainObject } from "../../_internal/is-plain-object.js";
 import type { DeepMergeParams, DeepMergeResult } from "./types.js";
-
-function isPlainObject(value: unknown): value is Record<string, unknown> {
-  return (
-    typeof value === "object" && value !== null && value.constructor === Object
-  );
-}
 
 /**
  * Recursively merges a source object into a target object.

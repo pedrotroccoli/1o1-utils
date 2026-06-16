@@ -1,23 +1,7 @@
+import { isNumericSlice } from "../../_internal/is-numeric-segment.js";
+import { isPlainObject } from "../../_internal/is-plain-object.js";
+import { UNSAFE_KEYS } from "../../_internal/unsafe-keys.js";
 import type { UnflattenParams } from "./types.js";
-
-const UNSAFE_KEYS = new Set(["__proto__", "constructor", "prototype"]);
-const MAX_NUMERIC_SEGMENT_LEN = 7;
-
-function isPlainObject(value: unknown): value is Record<string, unknown> {
-  if (typeof value !== "object" || value === null) return false;
-  const proto = Object.getPrototypeOf(value);
-  return proto === null || proto === Object.prototype;
-}
-
-function isSafeNumericSlice(str: string, start: number, end: number): boolean {
-  const span = end - start;
-  if (span <= 0 || span > MAX_NUMERIC_SEGMENT_LEN) return false;
-  for (let i = start; i < end; i++) {
-    const c = str.charCodeAt(i);
-    if (c < 48 || c > 57) return false;
-  }
-  return true;
-}
 
 /**
  * Builds a nested object from a flat record of dot-notation keys. Inverse of
@@ -104,7 +88,7 @@ function unflatten({
         current[seg] = container;
       } else {
         container = (
-          arrays && isSafeNumericSlice(fullKey, nextStart, nextEnd) ? [] : {}
+          arrays && isNumericSlice(fullKey, nextStart, nextEnd) ? [] : {}
         ) as Record<string, unknown>;
         internal.add(container);
         current[seg] = container;
