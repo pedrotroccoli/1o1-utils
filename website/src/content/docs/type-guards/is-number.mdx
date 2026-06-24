@@ -1,0 +1,79 @@
+---
+title: isNumber
+description: Type-guard that narrows a value to number
+---
+
+import Playground from "../../../components/Playground.tsx";
+
+Type guard that returns `true` when the value is a primitive `number` and narrows the argument to `number` in the truthy branch. Matches `typeof value === "number"` semantics — `NaN`, `Infinity`, and `-Infinity` return `true`; `bigint` values and boxed `Number` objects return `false`.
+
+Use `Number.isFinite` or `Number.isInteger` afterwards if you need to rule out `NaN`/`Infinity` or restrict to integers.
+
+## Try it
+
+<Playground client:only="react" utilityId="is-number" />
+
+## Import
+
+```ts
+import { isNumber } from "1o1-utils";
+```
+
+```ts
+import { isNumber } from "1o1-utils/is-number";
+```
+
+## Signature
+
+```ts
+function isNumber(value: unknown): value is number
+```
+
+## Parameters
+
+| Name  | Type      | Required | Description         |
+| ----- | --------- | -------- | ------------------- |
+| value | `unknown` | Yes      | The value to check  |
+
+## Returns
+
+`boolean` (type predicate `value is number`) — `true` if the value is a primitive number, `false` otherwise.
+
+## Examples
+
+```ts
+const value: unknown = 42;
+if (isNumber(value)) {
+  // value is narrowed to number
+  console.log(value.toFixed(2)); // "42.00"
+}
+
+isNumber(0);                       // => true
+isNumber(-1.5);                    // => true
+isNumber(Number.NaN);              // => true
+isNumber(Number.POSITIVE_INFINITY); // => true
+isNumber("1");                     // => false
+isNumber(1n);                      // => false
+isNumber(new Number(1));           // => false
+isNumber(null);                    // => false
+```
+
+## Edge Cases
+
+- `NaN`, `Infinity`, and `-Infinity` all return `true` because they are `number` values. Combine with `Number.isFinite` if you need to exclude them.
+- `bigint` (e.g. `0n`) returns `false` — bigint is its own primitive type.
+- Boxed `Number` objects return `false`.
+
+## Convention note
+
+Type guards use a single positional argument rather than the library's named-object parameter convention so that TypeScript can narrow the caller's variable inside the `if`/`else` branches.
+
+## Also known as
+
+is number, type guard, number check, narrow number, typeof number
+
+## Prompt suggestion
+
+```text
+I'm using 1o1-utils (npm: https://www.npmjs.com/package/1o1-utils, GitHub: https://github.com/pedrotroccoli/1o1-utils, LLM context: https://pedrotroccoli.github.io/1o1-utils/llms.txt). Show me how to use isNumber to narrow an `unknown` value to a number and combine it with Number.isFinite to also exclude NaN/Infinity.
+```

@@ -103,6 +103,10 @@ export default defineConfig({
           autogenerate: { directory: "functions" },
         },
         {
+          label: "Type Guards",
+          autogenerate: { directory: "type-guards" },
+        },
+        {
           label: "Validators",
           autogenerate: { directory: "validators" },
         },
