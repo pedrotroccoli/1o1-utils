@@ -17,7 +17,7 @@
     "iconoir": "^7.11.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
-    "sharp": "^0.33",
+    "sharp": "^0.35",
     "starlight-typedoc": "^0.21",
     "typedoc": "^0.28",
     "typedoc-plugin-markdown": "^4.6"
