@@ -19,7 +19,7 @@
 - **Tree-shakeable** — every utility ships from its own subpath; bundlers drop everything you don't import.
 - **Zero dependencies** — no transitive bloat, no supply-chain risk.
 - **TypeScript-first** — full type inference and strict null safety out of the box.
-- **Tiny per-utility footprint** — most utilities are **150–500 B brotlied**; the largest is ~1.2 kB.
+- **Tiny per-utility footprint** — most utilities are **under 500 B brotlied**; the largest is ~1.2 kB.
 - **Benchmarked** — measured against lodash, radash, es-toolkit, and native JavaScript — up to 11× faster on the slowest competitor.
 - **Interactive playground** — every utility has a "Try it" block on its docs page that runs `1o1-utils` directly from npm.
 
@@ -172,12 +172,12 @@ Run `pnpm size` to see per-utility brotli sizes locally. Sample from the latest 
 | `isNil` | 36 B |
 | `clamp` | 150 B |
 | `chunk` | 199 B |
-| `deepEqual` | 590 B |
+| `deepEqual` | 739 B |
 | `bindKey` | 1.05 kB |
 | `isValidPhone` | 1.19 kB |
-| **Whole library (all utilities)** | **~9.2 kB brotli / ~11 kB gzipped** |
+| **Whole library (all utilities)** | **~11.6 kB brotli / ~13 kB gzipped** |
 
-Tree-shaking removes everything you don't import — typical real-world bundles add a few hundred bytes per utility, not the whole 9 kB.
+Tree-shaking removes everything you don't import — typical real-world bundles add a few hundred bytes per utility, not the whole 13 kB.
 
 ## Benchmarks
 

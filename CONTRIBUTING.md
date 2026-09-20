@@ -298,7 +298,7 @@ Cover happy paths, edge cases, and error cases.
 
 ## Bundle Size
 
-Each utility must stay under its size limit (1-2 kB gzipped). Run `pnpm size` to verify. The total library limit is 5 kB.
+Each utility must stay under its size limit (1-2 kB brotli). Run `pnpm size` to verify. The total library limit is 12 kB.
 
 ## Pull Request Checklist
 
