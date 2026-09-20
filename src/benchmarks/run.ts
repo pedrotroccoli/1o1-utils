@@ -1,8 +1,7 @@
-import { mkdir, readdir, writeFile } from "node:fs/promises";
+import { mkdir, writeFile } from "node:fs/promises";
 import { arch, platform, release } from "node:os";
 import { join, resolve } from "node:path";
-import { pathToFileURL } from "node:url";
-import type { Bench, Task } from "tinybench";
+import { discoverBenchFiles, runBenchmarks, type TaskRow } from "./collect.js";
 
 const isCI = process.argv.includes("--ci");
 if (isCI) process.env.BENCH_CI = "1";
@@ -13,17 +12,6 @@ const filter = process.argv.find(
 );
 const rootDir = resolve(import.meta.dirname, "../..");
 const benchDir = join(rootDir, "docs", "benchmarks");
-
-// --- Discovery ---
-
-async function discoverBenchFiles(): Promise<string[]> {
-  const srcDir = resolve(import.meta.dirname, "..");
-  const entries = await readdir(srcDir, { recursive: true });
-  return entries
-    .filter((e) => e.endsWith(".bench.ts"))
-    .map((e) => join(srcDir, e))
-    .sort();
-}
 
 // --- Formatting helpers ---
 
@@ -48,30 +36,6 @@ function formatMultiplier(a: number, b: number): string {
   if (ratio >= 1.05) return `${ratio.toFixed(1)}× faster`;
   if (ratio <= 0.95) return `${(1 / ratio).toFixed(1)}× slower`;
   return "on par";
-}
-
-// --- Parse task results ---
-
-interface TaskRow {
-  lib: string;
-  size: string;
-  opsMedian: number;
-  latencyMedian: number;
-}
-
-function parseTask(task: Task): TaskRow | null {
-  const r = task.result;
-  if (!r || !("latency" in r)) return null;
-
-  const match = task.name.match(/^(.+?)\s*\((.+)\)$/);
-  if (!match) return null;
-
-  return {
-    lib: match[1].trim(),
-    size: match[2].trim(),
-    opsMedian: r.throughput.p50,
-    latencyMedian: r.latency.p50,
-  };
 }
 
 // --- Markdown generation ---
@@ -488,6 +452,24 @@ function generateReadme(suites: SuiteResult[]): string {
   lines.push(`- **Date**: ${new Date().toISOString().split("T")[0]}`);
   lines.push("- **Source**: [`src/**/*.bench.ts`](../src/)");
   lines.push("");
+  lines.push("---");
+  lines.push("");
+  lines.push("## Cross-machine validation");
+  lines.push("");
+  lines.push(
+    "The **Benchmark Validation** GitHub Actions workflow re-runs the suite on macOS (arm64), Ubuntu (x64), and Windows (x64) and checks that 1o1-utils' speedup ratio (own ops ÷ reference-library ops) stays within ±15% of the stored baseline. The ratio is hardware-independent, so it is comparable across machines.",
+  );
+  lines.push("");
+  lines.push(
+    "- **Trigger**: Actions → *Benchmark Validation* → *Run workflow* (`workflow_dispatch`).",
+  );
+  lines.push(
+    "- **Outcome**: fails the run if ≥2 machines breach the threshold for the same benchmark; a single-machine breach is a non-blocking warning.",
+  );
+  lines.push(
+    "- **Update the baseline**: run `pnpm bench:baseline` on a reference machine and commit the regenerated `benchmarks/baseline.json`.",
+  );
+  lines.push("");
   return lines.join("\n");
 }
 
@@ -511,33 +493,16 @@ async function main() {
   console.log("");
   console.log("=".repeat(80));
 
-  const suites: SuiteResult[] = [];
+  const benchResults = await runBenchmarks(benchFiles, { verbose: true });
 
-  for (const file of benchFiles) {
-    const mod = await import(pathToFileURL(file).href);
-    const bench: Bench = mod.bench;
-
-    console.log(`\n  ${bench.name}\n`);
-
-    await bench.run();
-    console.table(bench.table());
-
-    // Collect results
-    const rows: TaskRow[] = [];
-    for (const task of bench.tasks) {
-      const row = parseTask(task);
-      if (row) rows.push(row);
-    }
-
-    const meta = SUITE_META[bench.name];
-    suites.push({
-      name: bench.name,
-      slug: meta?.slug ?? bench.name.toLowerCase().replace(/\s+/g, "-"),
+  const suites: SuiteResult[] = benchResults.map(({ name, rows }) => {
+    const meta = SUITE_META[name];
+    return {
+      name,
+      slug: meta?.slug ?? name.toLowerCase().replace(/\s+/g, "-"),
       rows,
-    });
-
-    console.log("=".repeat(80));
-  }
+    };
+  });
 
   // Write markdown files (skip README when filtered)
   if (!filter || writeMd) {
