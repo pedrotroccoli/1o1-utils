@@ -211,11 +211,152 @@ export function decideExit(reports: Report[]): ExitDecision {
   return { code: failures.length > 0 ? 1 : 0, failures, warnings };
 }
 
+// --- Run history + markdown (pure) -----------------------------------------
+
+export type RunOutcome = "pass" | "warn" | "fail";
+
+export interface MachineSummary {
+  machine: string;
+  os: string;
+  arch: string;
+  nodeVersion: string;
+  total: number;
+  pass: number;
+  fail: number;
+}
+
+export interface RunHistoryEntry {
+  date: string;
+  commit: string;
+  outcome: RunOutcome;
+  machines: MachineSummary[];
+  failures: { name: string; failedMachines: number }[];
+  warnings: { name: string; failedMachines: number }[];
+}
+
+/** Summarizes one aggregation into a history entry. */
+export function summarizeRun(
+  reports: Report[],
+  decision: ExitDecision,
+  meta: { date: string; commit: string },
+): RunHistoryEntry {
+  const machines: MachineSummary[] = reports.map((r) => ({
+    machine: r.machine,
+    os: r.os,
+    arch: r.arch,
+    nodeVersion: r.nodeVersion,
+    total: r.benchmarks.length,
+    pass: r.benchmarks.filter((b) => b.status === "pass").length,
+    fail: r.benchmarks.filter((b) => b.status === "fail").length,
+  }));
+  const outcome: RunOutcome =
+    decision.code === 1
+      ? "fail"
+      : decision.warnings.length > 0
+        ? "warn"
+        : "pass";
+  return {
+    date: meta.date,
+    commit: meta.commit,
+    outcome,
+    machines,
+    failures: decision.failures,
+    warnings: decision.warnings,
+  };
+}
+
+/** Appends an entry, keeping at most `limit` most-recent runs (newest last). */
+export function appendHistory(
+  existing: RunHistoryEntry[],
+  entry: RunHistoryEntry,
+  limit = 100,
+): RunHistoryEntry[] {
+  return [...existing, entry].slice(-limit);
+}
+
+function shortSha(commit: string): string {
+  return /^[0-9a-f]{7,}$/i.test(commit) ? commit.slice(0, 7) : commit;
+}
+
+const OUTCOME_BADGE: Record<RunOutcome, string> = {
+  pass: "✅ PASS",
+  warn: "⚠️ WARN",
+  fail: "❌ FAIL",
+};
+
+/** Renders the validation doc: latest run detail + recent history table. */
+export function renderValidationMarkdown(
+  latest: RunHistoryEntry,
+  history: RunHistoryEntry[],
+): string {
+  const lines: string[] = [];
+  lines.push("# Benchmark validation");
+  lines.push("");
+  lines.push("[← Back to benchmarks](./README.md)");
+  lines.push("");
+  lines.push(
+    "Cross-machine validation of the speedup ratio (1o1-utils ops ÷ reference-library ops) against the stored baseline. Regenerated automatically by the **Benchmark Validation** workflow — do not edit by hand.",
+  );
+  lines.push("");
+  lines.push("---");
+  lines.push("");
+  lines.push(`## Latest run — ${OUTCOME_BADGE[latest.outcome]}`);
+  lines.push("");
+  lines.push(`- **Date**: ${latest.date}`);
+  lines.push(`- **Commit**: \`${shortSha(latest.commit)}\``);
+  lines.push("");
+  lines.push("| Machine | OS / Arch | Node | Pass | Fail |");
+  lines.push("| ------- | --------- | ---- | ---- | ---- |");
+  for (const m of latest.machines) {
+    lines.push(
+      `| ${m.machine} | ${m.os}/${m.arch} | ${m.nodeVersion} | ${m.pass} | ${m.fail} |`,
+    );
+  }
+  lines.push("");
+
+  if (latest.failures.length > 0) {
+    lines.push("### Blocking failures (≥2 machines)");
+    lines.push("");
+    lines.push("| Benchmark | Machines failed |");
+    lines.push("| --------- | --------------- |");
+    for (const f of latest.failures) {
+      lines.push(`| ${f.name} | ${f.failedMachines} |`);
+    }
+    lines.push("");
+  }
+  if (latest.warnings.length > 0) {
+    lines.push("### Warnings (1 machine, non-blocking)");
+    lines.push("");
+    lines.push("| Benchmark | Machines failed |");
+    lines.push("| --------- | --------------- |");
+    for (const w of latest.warnings) {
+      lines.push(`| ${w.name} | ${w.failedMachines} |`);
+    }
+    lines.push("");
+  }
+
+  lines.push("---");
+  lines.push("");
+  lines.push("## History");
+  lines.push("");
+  lines.push("| Date | Commit | Outcome | Machines | Blocking | Warnings |");
+  lines.push("| ---- | ------ | ------- | -------- | -------- | -------- |");
+  for (const run of [...history].reverse()) {
+    lines.push(
+      `| ${run.date} | \`${shortSha(run.commit)}\` | ${OUTCOME_BADGE[run.outcome]} | ${run.machines.length} | ${run.failures.length} | ${run.warnings.length} |`,
+    );
+  }
+  lines.push("");
+  return lines.join("\n");
+}
+
 // --- IO / CLI --------------------------------------------------------------
 
 const rootDir = resolve(import.meta.dirname, "../..");
 const baselinePath = join(rootDir, "benchmarks", "baseline.json");
 const reportPath = join(rootDir, "benchmark-validation-report.json");
+const historyPath = join(rootDir, "benchmarks", "history.json");
+const validationMdPath = join(rootDir, "docs", "benchmarks", "validation.md");
 
 function machineMeta(): MachineMeta {
   return {
@@ -285,7 +426,16 @@ async function runUpdateBaseline(): Promise<void> {
   );
 }
 
-async function runAggregate(dir: string): Promise<void> {
+async function readHistory(): Promise<RunHistoryEntry[]> {
+  try {
+    const parsed = JSON.parse(await readFile(historyPath, "utf8"));
+    return Array.isArray(parsed) ? (parsed as RunHistoryEntry[]) : [];
+  } catch {
+    return [];
+  }
+}
+
+async function runAggregate(dir: string, record: boolean): Promise<void> {
   const entries = await readdir(dir, { recursive: true });
   const files = entries
     .filter((e) => typeof e === "string" && e.endsWith(".json"))
@@ -302,7 +452,8 @@ async function runAggregate(dir: string): Promise<void> {
     throw new Error(`no benchmark report JSON files found under ${dir}`);
   }
 
-  const { code, failures, warnings } = decideExit(reports);
+  const decision = decideExit(reports);
+  const { code, failures, warnings } = decision;
   console.log(`\nAggregated ${reports.length} machine report(s):`);
   for (const r of reports) console.log(`  - ${r.machine} (${r.os}/${r.arch})`);
 
@@ -318,6 +469,26 @@ async function runAggregate(dir: string): Promise<void> {
   console.log(
     `\nResult: ${code === 0 ? "PASS" : "FAIL"} (${failures.length} blocking, ${warnings.length} warning)`,
   );
+
+  // Record run history + regenerate the validation doc before exiting, so the
+  // outcome is persisted even when the run fails.
+  if (record) {
+    const entry = summarizeRun(reports, decision, {
+      date: new Date().toISOString(),
+      commit: process.env.GITHUB_SHA ?? "local",
+    });
+    const history = appendHistory(await readHistory(), entry);
+    await mkdir(dirname(historyPath), { recursive: true });
+    await writeFile(historyPath, `${JSON.stringify(history, null, 2)}\n`);
+    await mkdir(dirname(validationMdPath), { recursive: true });
+    await writeFile(
+      validationMdPath,
+      `${renderValidationMarkdown(entry, history)}\n`,
+    );
+    console.log(`\nWrote ${historyPath}`);
+    console.log(`Wrote ${validationMdPath}`);
+  }
+
   process.exit(code);
 }
 
@@ -327,7 +498,7 @@ async function main(): Promise<void> {
   if (aggregateIdx !== -1) {
     const dir = args[aggregateIdx + 1];
     if (!dir) throw new Error("--aggregate requires a directory argument");
-    await runAggregate(dir);
+    await runAggregate(dir, args.includes("--record"));
     return;
   }
   if (args.includes("--update-baseline")) {

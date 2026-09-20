@@ -2,6 +2,7 @@ import { expect } from "chai";
 import { describe, it } from "mocha";
 import type { BenchSuiteResult } from "./collect.js";
 import {
+  appendHistory,
   type Baseline,
   type BenchStatus,
   buildReport,
@@ -12,6 +13,9 @@ import {
   type MachineMeta,
   parseBaseline,
   type Report,
+  type RunHistoryEntry,
+  renderValidationMarkdown,
+  summarizeRun,
 } from "./validate.js";
 
 const META: MachineMeta = {
@@ -235,6 +239,99 @@ describe("validate (benchmark validator)", () => {
     it("throws when a benchmark value is not a finite number", () => {
       const text = JSON.stringify({ benchmarks: { a: "fast" } });
       expect(() => parseBaseline(text)).to.throw(/must be a finite number/);
+    });
+  });
+
+  describe("summarizeRun", () => {
+    const meta = { date: "2026-01-01T00:00:00.000Z", commit: "abc1234def" };
+
+    it("derives outcome=pass when no machine fails", () => {
+      const reports = [
+        reportOf("a", { x: "pass" }),
+        reportOf("b", { x: "pass" }),
+      ];
+      const entry = summarizeRun(reports, decideExit(reports), meta);
+      expect(entry.outcome).to.equal("pass");
+      expect(entry.machines).to.have.length(2);
+      expect(entry.machines[0]).to.include({
+        machine: "a",
+        total: 1,
+        pass: 1,
+        fail: 0,
+      });
+    });
+
+    it("derives outcome=warn when exactly 1 machine fails", () => {
+      const reports = [
+        reportOf("a", { x: "fail" }),
+        reportOf("b", { x: "pass" }),
+      ];
+      const entry = summarizeRun(reports, decideExit(reports), meta);
+      expect(entry.outcome).to.equal("warn");
+      expect(entry.warnings).to.deep.equal([{ name: "x", failedMachines: 1 }]);
+    });
+
+    it("derives outcome=fail when ≥2 machines fail the same benchmark", () => {
+      const reports = [
+        reportOf("a", { x: "fail" }),
+        reportOf("b", { x: "fail" }),
+      ];
+      const entry = summarizeRun(reports, decideExit(reports), meta);
+      expect(entry.outcome).to.equal("fail");
+      expect(entry.failures).to.deep.equal([{ name: "x", failedMachines: 2 }]);
+    });
+  });
+
+  describe("appendHistory", () => {
+    const mk = (commit: string): RunHistoryEntry => ({
+      date: "d",
+      commit,
+      outcome: "pass",
+      machines: [],
+      failures: [],
+      warnings: [],
+    });
+
+    it("appends newest last", () => {
+      const out = appendHistory([mk("a")], mk("b"));
+      expect(out.map((e) => e.commit)).to.deep.equal(["a", "b"]);
+    });
+
+    it("keeps at most `limit` most-recent runs", () => {
+      const existing = [mk("a"), mk("b"), mk("c")];
+      const out = appendHistory(existing, mk("d"), 2);
+      expect(out.map((e) => e.commit)).to.deep.equal(["c", "d"]);
+    });
+  });
+
+  describe("renderValidationMarkdown", () => {
+    const entry: RunHistoryEntry = {
+      date: "2026-01-01T00:00:00.000Z",
+      commit: "abc1234def5678",
+      outcome: "warn",
+      machines: [
+        {
+          machine: "m",
+          os: "linux",
+          arch: "x64",
+          nodeVersion: "v22",
+          total: 5,
+          pass: 4,
+          fail: 1,
+        },
+      ],
+      failures: [],
+      warnings: [{ name: "chunk / n=100", failedMachines: 1 }],
+    };
+
+    it("renders latest badge, machine table, warnings and history", () => {
+      const md = renderValidationMarkdown(entry, [entry]);
+      expect(md).to.include("# Benchmark validation");
+      expect(md).to.include("⚠️ WARN");
+      expect(md).to.include("`abc1234`"); // short sha
+      expect(md).to.include("| m | linux/x64 | v22 | 4 | 1 |");
+      expect(md).to.include("chunk / n=100");
+      expect(md).to.include("## History");
     });
   });
 });
