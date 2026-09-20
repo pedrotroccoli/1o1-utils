@@ -8,3 +8,6 @@ website/node_modules
 website/dist
 website/.astro
 website/src/content/docs/api/
+
+# CI benchmark validation artifact (generated per-machine)
+benchmark-validation-report.json
